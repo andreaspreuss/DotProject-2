@@ -1,0 +1,20 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Department"=>"Pievienot nodaïu",
+"Department Company"=>"Nodaïas uzòçmums",
+"Department Name"=>"Nodaïas nosaukums",
+"Department Parent"=>"Nodaïas piederîba",
+"Edit Department"=>"Labot nodaïu",
+"Select Unit"=>"Izvçlçt vienîbu",
+"View Department"=>"Skatît nodaïu",
+"badCompany"=>"Ðis uzòçmums ir nekorekts. Jûs nevarat tam pievienot nodaïu",
+"delDept"=>"Vai Jûs esat pârliecinâts, ka vçlaties dzçst ðo nodaïu",
+"delete department"=>"dzçst nodaïu",
+"departmentDelete"=>"Vai Jûs tieðâm vçlaties dzçst ðo nodaïu",
+"deptIndexPage"=>"Lûdzu izvçlieties nodaïas, izmantojot uzòçmumu",
+"deptValidName"=>"Lûdzu ievadiet derîgu nodaïas nosaukumu",
+"deptWithProject"=>"Jûs nevarat izdzçst nodaïu, kurai ir piesaistîti projekti",
+"deptWithSub"=>"Jûs nevarat izdzçst nodaïu, kam ir apakðnodaïas",
+"edit this department"=>"labot ðo nodaïu",
+"view this department"=>"skatît ðo nodaïu",

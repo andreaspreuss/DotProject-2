@@ -1,0 +1,20 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Department"=>"Részleg felvitele",
+"Department Company"=>"Részleg cége",
+"Department Name"=>"Részleg neve",
+"Department Parent"=>"Részleg szülõje",
+"Edit Department"=>"Részleg szerkesztése",
+"Select Unit"=>"Egység kiválasztása",
+"View Department"=>"Részleg megtekintése",
+"badCompany"=>"Ez a cég hibás. Nem vehet fel hozzá részleget.",
+"delDept"=>"Biztosan törölni akarja ezt a részleget",
+"delete department"=>"részleg törlése",
+"departmentDelete"=>"Biztosan törölni akarja ezt a részleget",
+"deptIndexPage"=>"A részlegeket a cégeken keresztül érheti el",
+"deptValidName"=>"Kérem helyesen adja meg a részleg nevét",
+"deptWithProject"=>"Nem törölhet olyan részleget, melyhez projektet kapcsoltak.",
+"deptWithSub"=>"Nem törölhet olyan részleget, mely rendelkezik alrészlegekkel is.",
+"edit this department"=>"részleg szerkesztése",
+"view this department"=>"részleg megtekintése",

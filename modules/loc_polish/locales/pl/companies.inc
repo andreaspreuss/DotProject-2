@@ -1,0 +1,22 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Company"=>"Dodaj firmê",
+"Budget"=>"Bud¿et",
+"Company Name"=>"Nazwa firmy",
+"Company Owner"=>"W³a¶ciciel firmy",
+"Edit Company"=>"Edytuj firmê",
+"Invalid Company ID"=>"Niew³a¶ciwe ID firmy",
+"Started"=>"Rozpoczête",
+"Status"=>"Status",
+"View Company"=>"Przegl±daj firmê",
+"cdepartment::store-check failed"=>"cdepartment::store-check failed",
+"companies list"=>"lista firm",
+""=>"Dodaj firmê",
+"company list"=>"lista firm",
+"companyDelete"=>"Czy na pewno chcesz usun±æ t± firmê ?",
+"companyValidName"=>"Proszê podaæ w³a¶ciw± nazwê firmy",
+"delete company"=>"usuñ firmê ",
+"edit this company"=>"edytuj firmê",
+"new company"=>"nowa firma",
+"view this company"=>"przegl±daj t± firmê",

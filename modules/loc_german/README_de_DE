@@ -1,0 +1,163 @@
+dotProject: 	German Localisation - Deutsche Lokalisierung
+		optimized for 2.0.2 - optimiert für 2.0.2
+------------------------------------------------------------
+
+Overview/Übersicht
+------------------
+:) a) Aktuelles (de)
+	 b) News (en)
+	
+I) a) Dateien (de)
+	 b) Files (en)
+	
+II)	a) Hinweise (de)
+		b) Hints (en)
+
+III) Credits (de/en)
+
+IV)  ISO-8859-1 -> UTF-8 Konvertierungshinweise (de)
+     Perl-Script snip for conversion
+-------------------
+
+:) a) Aktuelles
+---------------
+Der Lokalisierungsmanager möchte hiermit die Benutzer auffordern, sich an der Weiterentwicklung der 
+deutschen Lokalisierung zu beteiligen. Bestimmt gibt es einige bessere und sinnvollere Übersetzungen als die gewählten. Der Maintainer freut sich über intensive Sendung der Verbesserungsvorschläge an:
+		
+				german at dotprNONSENSEoject dot net
+
+Bei größeren Übersetzungs-/Veränderungsvorhaben empfiehlt sich eine _vorherige_ Absprache mit dem Maintainer.
+	
+:) b) News
+----------
+Take part in the process of optimizing the german localisation! Mail your suggestions to:
+		
+				german at dotproject dot net
+
+In case of major changes or translations please contact the maintainer _before_ you start working.
+
+
+I) a) Dateien
+-------------
+./INSTALL				Installationshinweise
+./POLICY				Übersetungsrichtlinien- und standardisierung
+./README_de_DE	Die vorliegende Datei
+./locales				Übersetzungsdateien für dotProject-Core
+./modules				Übersetzungsdateien für Zusatzmodule
+
+I) a) Files
+-----------
+./INSTALL				Installation Manual
+./POLICY				Translation Guidelines and Standards
+./README_de_DE	The present file
+./locales				Translation Files for dotProject Core
+./modules				Translation Files for additional non-core modules
+
+
+II) a) Hinweise
+---------------
+* Die Kodierung der Lokalisationsdateien ist an den dotProject-Standard 'UTF-8' angepasst. 
+	Man passe die dotProject-Umgebung (Betriebssystem, Datenbank, ggf. Browser) entsprechend an. Andernfalls ist
+	es wahrscheinlich, dass insbesondere Umlaute kryptisch dargestellt werden (z.B. böse -> b�se). 
+	Man benutze die GNU Recode Funktionen, um diese Änderung rückgängig zu machen, falls notwendig.
+
+	Hierzu finden sich Hinweise am Ende dieses Dokuments, die dem Maintainer via E-Mail gesandt wurden, 
+	und freundlicherweise hier veroeffentlicht werden duerfen.
+
+II) b) Hints
+------------
+* The character encoding is corresponding to the gobal and dotProject standard: 'UTF-8'. 
+	Please modify your system (Operating system, Database, Browser) in a suitable way. 
+	Otherwise it is very likely that german umlauts are not diplayed correctly (e.g. böse -> b�se).
+	If necessary use the GNU recode functions to rollback this change.
+
+	At the end of this document there are a number of hints concerning the conversion that have been
+	emailed to the maintainer. 
+
+III) Credits
+------------
+* Carsten Menke <menke@smp-synergie.de> has contributed a considerable amount of the improvements, review and enhancements for the 2.0.2 compliant version. The maintainer especially thanks him for all the fruitful discussions and
+ideas. 
+* Martin Goik has contributed the following hint:
+Mittels $locale_char_set = 'UTF-8'; in locales.php und Bearbeitung der Übersetzung mittels 
+"recode latin1..utf-8 xxx.inc" stimmt das Ganze auch auf einem UTF-8 voreingestellten System.
+(Dieser Hinweis ist veraltet, aber vielleicht in umgekehrter Richtung für den einen oder anderen nützlich)
+* frog-ch had contributed a number of improvements in the earlier days.
+
+IV) ISO-8859-1 -> UTF-8 Konvertierungshinweise (Carsten Menke)
+--------------------------------------------------------------
+Als Alternative zu den GNU Recode Funktionen oder 'iconv -f ISO-8859-1 -t UTF8 inputfile.sql > outputfile.sql':
+
+> Backup der Datenbank machen:
+> 
+> mysqldump -u dotproject -p --database dotproject > dotproject.sql
+> 
+> Danach die Datenbank dotproject zur Sicherheit löschen (man achte
+> darauf das das Backup auch funktioniert hat)
+> 
+> mysql -u root -p <<EOF
+> DROP DATABASE dotproject;
+> EOF
+> 
+> Das Script latin2utf.pl aufrufen
+> 
+> ./latin2utf.pl dotproject.sql > dotproject-utf8.sql
+> 
+> Die konvertierte Version wieder einspielen
+> 
+> mysql -u root -p < dotproject-utf8.sql
+> 
+> Gruß
+> 
+> Carsten
+>-- 
+>smp Synergie
+>Carsten Menke
+>Maschine-Maschine Kommunikation
+>August-Schröder-Straße 10
+>
+>33602 Bielefeld
+>Tel. 0163/796 37 43
+>
+>[latin2utf.pl  application/x-perl (1175 bytes)]
+
+------------ latin2utf.pl script to extract--------
+#!/usr/bin/perl -w
+
+#
+# This Perl script translates strings from Latin-1 
+# (aka ISO-8859-1) to UTF-8. 
+#
+# Copyright (C) 2002 Thomas Weckert (info@weckert.org)
+# 
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+# 
+
+open( INFILE, "<$ARGV[0]" ); 
+@all_lines = <INFILE>;
+close( INFILE );
+
+for $line (@all_lines) {
+    $line =~
+		s/([\x80-\xff])/
+	    	chr((((ord($1) & 0xc0) >> 6) | 0xc0)) .
+	    	chr(( (ord($1) & 0x3f)       | 0x80))
+			/gex;
+
+    print $line;
+};
+
+__END__
+----------- end of latin2utf.pl script -----

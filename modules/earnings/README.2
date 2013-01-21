@@ -1,0 +1,143 @@
+Earnings dotModule
+Version .01 - August 2004
+http://www.dotproject.net
+Copyright (C) 2004 Bradley Stec, bstec@whereless.com
+----------------------------------------------------
+
+A dotProject employee timecard and subcontractor invoice editing tool 
+with approval process management.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+Requirements:
+- PHP4.1
+- MySQL (tested with 3.23.x)
+- DotProject v1.01 Released
+- A web-browser (Doh!)
+
+Summary:
+The purpose of the earnings module is to allow users marked as employees
+and/or contractors to bill their managers for their time either in hours (timecard)
+or as an actual invoice with hours and rates.
+
+The interface customizes to fit the user_type specified by the user's profile:
+
+User Type(s) 0,1,2,3,4,5,6 (Administrators, Executives, Management)
+- Get the ability to create invoices to bill the company they belong to for their time; and
+- the ability to approve timecards and invoices submitted to them by employees and contractors.
+
+User Type 7 (employee)
+- Gets the ability to create timecards to report their work to the managers.
+
+User Type 8 (contractor) (IN ORDER TO USE THIS USER TYPE READ THE INSTALL INSTRUCTIONS)
+- Gets the ability to create invoices to bill the managers for their time.
+
+The Earnings module is based upon the core of the dotProject system: The Task Logging functions.  
+It assumes that users are working on projects and logging their progress on tasks.  To simplify
+their work, the earnings allows them to select by line-item log entries from the task logs
+to add to timecards and invoices.  The Earnings module then "masks out" log line-items that
+have already been added to timecards and invoices (so that they can't be reported more than
+once).  
+
+The Earnings module allows users to put Ad Hoc line-items into the invoices.  So it IS 
+possible for a user to create an entire invoice or timecard from Ad Hoc manual entries!
+
+The Earnings module also provides an approval process so that users can keep records of their
+timecards and invoices.  The process is as follows:
+
+1) Create a new timecard/invoice.
+2) Submit it for approval after it is ready.
+3) An Manager or higher level user can decline (returning it to the submit queue) OR 
+approve it for payment.
+4) Contractors: Can mark an invoice as paid after they've received payment on it. 
+	(Part of a contractor's job is to see that he/she gets paid.)
+5) Managers: Can mark a timecard as paid after they've paid it. 
+	(Part of an employers job is to see that the employees get paid).
+
+
+Rules: Timecards and invoices which have been submitted for approval can no longer be deleted
+or edited.  
+
+Please submit bugs and/or requests through the normal channels at www.dotproject.net.
+
+TODO/PLANS: 
+
+1) Printable style sheet option.  Add rule to allow timecards and invoices which have been 
+approved and/or marked as paid can be printed using a print template system.
+2) Modified Earnings Module for invoicing external clients.... maybe.
+3) Allow updates to hours after adhoc entries are made.
+
+KNOWN PROBLEMS/ISSUES:
+
+1) Switching to flat screen layout not supported in Earnings Item List.
+2) The name "earnings" isn't so good but it is valid.  There's already too many dotmods
+with good names for this kind of purpose.
+3) At this time, ALL managers or higher levels can see the "MGR" tabs.  
+If you want tighter restrictions, you'll need to use the user permissions to prevent
+non-appropriate managers from seeing the Earnings module. 
+4) Reporting tab: by user, date range, project. Comments by: expected and actuals.  Output: csv
+
+CREDITS:
+
+Thanks to the founders and the whole community at dotproject.net for creating an excellent 
+application framework for the rest of us to build upon.   I'm frequently discovering new 
+ways to use it. 
+
+INSTALL: 
+
+1) Get Earnings file tree untarred/unzipped into a /modules/earnings directory under your dotProject
+installation.  
+2) Log on to the dotProject system as Admin and use the System Admin | View Modules.
+3) Make the Earnings module visible and enabled.
+4) Make sure that your users are properly profiles with a user-type.
+5) Add read/write permissions to the Earnings module to all users you want to have access to it.
+6) If you'd like to support contractors, you'll need to add User Type 8 to the user types array 
+in the admin functions (hard-coded in the system):
+	a) locate the file /functions/admin_func.php.
+	b) edit the file and add this line at the end of the list but before the array terminator:
+		8 => `Contractor`
+
+CHANGELOG:
+
+08/31/2004 (Brad Stec): Original Version.
+
+09/12/2004 (Brad Stec):
+- Bug: Using wrong User Type values. Switched to supporting default values for default dotProject install.
+- Change: Changed Suggest a Number to use timestamp followed by user_id number as format.
+- Change: Reorganized Submit/Approve/Paid section of UI to make it more intuitive to users.
+- Change: Titles of tabs to make the process easier to understand.
+- Change: Changed process section to show "declined" versus "not yet submitted".
+- Change: Sorting items by date descending in item lists.
+- Change: Added "select all" and "unselect all" buttons to the Unused Task Log tab.
+- Change: Modified Approval Tabs to show appropriate timecard or invoice format on request forms.
+- Change: Modified Item Tables to flow better on MSIE6.
+- Change: Added Two Fields - earning_approved_by and earning_title.
+- Change: Added earning_title field support to view and edit form pages.
+- Change: Added notification email field validation to edit/add form page.
+- Change: Added earning_approved_by support to approval process.
+- Change: Added "My Approved" tab.
+- Change: Modified all manager tabs to show From information rather than To information.
+- Change: Added email notification to and from approver and submitter.
+- Update: Updated setup.php to support new table structure.
+
+
+
+
+
+
+
+
+
+

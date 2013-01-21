@@ -1,0 +1,20 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Department"=>"Tilføj afdeling",
+"Department Company"=>"Virksomhed",
+"Department Name"=>"Afdelingsnavn",
+"Department Parent"=>"Afdeling er underafdeling af",
+"Edit Department"=>"Redigér afdeling",
+"Select Unit"=>"Vælg enhed",
+"View Department"=>"Afdeling",
+"badCompany"=>"Virksomheden er ugyldig. Du kan ikke tilføje en afdeling.",
+"delDept"=>"Er du sikker på du vil slette denne afdeling?",
+"delete department"=>"Slet afdeling",
+"departmentDelete"=>"Er du sikker på du vil slette denne afdeling?",
+"deptIndexPage"=>"Tilgå afdelinger via en virksomhed",
+"deptValidName"=>"Indtast et gyldigt afdelingsnavn",
+"deptWithProject"=>"Du kan ikke slette en afdeling med associerede projekter.",
+"deptWithSub"=>"Du kan ikke slette en afdeling med underafdelinger.",
+"edit this department"=>"Redigér denne afdeling",
+"view this department"=>"Vis denne afdeling",

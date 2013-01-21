@@ -1,0 +1,21 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Company"=>"Legg til firma",
+"Budget"=>"Budsjett",
+"Company Name"=>"Firmanavn",
+"Company Owner"=>"Firmaeier",
+"Edit Company"=>"Rediger firma",
+"Invalid Company ID"=>"Ugyldig firma ID",
+"Started"=>"Startet",
+"Status"=>"Status",
+"View Company"=>"vis firma",
+"cdepartment::store-check failed"=>"cdepartment::store-check feilet",
+"companies list"=>"firma liste",
+"company list"=>"firma liste",
+"companyDelete"=>"Er du sikker på at du vil slatte dette firmaet?",
+"companyValidName"=>"Skriv inn gyldig firmanavn",
+"delete company"=>"slett firma",
+"edit this company"=>"reiger firma",
+"new company"=>"nytt firma",
+"view this company"=>"vis firma",

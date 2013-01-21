@@ -1,0 +1,81 @@
+dotProject: 	German Localisation - Deutsche Lokalisierung
+
+Overview / Übersicht:
+---------------------
+I)  Installation Manual (en)
+II) Installationsanweisungen (de)
+
+
+I) Installation Manual (en)
+---------------------------
+0) 	Get the german localisation archive from sourceforge.net/projects/dotmods
+
+1) 	Untar (tar -xvvz de_DE????????.tar.gz) the file to the dotProject root directory.
+		This archive contains the relevant diretory structure.
+
+2)	As with dotProject 2.0 and above it could be necessary to refresh the session in order 
+		to have the new localisation files registered with dotProject. Eventually logout and relogin.
+
+3)	You now have the following options:
+
+	i) 	Set the german language for yourself (No system administrators permissions required):
+		+ Login with your username/password combination to dotProject
+		+ Choose 'My Info' from the upper right menu of dotProject
+		+ Choose 'user preferences' from the breadcrumb below the site header
+		+ Choose 'German (Ger)' from the Locale dropdown box and click submit
+			
+	Or you must be logged in with system administrators permissions and may be allowed to:	
+	
+	ii)	Set the german language for a special user:
+		+ Go to the User Admin Module (Main Menu)
+		+ Choose the relevant User from the list and click his name
+		+ Choose 'user preferences' from the breadcrumb below the site header
+		+ Choose 'German (Ger)' from the Locale dropdown box and click submit
+		
+	iii) 	Set the german language as default for all new users (can be overriden a posteriori)
+		+ Go to the System Admin Module (Main Menu)
+		+ Choose 'Default User Preferences'
+		+ Choose 'German (Ger)' from the Locale dropdown box and click submit
+		
+	iv)	Set the german language as default for the login screen:
+		+ Go to the System Admin Module (Main Menu)
+		+ Choose 'System Configuration'
+		+ Change the Host Locale option to 'de' and save
+
+
+II) Installationsanweisungen (de)
+---------------------------------
+0) 	Man lade das deutsche Lokalisationspaket von sourceforge.net/projects/dotmods herunter
+
+1) 	Man entpacke (tar -xvvz de_DE????????.tar.gz) das Archiv in das dotProject Wurzelverzeichnis.
+		Es enthält die relevante Verzeichnisstruktur.
+
+2)	Für dotProject 2.0 und höher kann es notwendig sein, eine neue Session zu starten, um
+		zu garantieren, dass die deutschen Lokalisationsdateien erkannt werden. Eventuell ist Abmelden 
+		und Wiederanmeldung notwendig.
+
+3)	Es bestehen nun die folgenden Optionen:
+
+	i) 	Die deutsche Sprache für sich selbst setzen (keine Administratorrechte notwendig):
+		+ Man melde sich (falls noch nicht getan) mit seinem Benutzernamen an.
+		+ Man wähle 'Über mich' vom kleinen Menü oben rechts in dotProject
+		+ Man wähle 'die Einstellungen bearbeiten' von den Brotkrümeln unterhalb der Seitenüberschrift
+		+ Man wähle 'German (Ger)' bzw. 'Deutsch (DE)' für Locale/Orts- & Sprachanpassung aus und klicke auf abschicken
+			
+	Für die folgenden Optionen sind Administratorrechte notwendig:
+		
+	ii)	Die deutsche Sprache für einen bestimmten, beliebigen Benutzer setzen:
+		+ Man gehe in das Benutzerverwaltungsmodul.
+		+ Man wähle den relevanten Benutzer aus der Liste und klicke auf seinen Namen
+		+ Man wähle 'die Einstellungen bearbeiten' von den Brotkrümeln unterhalb der Seitenüberschrift
+		+ Man wähle 'German (Ger)' bzw. 'Deutsch (DE)' für Locale/Orts- & Sprachanpassung aus und klicke auf abschicken
+		
+	iii) 	Die deutsche Sprache für alle neuen Benutzer als Standard setzen (kann a posteriori verändert werden)
+		+ Man gehe in das Systemverwaltungsmodul.
+		+ Man wähle 'Standardeinstellungen für Benutzer'
+		+ Man wähle 'German (Ger)' bzw. 'Deutsch (DE)' für Locale/Orts- & Sprachanpassung aus und klicke auf abschicken
+		
+	iv)	Zeige die Anmeldeseite in Deutsch:
+		+ Man gehe in das Systemverwaltungsmodul.
+		+ Man wähle 'Systemkonfiguration'
+		+ Man setze Host Locale bzw. Sprache für die Loginseite auf 'de' und speichere

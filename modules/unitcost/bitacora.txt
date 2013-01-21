@@ -1,0 +1,202 @@
+
+--------------------------
+Recomendaciones del Modulo
+--------------------------
+-Aunque el módulo lo soporta, no se debe permitir borrar ni editar task logs
+
+
+------------------------
+Updates a la bd original
+------------------------
+todos los campos financieros a 15,2
+campo de percent complete a decimal 4,2
+
+
+-------------------------
+Cambios Listas de Valores
+-------------------------
+
+Referencia del task log ahora tiene:
+------------------------------------
+- Advance Report
+- Valuation
+- Invoice
+- Payment
+
+
+------------------------------------
+Formula de Percent Complete Original
+------------------------------------
+SUM(t1.task_duration * t1.task_percent_complete * IF(t1.task_duration_type = 24, ".$working_hours.", t1.task_duration_type))/
+SUM(t1.task_duration * IF(t1.task_duration_type = 24, ".$working_hours.", t1.task_duration_type)) AS project_percent_complete");
+
+ojo: task_duration_type es 24 si es por día y 1 si es por hora.
+
+es decir (en horas - ver ojo arriba):
+SUM(task_duration * %complete) / SUM(task_duration)
+
+Ejemplo:
+
+Avance Proyecto: 41.5%
+
+Tareas
+------
+100 * 0.05 = 5
+150 * 0.10 = 15
+200 * 0.90 = 180
+50  * 0.15 = 7.5
+             -----
+             207.5
+
+207.5/500 = 0.415
+
+Formula propuesta para Cost Percent Complete
+--------------------------------------------
+SUM(task_total_cost * %complete) / SUM(task_total_cost)
+
+
+-------------------------------
+             TO-DO
+-------------------------------
+10/08/06 Falta formalizar todo el código que está en dosql a la clase
+	 Listo 14/08/06 11:27PM
+10/08/06 Validaciones y pruebas integrales
+	 Listo 15/08/06 4:02PM	 
+10/08/06 Eliminar Campo de avance en la tarea, mejor, ponerlo RO
+	 Listo 15/08/06 12:15AM
+10/08/06 Cálculo de Avance por Costo
+	 Listo 14/08/06 04:20PM
+10/08/06 Poner read only campo presupuesto real (editar proyecto)
+	 Listo 14/08/06 11:55PM
+10/08/06 Poner todos los errores de JS locale bonitos arriba
+	 Listo 15/08/06 12:09AM
+14/08/06 Faltan UPDATES y DELETES!!!
+	 Listo 14/08/06 11:55PM
+14/08/06 Hay algo con el redondeo del decimal en en task_log percen_complete
+	 Listo 14/08/06 04:02PM
+14/08/06 Faltan los updates de las columnas originales en el setup!
+	 Listo 15/08/06 04:02PM
+14/08/06 Estudiar posibilidad de outer join en projects.class.php L75
+	 Listo 14/08/06 11:56PM se dejó inner join por ahora
+14/08/06 Documentación
+	 Listo 16/08/06 3:08AM
+14/08/06 Hay que verificar el locale del modulo
+	 Próxima versión
+15/08/06 Log cuando no tiene extended cost info
+	 Listo 15/05/06 3:20PM
+15/08/06 El return false no hace nada en checkOther
+	 Listo 15/08/06 2:47PM
+15/08/06 Accumulated task cost javasritp asegurar 2 decimales
+	 Listo 15/08/06
+
+-------------------------------
+         TO-DO V1.0.1
+-------------------------------
+16/08/06 Alter of projects task_percent_complete
+16/08/06 No funciona el cambio de "per" (dia/hora) en producción
+20/08/06 Hay un tema con las sub-tareas!!! El porcentaje se actualiza con las hijas y la madre no tiene historial!!!
+20/08/06 Cuando se haga update del costo hay que actualizar todo!
+20/08/06 Resolver lo del orden (sort) de las tareas!
+20/08/06 Cuando se edita un log se podría buscar su historial y no solo el ultimo valor
+20/08/06 Actualizar costos del padre cuando se guarda una hija
+
+------------------------
+Strings a pasar a Locale
+------------------------
+
+Tasks
+-----
+Inspection / Inspección
+Valuation / Valuación
+Final Valuation / Valuación Final
+Closing / Cierre
+Unit costs / Costo Unitario
+Material Unit Cost / Costo Unitario de Material
+Equipment Unit Cost / Costo Unitario de Equipo
+Labor Unit Cost / Costo Unitario de Mano de Obra
+Other Unit Cost / Otros Costos Unitario
+Total Unit Cost / Total Costo Unitario
+Unit of Measure / Unidad de Medida
+Total Units / Unidades Locales
+Task Total Cost / Total Costo Tarea
+Performance / Rendimiento
+per / por
+Normative Reference / REF COVENIN
+Normative Description / Descripción Detallada
+
+Projects
+--------
+CProgress / Avance por Costo
+*Progress / Avance por Tiempo
+
+Strings de Errores
+------------------
+Performance Cannot be Greater Than Total Units!
+Unit of Measurement may not be N/A!
+Total Units must be greater than zero!
+Total Task Cost must be greater than zero!
+Performance must be greater than zero!
+Percent Complete Cannot be Negative!
+Unitcost not configured for this task!
+
+
+
+*NOTA: Ya existen
+
+-------------------------------
+         TO-DO FONEP
+-------------------------------
+20/08/06 Logo del Fonep
+20/08/06 Lista de Valores Tipo de Tarea
+20/08/06 Lista de Valores 
+20/08/06 Gráficas de Gantt
+
+---------------------------------------
+Archivos Modificados V1.0 version 2.0.3
+---------------------------------------
+./modules/tasks/do_updatetask.php - ok
+./modules/tasks/vw_log_update.php - ok
+./modules/tasks/tasks.class.php - ok
+./modules/tasks/addedit.php - ok
+./modules/projects/view.php - ok
+./modules/projects/addedit.php - ok
+./modules/projects/projects.class.php -ok
+
+
+------------------------------------------------------
+                  Nuevo patch 2.0.4
+Archivos modificados entre las versiones 2.0.3 y 2.0.4
+          (solo los que aplican a unitcost)
+------------------------------------------------------
+Archivo					AFECTA
+------------------------------------------------------
+/modules/tasks/vw_log_update.php	SI
+/modules/tasks/gantt.php		NO
+/modules/projects/projects.class.php	SI
+
+
+---------------------------------------------
+Queries para migrar la data de Alejandro Orta
+---------------------------------------------
+
+Primer query:
+
+insert into unitcost_task_costs (task_id, unit_of_measure, equipment_unit_cost, material_unit_cost, labor_unit_cost, other_unit_cost, total_unit_cost, total_units, performance, task_total_cost, norm_ref, norm_dsc, task_actual_units, task_actual_cost) select t2.value_object_id, 'UOM', 0, 0, 0, 1, 1, 5, 1, 5, t2.value_charvalue, 'DESC COVENIN', 0, 0 from tasks t1, custom_fields_values t2 where t1.task_id = t2.value_object_id and t1.task_project = 13 and value_field_id = 3 and t2.value_charvalue != '';
+
+Segundo query:
+update unitcost_task_costs t1, custom_fields_values t2 set t1.unit_of_measure = t2.value_charvalue where t2.value_object_id = t1.task_id and t2.value_field_id = 4;
+
+Tercer query:
+update unitcost_task_costs t1, custom_fields_values t2 set t1.total_units = t2.value_charvalue where t2.value_object_id = t1.task_id and t2.value_field_id = 9;
+
+Cuarto query:
+update unitcost_task_costs set task_total_cost = total_units * total_unit_cost;
+
+
+------------------
+Query para el LDAP
+------------------
+(verificar previamente cual es el id de config_name='ldap_allow_login')
+update config set config_value = 'true' where config_id = 109;
+update config set config_value = 'false' where config_id = 109;
+

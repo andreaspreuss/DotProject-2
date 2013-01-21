@@ -1,0 +1,20 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Department"=>"添加部门",
+"Department Company"=>"部门所属公司",
+"Department Name"=>"部门名称",
+"Department Parent"=>"上级部门",
+"Edit Department"=>"编辑部门",
+"Select Unit"=>"选择单位",
+"View Department"=>"查看部门",
+"badCompany"=>"无效的公司。你无法添加部门。",
+"delDept"=>"你确定要删除此部门么",
+"delete department"=>"删除部门",
+"departmentDelete"=>"你确认要删除此部门么",
+"deptIndexPage"=>"请通过公司来访问部门",
+"deptValidName"=>"请输入有效的部门名称",
+"deptWithProject"=>"你不能删除一个有项目关联的部门",
+"deptWithSub"=>"你不能删除一个有下级部门的部门",
+"edit this department"=>"编辑此部门",
+"view this department"=>"查看此部门",

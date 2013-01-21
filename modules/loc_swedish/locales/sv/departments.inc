@@ -1,0 +1,20 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Department"=>"Lägga till avdelning",
+"Department Company"=>"Avdelning företag",
+"Department Name"=>"Avdelningsnamn",
+"Department Parent"=>"Överordnad avdelning",
+"Edit Department"=>"Redigera avdelning",
+"Select Unit"=>"Välj enhet",
+"View Department"=>"Visa avdelning",
+"badCompany"=>"Detta företag är ogiltigt. Därför kan ingen avdelning läggas till.",
+"delDept"=>"Skall denna avdelning verkligen raderas?",
+"delete department"=>"Radera avdelning",
+"departmentDelete"=>"Skall denna avdelning verkligen raderas?",
+"deptIndexPage"=>"Visa avdelningen via ett företag",
+"deptValidName"=>"Mata in ett giltigt namn för denna avdelning",
+"deptWithProject"=>"En avdelning associerad med projekt kan ej raderas.",
+"deptWithSub"=>"En avdelning med underavdelningar kan ej raderas.",
+"edit this department"=>"redigera denna avdelning",
+"view this department"=>"visa denna avdelning",

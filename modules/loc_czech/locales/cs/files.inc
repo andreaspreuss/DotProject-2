@@ -1,0 +1,22 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add File"=>"Pøidat soubor",
+"All Projects"=>"V¹echny projekty",
+"Date"=>"Datum",
+"Edit File"=>"Editovat soubor",
+"File Name"=>"Název souboru",
+"New File"=>"Nový soubor",
+"Size"=>"Velikost",
+"Type"=>"Typ",
+"Upload File"=>"Vlo¾ený soubor",
+"Uploaded By"=>"Soubor vlo¾il",
+"Version"=>"Verze",
+"add new file"=>"pøidat nový soubor",
+"delete file"=>"smazat soubor",
+"download"=>"stáhnout",
+"fileIdError"=>"Neplatný file handle byl pøedán funkci",
+"files list"=>"seznam souborù",
+"filesDelete"=>"Urèitì chcete smazat tento soubor?",
+"new file"=>"nový soubor",
+"select task"=>"vybrat úkol",

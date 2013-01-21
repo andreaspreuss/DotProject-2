@@ -1,0 +1,21 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Company"=>"Добавить Компанию",
+"Budget"=>"Бюджет",
+"Company Name"=>"Название Компании",
+"Company Owner"=>"Создал Компанию",
+"Edit Company"=>"Редакт-ть Компанию",
+"Invalid Company ID"=>"Неверный ID Компании",
+"Started"=>"Начато",
+"Status"=>"Состояние",
+"View Company"=>"Посмотреть Компанию",
+"cdepartment::store-check failed"=>"",
+"companies list"=>"список компаний",
+"company list"=>"список компании",
+"companyDelete"=>"Вы действительно хотите удалить компанию?",
+"companyValidName"=>"Пожалуйста, введите название Компании",
+"delete company"=>"удалить компанию",
+"edit this company"=>"редакт-ть компанию",
+"new company"=>"новая компания",
+"view this company"=>"посмотреть компанию",

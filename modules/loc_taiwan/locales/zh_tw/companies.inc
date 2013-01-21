@@ -1,0 +1,21 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Company"=>"新增公司",
+"Budget"=>"預算",
+"Company Name"=>"公司名稱",
+"Company Owner"=>"公司所有人",
+"Edit Company"=>"編輯公司",
+"Invalid Company ID"=>"無效的公司ID",
+"Started"=>"已開始",
+"Status"=>"狀態",
+"View Company"=>"顯示公司",
+"cdepartment::store-check failed",
+"companies list"=>"公司清單",
+"company list"=>"公司清單",
+"companyDelete"=>"確定要刪除這個公司嗎?",
+"companyValidName"=>"請輸入有效的公司名稱",
+"delete company"=>"刪除公司",
+"edit this company"=>"編輯公司",
+"new company"=>"新增公司",
+"view this company"=>"顯示這個公司",

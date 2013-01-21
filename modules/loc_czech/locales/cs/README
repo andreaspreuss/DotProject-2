@@ -1,0 +1,26 @@
+Czech locale files for dotProject
+
+The current locale represent Czech translation of the dotProject. As
+for quantity - all resources which could be translated are included,
+however the quality should be also considered as alpha. In some places
+genders, singular and plural etc., do not really fit together.
+
+All remarks and comments for the translation are welcome on my email
+address: richard.korinek@seznam.cz.
+
+Richard Korinek
+
+---------------------------------------------------------------------
+
+Czech Version (iso-8859-2)
+
+Èeský pøeklad rozhraní pro dotProject. Kompletní pøeklad
+lokalizovatelných zdrojù. Co se týèe kvality, tak zatím je pøeklad
+také spí¹ v alpha kvalitì. Místy nesedí rody, pády atd. 
+
+Pøipomínky k pøekladu uvítám na adrese richard.korinek@seznam.cz.
+
+
+Richard Koøínek
+
+---------------------------------------------------------------------

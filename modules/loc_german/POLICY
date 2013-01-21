@@ -1,0 +1,89 @@
+dotProject: 	German Localisation - Deutsche Lokalisierung
+
+Policy and Standardisation
+--------------------------
+--------------------------
+
+0) Aim
+------
+This translation shall be standardised upon the following guidelines.
+
+In short:
+---------
+The translation shall:
+a) correspond to usual project management terminology
+b) correspond to usual free libre open source software terminology 
+c) be as general as possible
+d) as near to the original as possible
+e) be spelled along the rules of 'Der Duden'
+f) fit the context
+g) shall not be over-zealous
+h) correct meaning of wrong original terminology
+i) be neutral w.r.t. target groups
+j) be neutral w.r.t. industries/areas of use
+
+
+
+Terms and expressions
+-------------------------
+The best German equivalent for a given english term/expression should be found by
+a) clarifying how the term/expression is usually translated in project management context
+b) determining the usual term/expression in major FLOSS applications/frameworks such as:
+	 OpenOffice.org, GNOME, Firefox, Thunderbird, etc.
+c) respecting the general validity of the expression
+d) respecting the proximity to the original
+
+Spelling
+-------------
+e) The spelling is bound to the German standard "Der Duden", http://de.wiktionary.org or http://www.dict.cc
+	 respectively. In case of doubt 'Der Duden' rules.
+
+Context
+-----------
+f) The best translation is not necessarily the direct one. It shall be determined by evaluation of the context.
+g) Translation shall not be forced (i.e. in general Project Management -> Projektmanagement and not Projektverwaltung).
+
+Deviations:
+--------------
+The translation may deviate from the original in case
+h) of the original being proven to be wrong
+
+Neutrality
+---------------
+i) This localisation distribution shall be neutral in the sense of Target Group Neutrality.
+	 The main problem is that the english 'you' has two German interpretations:
+		i) the formal 'Sie/Sie'
+		ii)the informal 'Du/Ihr'
+	 
+	 Consequently, the english 'you' must be translated to the german equivalent of 'one', 'man'.
+
+		"Please fill in your last name!" => "Bitte den Nachnamen eingeben!"
+		"Click on 'Submit' and ..." => "Man klicke auf 'Abschicken' und ..."
+
+j)  This localisation shall be neutral in the sense of industry neutrality, 
+		so the translations should refer to general project management terminology 
+		and not to specific terminology in one particular area.
+
+
+Some Concrete Translations
+--------------------------
+Consider the following list with priority from left to right (prefer ansehen over sehen)
+
+Original                                    German Translation
+--------                                    --------------------
+administration                  =>          Verwaltung
+administrative                  =>          administrativ
+application                     =>          Anwendung
+child,children                  =>          untergeordnet(e)
+complete                        =>          vollständig
+completed                       =>          vervollständigt
+e-mail,email,Mail,mail          =>          E-Mail
+log                             =>          Protokoll,Protokolleintrag,protokollieren
+on hold                         =>          angehalten
+parent                          =>          übergeordnet
+reset                           =>          zurücksetzen
+report                          =>          Bericht,berichten
+show                            =>          anzeigen,zeigen
+submit                          =>          absenden
+tab,tabbed                      =>          Registerkarte(n)
+view                            =>          ansehen,sehen

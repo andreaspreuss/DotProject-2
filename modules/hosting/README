@@ -1,0 +1,38 @@
+/* Hosting module -> $Id: README,v 1.2 2007/04/16 05:38:56 mbelos Exp $ */
+
+ABOUT
+
+    This is a dotProject module designed to track ownership of domains and hosting packages.
+    It started off as an internal project for Funke Web Solutions to manage expiring domain
+    names and hosting packages, so it's simple! The code is fairly messy as there was no official
+    API at the time of coding, so I had to look through 5 other modules and use similar code.
+    If anyone wants to maintain this project, please let us know.
+
+
+CREATOR
+ 
+    Michael Belos (mbelos@users.sourceforge.net)
+
+
+COPYRIGHT
+
+    (C) 2007 Funke Web Solutions Pty Ltd
+    http://www.funke.com.au
+
+LICENSE
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License (docs/COPYING) for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+

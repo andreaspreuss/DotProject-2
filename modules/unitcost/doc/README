@@ -1,0 +1,21 @@
+The documentation is written using SGML Docbook 4.2
+To re-generate it you will need all the required tools
+
+Note that source is in UTF-8 so you need to declare
+export SP_ENCODING="UTF-8"
+before you run jade and other utilities
+
+You must also use the print stylesheet included to preserve the
+original look of the document and other requirements by the author
+such as the Copyright notice and the License terms.
+
+for a common Linux system or alike just use:
+
+db2ps -d corvus-print-main.dsl unitcost.sgml
+
+No need for the stylesheet with html generation
+
+NOTE: The html generated is also UTF-8 and YOU MUST MAKE YOUR BROWSER
+USE UTF-8 BY DEFAULT since the conversion does not add any META tags
+that indicate encoding.
+

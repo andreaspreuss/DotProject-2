@@ -1,0 +1,23 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"All Projects"=>"所有專案",
+"Add File"=>"新增檔案",
+"Date"=>"日期",
+"Edit File"=>"編輯檔案",
+"File Name"=>"檔案名稱",
+"File could not be written"=>"無法寫入檔案",
+"New File"=>"新檔案",
+"Size"=>"大小",
+"Type"=>"型態",
+"Upload File"=>"上載檔案",
+"Uploaded By"=>"上載人",
+"Version"=>"版本",
+"add new file"=>"新增檔案",
+"delete file"=>"刪除檔案",
+"download"=>"下載",
+"fileIdError"=>"一個無效的檔案控制點(file handle) 傳到這個函式(function), 請通知系統管理者處理.",
+"files list"=>"檔案清單",
+"filesDelete"=>"確定要刪除這個檔案嗎?",
+"new file"=>"新檔案",
+"select task"=>"選擇工作",

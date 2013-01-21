@@ -1,0 +1,23 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add File"=>"Bestand Toevoegen",
+"All Projects"=>"Alle Projecten",
+"Date"=>"Datum",
+"Edit File"=>"Wijzig Bestand",
+"File Name"=>"Naam Bestand",
+"File could not be written"=>"Bestand kon niet worden weggeschreven",
+"New File"=>"Nieuw Bestand",
+"Size"=>"Grootte",
+"Type"=>"Type",
+"Upload File"=>"Upload Bestand",
+"Uploaded By"=>"Uploaded Door",
+"Version"=>"Versie",
+"add new file"=>"nieuw bestand toevoegen",
+"delete file"=>"verwijder bestand",
+"download"=>"download",
+"fileIdError"=>"Een ongeldige bestand ID was opgegeven aan deze functie",
+"files list"=>"bestanden lijst",
+"filesDelete"=>"Weet u zeker dat u dit bestand wilt verwijderen?",
+"new file"=>"nieuw bestand",
+"select task"=>"selecteer taak",

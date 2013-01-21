@@ -1,0 +1,22 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+""=>"Add Company",
+"Add Company"=>"Bedrijf Toevoegen",
+"Budget"=>"Budget",
+"Company Name"=>"Naam Bedrijf",
+"Company Owner"=>"Bedrijf Eigenaar",
+"Edit Company"=>"Wijzig Bedrijf",
+"Invalid Company ID"=>"Ongeldig Bedrijf ID",
+"Started"=>"Gestart",
+"Status"=>"Status",
+"View Company"=>"Bekijk Bedrijf",
+"cdepartment::store-check failed"=>"",
+"companies list"=>"bedrijven lijst",
+"company list"=>"bedrijf lijst",
+"companyDelete"=>"Weet u zeker dat u dit bedrijf wilt verwijderen?",
+"companyValidName"=>"Vul een geldig Bedrijf naam in",
+"delete company"=>"verwijder bedrijf",
+"edit this company"=>"wijzig dit bedrijf",
+"new company"=>"nieuw bedrijf",
+"view this company"=>"bekijk dit bedrijf",

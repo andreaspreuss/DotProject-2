@@ -1,0 +1,29 @@
+Backup Module for dotProject
+============================
+
+Copyright (c) 2003 Daniel Vijge [danielvijge@users.sourceforge.net]
+
+This work is based on the work of the phpMyAdmin group:
+    Copyright (C) 1998-2000 Tobias Ratschiller <tobias.ratschiller_at_maguma.com>
+    Copyright (C) 2001-     Olivier Müller <om_at_omnis.ch>
+                            Loïc Chapeaux <lolo_at_phpHeaven.net>
+                Marc Delisle <DelislMa_at_CollegeSherbrooke.qc.ca>
+
+Changes to upgrade to dotProject v2.x by Adam Donnison <ajdonnison@dotproject.net>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+
+These files add a backup option to dotProject. It allows you to make backups
+of your entire database easily. All you have to do is push a button and the
+backup will be generated. You are then presented with a download dialog. You can
+save this backup anywhere you want.
+
+To install, create a new directory in the modules directory of dotproject name
+'backup' (without quotes). Copy all files into this directory. Open your web-browser
+and log in to dotproject. Goto System Admin, View Modules. At the bottom the new module
+backup is listed. Press install and the module will be installed. Now press activate and
+you're ready.

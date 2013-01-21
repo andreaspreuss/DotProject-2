@@ -1,0 +1,20 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Department"=>"Şube Ekle",
+"Department Company"=>"Şube Firma",
+"Department Name"=>"Şube adı",
+"Department Parent"=>"Şubenin Dairesi ",
+"Edit Department"=>"Şubesi düzenle",
+"Select Unit"=>"Birimi Seç",
+"View Department"=>"Şubeyi görüntüle",
+"badCompany"=>"Bu firma geçerli değil. Şube ekleyemezsiniz.",
+"delDept"=>"Bu şubeyi silmek istediğinizden emin misiniz?",
+"delete department"=>"Şubeyi sil.",
+"departmentDelete"=>"Bu şubeyi silmek istediğinizden emin misiniz?",
+"deptIndexPage"=>"Lütfen şubelere firma üzerinden ulaşınız.",
+"deptValidName"=>"Lütfen geçerli bir Şube ismi giriniz.",
+"deptWithProject"=>"Bir proje ile ilişkili şubeyi silemezsiniz.",
+"deptWithSub"=>"Alt şubeleri olan bir şubeyi silemezsiniz.",
+"edit this department"=>"Bu şubeyi düzenle.",
+"view this department"=>"Bu şubeyi görüntüle.",

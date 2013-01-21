@@ -1,0 +1,20 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Department"=>"Thêm phòng ban",
+"Department Company"=>"Phòng ban công ty",
+"Department Name"=>"Tên phòng ban",
+"Department Parent"=>"Phòng ban cấp trên",
+"Edit Department"=>"Sửa đổi phòng ban",
+"Select Unit"=>"Chọn đơn vị",
+"View Department"=>"Xem phòng ban",
+"badCompany"=>"Công ty này không hợp lệ. Bạn không thể thêm phòng ban.",
+"delDept"=>"Bạn có chắc muốn xóa phòng ban này không?",
+"delete department"=>"xóa phòng ban",
+"departmentDelete"=>"Bạn có chắc muốn xóa phòng ban này không?",
+"deptIndexPage"=>"Hãy truy cập vào các phòng ban từ công ty",
+"deptValidName"=>"Hãy nhập tên phòng ban hợp lệ",
+"deptWithProject"=>"Bạn không thể xóa phòng ban có các dự án liên quan",
+"deptWithSub"=>"Bạn không thể xóa phòng ban có các phòng ban cấp dưới",
+"edit this department"=>"sửa đổi phòng ban này",
+"view this department"=>"xem phòng ban này",

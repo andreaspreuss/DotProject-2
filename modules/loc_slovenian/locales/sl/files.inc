@@ -1,0 +1,22 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add File"=>"dodaj datoteko",
+"All Projects"=>"Vsi projekti",
+"Date"=>"Datum",
+"Edit File"=>"Uredi datoteko",
+"File Name"=>"Ime datoteke",
+"New File"=>"Nova datoteka",
+"Size"=>"Velikost",
+"Type"=>"Tip",
+"Upload File"=>"Naloži datoteko",
+"Uploaded By"=>"Naložil",
+"Version"=>"Verzija",
+"add new file"=>"dodaj novo datoteko",
+"delete file"=>"briši datoteko",
+"download"=>"prenesi datoteko",
+"fileIdError"=>"",
+"files list"=>"seznam datotek",
+"filesDelete"=>"Ali želiš brisati datoteko?",
+"new file"=>"nova datoteka",
+"select task"=>"izberi opravilo",

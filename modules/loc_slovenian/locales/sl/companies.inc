@@ -1,0 +1,20 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add company"=>"Dodaj podjetje",
+"Budget"=>"",
+"Company Name"=>"Ime podjetja",
+"Company Owner"=>"Lastnik podjetja",
+"Edit Company"=>"Uredi podjetje",
+"Invalid Company ID"=>"Napa&#269;en ID podjetja",
+"Started"=>"Za&#269;eto",
+"Status"=>"Status",
+"View Company"=>"Poglej podjetje",
+"companies list"=>"Seznam podjetij",
+"company list"=>"seznam podjetja",
+"companyDelete"=>"Ali želiš brisati podjetje?",
+"companyValidName"=>"Vnesi veljavno ime podjetja",
+"delete company"=>"briše podjetje",
+"edit this company"=>"uredi podjetje",
+"new company"=>"novo podjetje",
+"view this company"=>"poglej podjetje",

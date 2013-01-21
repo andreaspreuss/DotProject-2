@@ -1,0 +1,22 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Date"=>"Data",
+"Edit File"=>"Editar Arxiu",
+"File Management"=>"Administració d'arxius",
+"File Name"=>"Nom de l' Arxiu",
+"File deleted"=>"Arxiu eliminat",
+"File inserted"=>"Arxiu afegit",
+"File updated"=>"Arxiu actualitzat",
+"New File"=>"Nou Arxiu",
+"Size"=>"Tama&#324;o",
+"Type"=>"Tipus",
+"Upload File"=>"Adjuntar Arxiu",
+"Uploaded By"=>"Arxivat per",
+"Version"=>"Versió",
+"add new file"=>"afegir nou arxiu",
+"delete file"=>"eliminar arxiu",
+"download"=>"descarregar",
+"fileIdError"=>"S'ha passat un controlador d'arxius en aquesta funció",
+"files list"=>"llistat d'arxius",
+"filesDelete"=>"¿Està segur que vol eliminar aquest arxiu?",

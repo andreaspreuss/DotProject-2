@@ -1,0 +1,888 @@
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.2//EN" [
+
+<!-- external entities -->
+<!-- example
+<!ENTITY extEntity SYSTEM "extEntity.sgml">
+-->
+
+<!-- image extentions -->
+<!ENTITY % imgpng "ignore" >
+<!ENTITY % imgeps "" >
+<!ENTITY % imgnon "ignore" >
+
+]>
+<book>
+  <bookinfo>
+    <title>
+      dotProject Unitcost Module
+    </title>
+    <subtitle>
+      User and Technical Documentation
+    </subtitle>
+    <copyright>
+      <year>2006</year> 
+      <holder>
+	Alejandro Imass & Corvus Latinoamérica S.A. - Released under
+	the GPL V2.x License (Copyleft)
+      </holder>
+    </copyright>
+    <author>
+      <surname>Imass</surname>
+      <firstname>Alejandro</firstname>
+      <affiliation>
+	<jobtitle>Senior Consultant</jobtitle>
+	<orgname>Corvus Latinoamérica S.A.</orgname>
+      </affiliation>
+      <affiliation>
+	<jobtitle>Plant Professor</jobtitle>
+	<orgname>
+	  Instituto Superior de Estudios e Investigaciones
+	  Tecnológicas - ISEIT, La Trinidad - Caracas, Venezuela
+	</orgname>
+      </affiliation>
+    </author>
+    <revhistory>
+      <revision>
+	<revnumber>1.0.1</revnumber>
+	<date>Tuesday, August 15 2006</date>
+	<authorinitials>AIT</authorinitials>
+      </revision>
+    </revhistory>
+  </bookinfo>
+  <preface>
+    <title>Preface</title>
+    <para>
+      dotProject is a very stable and mature Open Source project
+      management tool, it has been around for a long time and it's
+      community is quite robust. When we were evaluating similar FOSS
+      tools we found that dotProject was the only web-based tool
+      really focused <emphasis>only</emphasis> in project management with
+      little or no overlap into other areas like
+      <quote>Groupware</quote> and alike. Furthermore, dotProject
+      concentrates in the project <emphasis>Execution</emphasis> and
+      <emphasis>Control</emphasis> cycles 
+      <footnote>
+	<para>
+	  These terms correspond and are used within the context of
+	  the PMI model for project management, as defined in the
+	  PMBoK. For more information refer to the Project Management
+	  Institute and the PMBoK documentation.
+	</para>
+      </footnote>
+      rather than the planning, where most traditional project
+      management tools like <trademark>Primavera</trademark> or
+      <trademark>Microsoft Project</trademark> concentrate. This makes
+      dotProject unique and a perfect complement for other great FOSS
+      tools like <productname>Imendio Planner</productname> and
+      similar tools. dotProject is even a great compliment to
+      <trademark>Primavera P3</trademark> and other proprietary
+      software tools used in the market today. In fact, it is fair to
+      say that no proprietary planning tools have a very powerful
+      web-based components for Execution and Control, which makes
+      dotProject a perfect complement in any scenario.
+    </para>
+    <para>
+      The above does not imply that dotProject's planning capabilities
+      are weak, on the contrary, some of dotProject's planning
+      functionality is very forward-looking and challenges some
+      paradigms of the planning phase of project management. For
+      example dotProject's Task Dependencies logic may seem awkward,
+      and even though is a work-in-progress, it works for the common
+      planning needs and really offers a lot more flexibility and
+      simplicity than the popular counterparts.
+    </para>
+    <para>
+      All these features are excellent, but what really makes
+      dotProject stand out from all the other tools, is the Task Log
+      capability, which is the main reason we chose dotProject for our
+      project, and the reason we invested the time and money to write
+      this module.
+    </para>
+    <para>
+      If you have used dotProject, it is quite obvious that it was
+      originally inspired for IT type projects, with a detailed
+      control over time-based execution. With a little experience in
+      project management, it is well known that the time or
+      effort-based control is many times more complex than the
+      cost-based method, and all this module does is add the easy
+      cost-based control part, leaving the rest of the system
+      practically unmolested. In fact, great care was taken not to
+      disturb and/or change the original system's functionality or
+      philosophy and that the module could be an effective snap-on
+      even on deployments with existing data.
+    </para>
+    <para>
+      This module adds Task Unit Costs tab to tasks and makes
+      dotProject viable for construction and civil engineering
+      projects. It adds "reporting by units produced" functionality in
+      the task logs and calculates task progress based on the
+      measurement unit (feet, M2, M3, etc.). For example, if progress
+      percentage is entered, it will calculate theoretical units
+      completed or vice-versa. Complying with PMI recommendations,
+      with this module you can track both time-based progress
+      (dotProject standard) and cost-based progress. It also extends
+      the task logs capability by keeping track of the percentages and
+      costs, giving you the possibility to plot an actual progress
+      curve with the data; theoretical cost-based S curve can be
+      plotted using the new performance field (units per unit of
+      time). A series of PMI-compliant reports and KPIs are to come
+      with future versions (based on data collected from this
+      version).
+    </para>
+    <sect1>
+      <title>Structure of This Document</title>
+      <para>
+	This document includes both the technical documentation and
+	the user documentation each in it's own chapter. The technical
+	documentation is presented first, with installation and
+	configuration procedures, and other technical notes on the
+	module. The user documentation is intended for the final user
+	or the people who will train the users. The user documentation
+	assumes that you are completely familiar with the vanilla
+	dotProject up to version 2.0.3.
+      </para>
+      <important>
+	<para>
+	  If you are going to print this document, note that is built
+	  for double sided printing which can be easily done with
+	  tools like GhostView under X. Just make sure to select all
+	  right-sided pages first along with the odd number pages
+	  (most of the first pages are right-sided and must be
+	  manually selected after selecting the odd pages). Do
+	  yourself and the environment a favor by using double sided
+	  printing with new paper or by using scrap paper for
+	  single-sided printing.
+	</para>
+      </important>
+    </sect1>
+    <sect1>
+      <title>Comments and Questions</title>
+      <para>
+	Even though the construction of this module has been
+	originally paid by a third party, the support and maintenance
+	hereafter is a completely voluntary thing. Please do not
+	expect direct and fully committed support from myself,
+	although I may have time to answer a thing or two from time to
+	time. If you are willing to contribute to the module I may be
+	able to help you a bit more than the common user. Paid support
+	is always an option and you can check out dotProject's
+	official web site for the professional marketplace offerings,
+	where people that <emphasis>really know</emphasis> the
+	inside-outs or dotProject (the original coders and core team
+	members) will be able to help you a lot better than myself.
+      </para>
+    </sect1>
+    <sect1>
+      <title>Acknowledgements</title>
+      <para>
+	Special thanks "Fondo Nacional Para Edificaciones
+	Penitenciarias - FONEP" who hired and payed for the original
+	creation of this module, to their bosses at "Ministerio de
+	Interior y Justicia" for the wonderful "Prison Humanization
+	Project" and supplying the funds to modernize this office, and
+	to the Government of the Bolivarian Republic of Venezuela in
+	general, for the support of Free Software and Open Source. I
+	would also like to give special thanks to Corvus Latinoamérica
+	who is the prime contractor for this job and the company that
+	made it all happen. Thanks to Ricardo Strusberg for his
+	vision, Elda Rodriguez for her confidence in us, and Francis
+	Verde for being an excellent project manager. A special thank
+	you to the rest of the team who not only contributed in the
+	making, but will have to live with this for many years...
+      </para>
+      <para>
+	Last but not least, I would like to thank the dotProject team
+	for a wonderful product and a very complete framework that
+	really helps fast-track the development of modules like these,
+	cleanly. Extended thanks to all the other people and the whole
+	community behind and around dotProject.
+      </para>
+    </sect1>
+  </preface>
+
+  <chapter>
+    <title>Technical Documentation</title>
+    <sect1>
+      <title>Versions</title>
+      <para>
+	Although most of the module is a standard snap-in to the
+	dotProject platform, it is inevitable to patch a few of the
+	original distribution's files. Because of this, the Unitcost
+	module was not built to be downward-compatible with versions
+	of dotProject prior to version 2.0.3.
+      </para>
+      <sect2>
+	<title>Current dotProject Supported Versions</title>
+	<para>
+	  2.0.3
+	</para>
+      </sect2>
+      <sect2>
+	<title>Information on Newer Versions</title>
+	<para>
+	  Work for dotProject version 2.0.4 will start in the next few
+	  weeks and not expected to be released until the end of
+	  August.
+	</para>
+      </sect2>
+    </sect1>
+    <sect1>
+      <title>Installation</title>
+      <sect2>
+	<title>Obtaining the Latest Version</title>
+	<para>
+	  If you are reading this, you should have downloaded the
+	  module and already uncompressed it somewhere. If not, please
+	  goto dotProject's homepage at <ulink
+	    url="http://dotproject.net">http://dotproject.net</ulink>
+	  and follow the links to downloads and then to the dotmods
+	  download section at SourceForge. 
+	</para>
+      </sect2>
+      <sect2>
+	<title>Unpacking</title>
+	<para>
+	  You should have downloaded a file in the form of a
+	  compressed tarball. Copy the file to the
+	  <filename>modules</filename> directory of your dotProject
+	  installation and uncompress it there.
+	</para>
+      </sect2>
+      <sect2>
+	<title>Verify and Adjust Ownership of Files</title>
+	<note>
+	  <para>
+	    This manual assumes you are running on Linux, FreeBSD,
+	    MacOSX or other form of Unix or Unix-like operating system,
+	    with Apache 1, 2 or similar httpd server. If not, please
+	    refer to the appropriate documentation.
+	  </para>
+	</note>
+	<para>
+	  If you downloaded from the SourceForge site, all file
+	  permissions should be OK, but we advise you to double check
+	  for your particular http server configuration and security
+	  requirements. You must, however, make sure that the file
+	  ownership corresponds to the correct httpd username, group
+	  and other prerogatives. A simple <command>chmod -R
+	  user.group unitcost/</command> will do from the
+	  <filename>modules</filename> directory.
+	</para>
+      </sect2>
+      <sect2>
+	<title>Install the Module in dotProject</title>
+	<para>
+	  You must login to dotProject as the administrator and go to
+	  the Modules section of the administrative
+	  applications. Unitcost should be on the list as an
+	  un-installed and inactive module. You may now select the
+	  install link and then the activate link once it's
+	  installed. <emphasis>Do not make this module
+	  visible</emphasis>. This module is an add-on to the projects
+	  and tasks modules and has no screens of it's own, so there
+	  is no need, and it would probably break it, if you make it
+	  visible.
+	</para>
+      </sect2>
+      <sect2>
+	<title>Installing the Patched Files</title>
+	<para>
+	  As mentioned earlier, there are some minor changes to
+	  dotProject's standard files that cannot be applied as a
+	  module. For this reason <emphasis>it is fully necessary to
+	  patch your version with the provided files</emphasis>. If
+	  you are in doubt of doing this, please refer to <xref
+	  linkend="patch-sec"> for very precise details on the patched
+	  versions and why they are needed.
+	</para>
+	<para>
+	  To install the patched files you must go into the
+	  <filename>unitcost</filename> module directory and locate
+	  the appropriate patch level. For example if you are running
+	  dotProject version 2.0.3 then the correct patch files will
+	  be located in the directory named
+	  <filename>patch_203</filename>. Inside this directory there
+	  will be subdirectories that correspond to your installed
+	  module directories.
+	</para>
+	<warning>
+	  <para>
+	    Before copying the files to the actual module directories
+	    we recommend that you backup or rename these files in the
+	    original directories in case that you want to roll-back
+	    the installation. Take care when renaming files in each
+	    module's directories because the dotProject framework may
+	    interpret some file names automatically and try to load
+	    them. It is recommended you rename the files with a safe
+	    set of leading characters such as
+	    <filename>XXX_UNITCOST_foo.php</filename> where
+	    <emphasis>foo</emphasis> is the original filename, for
+	    example <filename>XXX_UNITCOST_addedit.php</filename> for
+	    the original <filename>addedit.php</filename> file.
+	  </para>
+	</warning>
+	<para>
+	  Once you have backed up or renamed the original files, you
+	  may proceed to copy the patched versions into the
+	  corresponding directories.
+	</para>
+      </sect2>
+      <sect2>
+	<title>Logout, Clear Browser Cache and Test</title>
+	<para>
+	  It is important that you logout from dotProject and clear
+	  all the cache or your browser to make sure that all the
+	  cached JavaScript is cleared away, before login in again. Up
+	  to <productname>Firefox</productname> version 1.0.7 you have
+	  to go to
+	  <menuchoice>
+	    <guimenu>Edit</guimenu>
+	    <guimenuitem>Preferences</guimenuitem>
+	  </menuchoice>
+	  and then select <guiicon>Privacy</guiicon> and pressing
+	  <guibutton>Clear</guibutton> on <guilabel>Cache</guilabel>
+	  and <guilabel>Cookies</guilabel>.  Newer versions of
+	  <productname>Firefox</productname> have the option directly
+	  on the <guimenuitem>Tools</guimenuitem> menu (I think).
+	</para>
+	<para>
+	  Your new Unitcost module is ready to go. Just login and pull
+	  up a task to see the Unicost tab.
+	</para>
+      </sect2>
+    </sect1>
+    <sect1>
+      <title>Post-Installation and Configuration</title>
+      <para>
+	The Unicost module has been tested to work with your current
+	configuration and even with your current data. Nevertheless,
+	since it adds a whole new perspective to the <emphasis>Task
+	Log</emphasis> capability, we recommend that you:
+	<orderedlist>
+	  <listitem>
+	    <para>
+	      Edit User Roles or Security to disable the
+	      <emphasis>delete</emphasis> option in <application>Task
+	      Logs</application> application, even for the Administrator.
+	    </para>
+	  </listitem>
+	  <listitem>
+	    <para>
+	      Edit User Roles or Security to disable the
+	      <emphasis>edit</emphasis> option in <application>Task
+	      Logs</application> application, even for the Administrator.
+	    </para>
+	  </listitem>
+	  <listitem>
+	    <para>
+	      Change the <emphasis>TaskLogReference</emphasis> value
+	      list for actions that are appropriate for your
+	      industry. For example, in construction it makes sense to
+	      change these value for something like:
+	      <programlisting>
+		0|Not Defined 1|Advance Report 2|Valuation 3|Invoice 4|Payment
+	      </programlisting>
+	    </para>
+	  </listitem>
+	</orderedlist>
+      </para>
+      <note>
+	<para>
+	  The reasons for these recommendation are better explained
+	  later in this document, but for now take our word for it and
+	  follow them, or read this complete document before you
+	  decide not to.
+	</para>
+      </note>
+    </sect1>
+    <sect1 id="patch-sec">
+      <title>Patched Files Detail</title>
+      <para>
+	The following section identifies each patched file and details
+	the exact changes and reasoning behind them. This section will
+	be updated with each new release.
+      </para>
+      <para>
+	It is very easy to go into each patched file and figure out
+	what the changes are, because we clearly indicate where the
+	patched code is and the original code is left commented in the
+	file for reference. Just <command>grep</command> for the
+	string <quote>unitcost module patch start</quote> and you will
+	find every single change we made to the original files and you
+	will also be able to check the original code for reference. A
+	simple <command>find . -type f -print0 | xargs -0 -e grep -n
+	-e unitcost\ module\ patch\ start</command> should give you a
+	list like the following if run from the top-level
+	<filename>modules</filename> directory (right margin cropped
+	for clarity):
+	<programlisting>
+	  ./tasks/do_updatetask.php:3:/* unitcost module patch start */
+	  ./tasks/do_updatetask.php:71:/* unitcost module patch start */
+	  ./tasks/do_updatetask.php:98:		/* unitcost module patc
+	  .
+	  .
+	  .
+	  ./tasks/do_updatetask.php:185:		/* unitcost mod
+	  ./projects/addedit.php:329:                               &gt;!
+	  ./projects/projects.class.php:31:	/* unitcost module patc
+	  ./projects/projects.class.php:74:			/* unit
+	</programlisting>
+      </para>
+      <tip>
+	<para>
+	  In fact, this is precisely what we did to be able to
+	  complete this section, but of course I used
+	  <productname>emacs</productname> to easily capture the
+	  output and open the files interactively.
+	</para>
+      </tip>
+      <sect2>
+	<title>Patch 2.0.3</title>
+	<para>
+	  The following files where modified in the following
+	  lines. To understand each change, just go into the file and
+	  look at the code:
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+		File:<filename>tasks/do_updatetask.php</filename>,
+		lines: 3, 71, 98 and 185.
+	      </para>
+	    </listitem>
+	    <listitem>
+	      <para>
+		File:<filename>tasks/vw_log_update.php</filename>, lines:
+		4, 72, 155, 185 and 261
+	      </para>
+	    </listitem>
+	    <listitem>
+	      <para>
+		File:<filename>tasks/tasks.class.php</filename>,
+		lines: 93, 1897
+	      </para>
+	    </listitem>
+	    <listitem>
+	      <para>
+		File:<filename>tasks/addedit.php</filename>, line: 285
+	      </para>
+	    </listitem>
+	    <listitem>
+	      <para>
+		File:<filename>projects/view.php</filename>, line: 190
+	      </para>
+	    </listitem>
+	    <listitem>
+	      <para>
+		File:<filename>projects/addedit.php</filename>, line
+		329
+	      </para>
+	    </listitem>
+	    <listitem>
+	      <para>
+		File:<filename>projects/projects.class.php</filename>,
+		lines: 31 and 74
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+      </sect2>
+    </sect1>
+    <sect1>
+      <title>Database Changes</title>
+      <para>
+	Unicost adds two new tables and alters the definition of some
+	original fields. You may un-install the module and these new
+	tables will be removed. Nevertheless the table alterations
+	to the original tables will not be undone for obvious
+	reasons, but on the other hand, all the alterations are
+	basically harmless to the standard dotProject. Check the
+	<filename>setup.php</filename> file in the
+	<filename>unicost</filename> module directory for details on
+	the new tables and the alters performed on the original tables.
+      </para>
+    </sect1>
+    <sect1>
+      <title>Known bugs and limitations</title>
+      <sect2>
+	<title>Version 1.0 / Patch 2.0.3</title>
+	<variablelist>
+	  <varlistentry>
+	    <term>Locale</term>
+	    <listitem>
+	      <para>
+		For this release
+		<footnote>
+		  <para>
+		    I tried the module locale but that did not work
+		    for some reason. Hope to get this fixed by the
+		    next release (for 2.0.4).
+		  </para>
+		</footnote>
+		, Locale has to be adjusted manually
+		if you work with a language other than default English
+		language. If so, you need to add the following Locale
+		strings <emphasis>first</emphasis> to the English
+		locale and <emphasis>then</emphasis> to your language:
+		<variablelist>
+		  <varlistentry>
+		    <term>Tasks</term>
+		    <listitem>
+		      <itemizedlist>
+			<listitem>
+			  <para>
+			    Unit costs
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Material Unit Cost
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Equipment Unit Cost
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Labor Unit Cost
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Other Unit Cost
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Total Unit Cost
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Unit of Measure
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Total Units
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Task Total Cost
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Performance
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    per
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Normative Reference
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Normative Description
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Inspection
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Valuation
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Final Valuation
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Closing
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Performance Cannot be Greater Than Total Units!
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Unit of Measurement may not be N/A!
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Total Units must be greater than zero!
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Total Task Cost must be greater than zero!
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Performance must be greater than zero!
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Percent Complete Cannot be Negative!
+			  </para>
+			</listitem>
+			<listitem>
+			  <para>
+			    Unitcost not configured for this task!
+			  </para>
+			</listitem>
+		      </itemizedlist>
+		    </listitem>
+		  </varlistentry>
+		  <varlistentry>
+		    <term>Projects</term>
+		    <listitem>
+		      <itemizedlist>
+			<listitem>
+			  <para>
+			    CProgress
+			    <note>
+			      <para>
+				This field indicates progress by cost
+				and should be translated to the
+				English locale anyway with a tag name
+				of <quote>Cost Progress</quote> or
+				similar.
+			      </para>
+			    </note>
+			  </para>
+			</listitem>
+		      </itemizedlist>
+		    </listitem>
+		  </varlistentry>
+		</variablelist>
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>NTH-0001 Status: Pending</term>
+	    <listitem>
+	      <para>
+		There is a general NTH (Nice To Have) issue with
+		sub-tasks. If you need to work with sub-tasks in this
+		particular release you should sub-divide the unit
+		costs between all the sub-tasks and
+		<emphasis>not</emphasis> set a general unit cost for
+		the parent task, it's a pain but it is consistent with
+		Task Logs. It would be nice , nevertheless, if unit
+		cost could be configured at the parent task level only
+		and get by the task logs of the children tasks; this
+		may be added in the next immediate release.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>ISSUE-0001 Status: Pending</term>
+	    <listitem>
+	      <para>
+		If you edit a child tasks, the cost of the parent task
+		does not get updated (but the project does
+		perfectly). This should go away next release.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>ISSUE-0002 Status: Pending</term>
+	    <listitem>
+	      <para>
+		This was initially catalogued as a NTH but we feel
+		this is now an issue. The thing is that when you edit
+		a task log, it should bring the progress reported at
+		the time of the task log and not the current
+		accumulated progress (dotProject standard). Since this
+		module enhances the log and keeps track of each
+		progress report, there is no reason why this should
+		remain this way. Next release.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>ISSUE-0003 Status: Pending</term>
+	    <listitem>
+	      <para>
+		When you update the unit cost configuration of a task
+		that already has some logs, the task and project
+		information will not be updated until the next task
+		log report. Furthermore, all history logs will be
+		calculating the old costs. I am still figuring out the
+		best way to solve this.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </sect2>
+      <sect2>
+	<title>Future Upgrading Issues</title>
+	<para>
+	  Upgrading should work fine except that the data may not fit
+	  in the new database schema, because of the alters that
+	  Unitcost performs on some columns upon installation. It is
+	  recommended to verify this carefully, and backup you
+	  database well before attempting the upgrade. This is an
+	  issue that will have to wait for the next version until we
+	  can provide instructions on how to do this.
+	</para>
+      </sect2>
+    </sect1>
+  </chapter>
+  <chapter>
+    <title>User Documentation</title>
+    <sect1>
+      <title>The Unitcost tab</title>
+      <para>
+	The main place where you can observe a major change with
+	standard dotProject is in the Tasks application. In both the
+	view and edit screens you will now see an extra tab named
+	<guilabel>Unitcost</guilabel> or the term for your particular
+	locale translation.
+      </para>
+      <para>
+	On the view mode of the Tasks application, you can click on
+	the Unicost tab and view the Unicost configuration of this
+	particular task. If you installed Unicost with existing data,
+	it is very likely the fields will be NULL until your first
+	save after the installation of the module; this is harmless
+	and will not affect the module or your current data.
+      </para>
+      <para>
+	If you edit the task, you will have access to the write-able
+	fields for configuring the Unicost. The Unicost or cost per
+	unit, can be broken down into individual Material, Equipment,
+	Labor, and Other costs, and will add up in the Total Unit Cost
+	field.
+      </para>
+      <important>
+	<para>
+	  Once you start configuring the Unitcost for a task, you must
+	  complete it, or return the values to NULL (empty) and
+	  save. If you don't complete all the Unicost fields, or make
+	  a mistake, there are a series of business rules and
+	  validations that will aid you in correctly configuring the
+	  Unitcost; the validations are de-activated if all fields are
+	  returned to NULL and the system will place some default
+	  values for you automatically upon save.
+	</para>
+      </important>
+      <para>
+	The Unit of Measure is a required field and will help you when
+	creating a Task Log for this task. The Total Units field will
+	calculate the Task Total Cost and along with the Performance
+	field is required for saving. The "per" field, which indicates
+	the Unit of Time associated with the declared Performance, is
+	connected with same field in the Dates tab, which means that
+	if you change it here, it will change there and
+	vice-versa. Normative reference and Description are just
+	reference fields in case this task corresponds to a particular
+	norm definition. This is especially useful in construction
+	projects but probably applicable in other disciplines. 
+      </para>
+      <para>
+	Upon save, the Unicost module will update the Task Target
+	Budget (effectively useless field in standard dotProject), and
+	the project's Actual Budget field with the total cost of all
+	tasks (that have Unicost defined, of course). The project's
+	Target Budget field is left for user manual entry based on the
+	actual budget which is now calculated and read-only. If tasks
+	had an Actual Budget field we would have used that one for
+	consistency, but they don't, and we did not really want to add
+	columns to existing tables to minimize upgrading issues.
+      </para>
+    </sect1>
+    <sect1>
+      <title>Task Log Changes and Related Functionality</title>
+      <para>
+	The whole point of the Unicost module is to be able to track
+	cost-based progress along with time-based progress which is
+	the dotProject standard. Furthermore, we have done some
+	changes that force you to update progress through Task Logs
+	instead of doing it directly on the task. You will notice that
+	when you edit the task, the Progress field is now read-only,
+	this is on purpose, and we recommend you do not change this
+	(read on). We also recommend that you prevent users from
+	deleting and editing Task Logs (with Roles and User Security)
+	so you can have an audit trail of progress using the Logs. The
+	Unitcost module enhances the standard dotProject log because
+	it keeps track on historic performance making it easy not only
+	to plot a progress line (or "S" curve) but to do mathematical
+	calculations and estimate or forecast based on the historic
+	trending. If you allow users to edit and delete the logs, you
+	will not be able to take advantage of this enhancement.
+      </para>
+      <para>
+	When you create a new Task Log, you will notice a new section
+	that is clearly divided and titled "Unit Cost Report". Only
+	tasks with properly configured Unitcosts are allowed to report
+	by unit, of course. You will also notice that we did away with
+	the percentage drop down list and this field is now a decimal
+	number instead of an integer value. If you enter the completed
+	units, it will automatically calculate the accumulated
+	percentage and vice-versa. The rest of the Task Log
+	functionality remains intact, at least with respect to the
+	user. Upon save, nevertheless, the system will now keep track
+	of historic percentage and unitcost values in an extended log
+	table (unitcost_task_log_costs) and will also update the
+	accumulated values in the extended tasks table
+	(unitcost_task_costs). Furthermore, if you view the Project
+	information, you will notice a new field called CProgress
+	which shows current cost-based progress based on the logs and
+	it's complimentary to the standard Progress field (which is
+	time-based).
+      </para>
+    </sect1>
+    <sect1>
+      <title>Final Notes</title>
+      <para>
+	The current version of Unicost adds the capability of managing
+	construction-based projects with dotProject. It also enhances
+	some standard functionality and recommends new best practices
+	for these type of projects. With the new historical data, it
+	is now possible to generate all the PMI recommended curves and
+	KPIs and opens the possibility to forecast and evaluate
+	scenarios. If you notice, the performance field is there
+	precisely for the trending report so you can plot the
+	estimated progress using this value and applying common "S"
+	curve techniques instead of the linear model. The same can be
+	done with start and end dates and estimated hours in
+	dotProject's standard functionality. I hope, that in future
+	versions we can complement dotProject's standard reports with
+	a whole set of PMI-compliant reports and graphs. 
+      </para>
+    </sect1>
+  </chapter>
+
+
+
+
+</book>
+<!-- LocalWords: dotProject Unitcost Copyleft Latinoamérica Instituto ISEIT de
+  Tecnológicas Tecnol gicas Edificaciones FONEP Bolivarian rica Imass Latinoam
+-->
+
+<!--  LocalWords:  Fondo Nacional Para Penitenciarias Ministerio Justicia Elda
+ -->
+<!--  LocalWords:  Strusberg dotProject's SourceForge dotmods http httpd MacOSX
+ -->
+<!--  LocalWords:  username JavaScript grep
+ -->

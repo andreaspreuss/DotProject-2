@@ -1,0 +1,46 @@
+Data Import module for dotProject 2.x
+=====================================
+
+Copyright (c) 2005 Adam Donnison <ajdonnison@dotproject.net>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+About the module
+================
+
+The Data Import module provides a method for collecting various
+project details from external sources and import them into
+dotProject.  It is designed to be extensible and configurable
+and provides for user-definable import options.
+
+Installation
+============
+
+As with all dotproject modules, unpack the archive and move
+the dataimport directory and all of its contents (including
+subdirectories) to the modules directory of your dotProject
+installation.  This should result in a directory called
+dotproject/modules/dataimport.
+
+Then log in to dotProject as a system administrator and in
+System Admin, choose View Modules.  Somewhere near the bottom
+of the list you should find the dataimport module.  Select
+install, then click on the 'disabled' message to enable it.
+You can also add it to the list of modules in the top navigation
+bar by selecting the 'hidden' option.
+
+Usage
+=====
+
+Select the Data Import module from the top navigation bar.
+This will display an import data form that asks a number of
+questions.  If this is the first time through, you will be
+asked for details of the upload file format and the data
+mapping.  This can then be saved so that on future imports
+you can select this configuration, or set this to the
+default configuration.
+
+Select Import Configuration

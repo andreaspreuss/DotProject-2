@@ -1,0 +1,23 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add File"=>"Добавить файл",
+"All Projects"=>"Все проекты",
+"Date"=>"Дата",
+"Edit File"=>"Редакт-ть файл",
+"File Name"=>"Имя файла",
+"File could not be written"=>"Невозможно сохранить файл",
+"New File"=>"Новый файл",
+"Size"=>"Размер",
+"Type"=>"Тип",
+"Upload File"=>"Загрузить Файл",
+"Uploaded By"=>"Загружен",
+"Version"=>"Версия",
+"add new file"=>"добавить новый файл",
+"delete file"=>"удалить файл",
+"download"=>"скачать",
+"fileIdError"=>"В функцию передан неверный хендл файла",
+"files list"=>"список файлов",
+"filesDelete"=>"Вы действительно хотите удалить этот файл?",
+"new file"=>"новый файл",
+"select task"=>"выбрать задачу",

@@ -1,0 +1,23 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add File"=>"Legg til fil",
+"All Projects"=>"Alle prosjekter",
+"Date"=>"Dato",
+"Edit File"=>"Rediger fil",
+"File Name"=>"Filnavn",
+"File could not be written"=>"Kunne ikke lage filen",
+"New File"=>"Ny fil",
+"Size"=>"Størrelse",
+"Type"=>"Type",
+"Upload File"=>"Last opp fil",
+"Uploaded By"=>"Lastet opp av",
+"Version"=>"Versjon",
+"add new file"=>"legg til ny fil",
+"delete file"=>"slett fil",
+"download"=>"last ned",
+"fileIdError"=>"En ugyldig fil ID ble gitt til funksjonen",
+"files list"=>"filliste",
+"filesDelete"=>"Er du sikker på at du vil slette denne filen?",
+"new file"=>"ny fil",
+"select task"=>"velg oppgave",

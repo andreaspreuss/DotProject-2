@@ -1,0 +1,23 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Add Company"=>"Pøidat pracovní skupinu",
+"Budget"=>"Rozpoèet",
+"Company Name"=>"Jméno pracovní skupiny",
+"Company Owner"=>"Mana¾er skupiny",
+"Company deleted"=>"Skupina smazána",
+"Company inserted"=>"Skupina vytvoøena",
+"Company updated"=>"Skupina aktualizována",
+"Edit Company"=>"Upravit skupinu",
+"Invalid Company ID"=>"Neplatný identifikátor skupiny",
+"Started"=>"Zahájeno",
+"Status"=>"Status",
+"View Company"=>"Zobrazit skupinu",
+"companies list"=>"seznam skupin",
+"company list"=>"seznam skupin",
+"companyDelete"=>"Urèitì chcete tuto pracovní skupinu vymazat?",
+"companyValidName"=>"Prosím vlo¾te platné jméno pracovní skupiny.",
+"delete company"=>"smazat skupinu",
+"edit this company"=>"editovat skupinu",
+"new company"=>"nová skupina",
+"view this company"=>"zobrazit skupinu",
