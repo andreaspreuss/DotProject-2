@@ -1,0 +1,125 @@
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/dotproject/!svn/ver/6164/branches/stable_2/dotproject/modules/projectdesigner
+END
+config.php
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/config.php
+END
+vw_projecttask.php
+K 25
+svn:wc:ra_dav:version-url
+V 105
+/svnroot/dotproject/!svn/ver/6149/branches/stable_2/dotproject/modules/projectdesigner/vw_projecttask.php
+END
+index.php
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/dotproject/!svn/ver/6141/branches/stable_2/dotproject/modules/projectdesigner/index.php
+END
+do_task_bulk_aed.php
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svnroot/dotproject/!svn/ver/6149/branches/stable_2/dotproject/modules/projectdesigner/do_task_bulk_aed.php
+END
+vw_addtasks.php
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/vw_addtasks.php
+END
+vw_actions.php
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/vw_actions.php
+END
+gantt.php
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/dotproject/!svn/ver/6164/branches/stable_2/dotproject/modules/projectdesigner/gantt.php
+END
+vw_files.php
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/vw_files.php
+END
+configure.php
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/configure.php
+END
+do_projectdesigner_aed.php
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svnroot/dotproject/!svn/ver/6149/branches/stable_2/dotproject/modules/projectdesigner/do_projectdesigner_aed.php
+END
+vw_project.php
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/vw_project.php
+END
+printproject.php
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/printproject.php
+END
+.cvsignore
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/.cvsignore
+END
+do_addtasks_aed.php
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svnroot/dotproject/!svn/ver/6149/branches/stable_2/dotproject/modules/projectdesigner/do_addtasks_aed.php
+END
+vw_gantt.php
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/vw_gantt.php
+END
+sponsor.txt
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/sponsor.txt
+END
+projectdesigner.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/projectdesigner.class.php
+END
+index.js
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/index.js
+END
+setup.php
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/dotproject/!svn/ver/6077/branches/stable_2/dotproject/modules/projectdesigner/setup.php
+END
+vw_tasks.php
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/dotproject/!svn/ver/6149/branches/stable_2/dotproject/modules/projectdesigner/vw_tasks.php
+END

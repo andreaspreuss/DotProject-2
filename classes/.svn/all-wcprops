@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svnroot/dotproject/!svn/ver/6182/branches/stable_2/dotproject/classes
+END
+event_queue.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/dotproject/!svn/ver/5872/branches/stable_2/dotproject/classes/event_queue.class.php
+END
+query.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/dotproject/!svn/ver/6182/branches/stable_2/dotproject/classes/query.class.php
+END
+csscolor.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/dotproject/!svn/ver/6036/branches/stable_2/dotproject/classes/csscolor.class.php
+END
+libmail.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/dotproject/!svn/ver/6154/branches/stable_2/dotproject/classes/libmail.class.php
+END
+authenticator.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/dotproject/!svn/ver/6070/branches/stable_2/dotproject/classes/authenticator.class.php
+END
+permissions.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/dotproject/!svn/ver/6103/branches/stable_2/dotproject/classes/permissions.class.php
+END
+date.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/dotproject/!svn/ver/6131/branches/stable_2/dotproject/classes/date.class.php
+END
+ui.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/dotproject/!svn/ver/6182/branches/stable_2/dotproject/classes/ui.class.php
+END
+customfieldsparser.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/dotproject/!svn/ver/5905/branches/stable_2/dotproject/classes/customfieldsparser.class.php
+END
+tree.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/dotproject/!svn/ver/5989/branches/stable_2/dotproject/classes/tree.class.php
+END
+index.html
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/dotproject/!svn/ver/5862/branches/stable_2/dotproject/classes/index.html
+END
+CustomFields.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/dotproject/!svn/ver/6048/branches/stable_2/dotproject/classes/CustomFields.class.php
+END
+dp.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/dotproject/!svn/ver/6049/branches/stable_2/dotproject/classes/dp.class.php
+END

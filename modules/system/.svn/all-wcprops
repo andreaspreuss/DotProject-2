@@ -1,0 +1,113 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/svnroot/dotproject/!svn/ver/6182/branches/stable_2/dotproject/modules/system
+END
+custom_field_addedit.php
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svnroot/dotproject/!svn/ver/6038/branches/stable_2/dotproject/modules/system/custom_field_addedit.php
+END
+translate.php
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svnroot/dotproject/!svn/ver/6149/branches/stable_2/dotproject/modules/system/translate.php
+END
+viewmods.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/dotproject/!svn/ver/6046/branches/stable_2/dotproject/modules/system/viewmods.php
+END
+do_systemconfig_aed.php
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/dotproject/!svn/ver/6048/branches/stable_2/dotproject/modules/system/do_systemconfig_aed.php
+END
+do_billingcode_aed.php
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svnroot/dotproject/!svn/ver/6182/branches/stable_2/dotproject/modules/system/do_billingcode_aed.php
+END
+index.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/dotproject/!svn/ver/6038/branches/stable_2/dotproject/modules/system/index.php
+END
+do_custom_field_aed.php
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/dotproject/!svn/ver/5972/branches/stable_2/dotproject/modules/system/do_custom_field_aed.php
+END
+do_preference_aed.php
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/dotproject/!svn/ver/5872/branches/stable_2/dotproject/modules/system/do_preference_aed.php
+END
+systemconfig.php
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/dotproject/!svn/ver/6038/branches/stable_2/dotproject/modules/system/systemconfig.php
+END
+translate_save.php
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/svnroot/dotproject/!svn/ver/6149/branches/stable_2/dotproject/modules/system/translate_save.php
+END
+addeditpref.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/dotproject/!svn/ver/6149/branches/stable_2/dotproject/modules/system/addeditpref.php
+END
+billingcode.php
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svnroot/dotproject/!svn/ver/6182/branches/stable_2/dotproject/modules/system/billingcode.php
+END
+contacts_ldap.php
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/dotproject/!svn/ver/6149/branches/stable_2/dotproject/modules/system/contacts_ldap.php
+END
+domodsql.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/dotproject/!svn/ver/6149/branches/stable_2/dotproject/modules/system/domodsql.php
+END
+systemconfig_help.php
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svnroot/dotproject/!svn/ver/5872/branches/stable_2/dotproject/modules/system/systemconfig_help.php
+END
+custom_field_editor.php
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svnroot/dotproject/!svn/ver/6048/branches/stable_2/dotproject/modules/system/custom_field_editor.php
+END
+index.html
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/dotproject/!svn/ver/5862/branches/stable_2/dotproject/modules/system/index.html
+END
+system.class.php
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/dotproject/!svn/ver/6048/branches/stable_2/dotproject/modules/system/system.class.php
+END

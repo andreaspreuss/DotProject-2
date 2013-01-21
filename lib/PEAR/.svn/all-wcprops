@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/dotproject/!svn/ver/6039/branches/stable_2/dotproject/lib/PEAR
+END
+Date.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/dotproject/!svn/ver/6037/branches/stable_2/dotproject/lib/PEAR/Date.php
+END
+Contact_Vcard_Parse.php
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/dotproject/!svn/ver/5972/branches/stable_2/dotproject/lib/PEAR/Contact_Vcard_Parse.php
+END
+FixPHP5PEARWarnings.php
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/dotproject/!svn/ver/6039/branches/stable_2/dotproject/lib/PEAR/FixPHP5PEARWarnings.php
+END
+Contact_Vcard_Build.php
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/dotproject/!svn/ver/5972/branches/stable_2/dotproject/lib/PEAR/Contact_Vcard_Build.php
+END

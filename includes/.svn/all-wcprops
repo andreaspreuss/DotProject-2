@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svnroot/dotproject/!svn/ver/6177/branches/stable_2/dotproject/includes
+END
+.htaccess
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svnroot/dotproject/!svn/ver/3299/branches/stable_2/dotproject/includes/.htaccess
+END
+gateway.pl
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/dotproject/!svn/ver/6038/branches/stable_2/dotproject/includes/gateway.pl
+END
+version.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/dotproject/!svn/ver/6177/branches/stable_2/dotproject/includes/version.php
+END
+config-dist.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/dotproject/!svn/ver/6048/branches/stable_2/dotproject/includes/config-dist.php
+END
+dP_compat.php
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/svnroot/dotproject/!svn/ver/6081/branches/stable_2/dotproject/includes/dP_compat.php
+END
+.cvsignore
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/dotproject/!svn/ver/3299/branches/stable_2/dotproject/includes/.cvsignore
+END
+permissions.php
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/dotproject/!svn/ver/6054/branches/stable_2/dotproject/includes/permissions.php
+END
+main_functions.php
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/dotproject/!svn/ver/6148/branches/stable_2/dotproject/includes/main_functions.php
+END
+db_adodb.php
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/dotproject/!svn/ver/6050/branches/stable_2/dotproject/includes/db_adodb.php
+END
+db_connect.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/dotproject/!svn/ver/6050/branches/stable_2/dotproject/includes/db_connect.php
+END
+sendpass.php
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/dotproject/!svn/ver/6084/branches/stable_2/dotproject/includes/sendpass.php
+END
+session.php
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svnroot/dotproject/!svn/ver/6048/branches/stable_2/dotproject/includes/session.php
+END
+index.html
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svnroot/dotproject/!svn/ver/5862/branches/stable_2/dotproject/includes/index.html
+END

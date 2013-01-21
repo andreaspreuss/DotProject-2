@@ -1,0 +1,143 @@
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svnroot/dotproject/!svn/ver/6185/branches/stable_2/dotproject/db
+END
+upgrade_102_to_20alpha.sql
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/dotproject/!svn/ver/4844/branches/stable_2/dotproject/db/upgrade_102_to_20alpha.sql
+END
+upgrade_204_to_21rc1.sql
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/dotproject/!svn/ver/6048/branches/stable_2/dotproject/db/upgrade_204_to_21rc1.sql
+END
+upgrade_20beta_to_20.sql
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svnroot/dotproject/!svn/ver/3299/branches/stable_2/dotproject/db/upgrade_20beta_to_20.sql
+END
+upgrade_latest.php
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/dotproject/!svn/ver/6185/branches/stable_2/dotproject/db/upgrade_latest.php
+END
+upgrade_101_to_102.sql
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/dotproject/!svn/ver/4848/branches/stable_2/dotproject/db/upgrade_101_to_102.sql
+END
+upgrade_20alpha_to_20beta.sql
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svnroot/dotproject/!svn/ver/3299/branches/stable_2/dotproject/db/upgrade_20alpha_to_20beta.sql
+END
+upgrade_201_to_202.sql
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/dotproject/!svn/ver/4844/branches/stable_2/dotproject/db/upgrade_201_to_202.sql
+END
+README
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svnroot/dotproject/!svn/ver/3299/branches/stable_2/dotproject/db/README
+END
+upgrade_211_to_212.sql
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/dotproject/!svn/ver/6048/branches/stable_2/dotproject/db/upgrade_211_to_212.sql
+END
+upgrade_212_to_213.sql
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/dotproject/!svn/ver/6049/branches/stable_2/dotproject/db/upgrade_212_to_213.sql
+END
+upgrade_contacts_company.php
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svnroot/dotproject/!svn/ver/6048/branches/stable_2/dotproject/db/upgrade_contacts_company.php
+END
+upgrade_latest.sql
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svnroot/dotproject/!svn/ver/6177/branches/stable_2/dotproject/db/upgrade_latest.sql
+END
+upgrade_213_to_214.sql
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/dotproject/!svn/ver/6111/branches/stable_2/dotproject/db/upgrade_213_to_214.sql
+END
+upgrade_21rc2_to_21.sql
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/dotproject/!svn/ver/5427/branches/stable_2/dotproject/db/upgrade_21rc2_to_21.sql
+END
+upgrade_214_to_215.sql
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/dotproject/!svn/ver/6111/branches/stable_2/dotproject/db/upgrade_214_to_215.sql
+END
+upgrade_215_to_216.sql
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svnroot/dotproject/!svn/ver/6178/branches/stable_2/dotproject/db/upgrade_215_to_216.sql
+END
+upgrade_21rc1_to_21rc2.sql
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svnroot/dotproject/!svn/ver/4941/branches/stable_2/dotproject/db/upgrade_21rc1_to_21rc2.sql
+END
+upgrade_permissions.php
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svnroot/dotproject/!svn/ver/6051/branches/stable_2/dotproject/db/upgrade_permissions.php
+END
+index.html
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svnroot/dotproject/!svn/ver/5862/branches/stable_2/dotproject/db/index.html
+END
+upgrade_20_to_201.sql
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/dotproject/!svn/ver/5924/branches/stable_2/dotproject/db/upgrade_20_to_201.sql
+END
+upgrade_contacts.php
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svnroot/dotproject/!svn/ver/6149/branches/stable_2/dotproject/db/upgrade_contacts.php
+END
+dotproject.sql
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svnroot/dotproject/!svn/ver/6185/branches/stable_2/dotproject/db/dotproject.sql
+END
+upgrade_21_to_211.sql
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svnroot/dotproject/!svn/ver/6184/branches/stable_2/dotproject/db/upgrade_21_to_211.sql
+END
