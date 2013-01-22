@@ -113,14 +113,14 @@ class CDepartment extends CDpObject {
 //writes out a single <option> element for display of departments
 function showchilddept(&$a, $level=1) {
 	global $AppUI, $cBuffer, $department;
-	$s = ('<option value="' . $AppUI->___($a['dept_id']) . '"' 
-	      . ((isset($department) && $department == $a['dept_id']) ? 'selected="selected"' : '') 
+	$s = ('<option value="' . $AppUI->___($a['dept_id']) . '"'
+	      . ((isset($department) && $department == $a['dept_id']) ? 'selected="selected"' : '')
 	      . '>');
 
 	for ($y=0; $y < $level; $y++) {
 		$s .= (($y+1 == $level) ? '' : '&nbsp;&nbsp;');
 	}
-	
+
 	$s .= '&nbsp;&nbsp;' . $AppUI->___($a['dept_name']) . "</option>\n";
 	$cBuffer .= $s;
 
@@ -132,7 +132,7 @@ function findchilddept(&$tarr, $parent, $level=1) {
 	$level = $level+1;
 	$n = count($tarr);
 	for ($x=0; $x < $n; $x++) {
-		if ($tarr[$x]['dept_parent'] == $parent 
+		if ($tarr[$x]['dept_parent'] == $parent
 		    && $tarr[$x]['dept_parent'] != $tarr[$x]['dept_id']) {
 			showchilddept($tarr[$x], $level);
 			findchilddept($tarr, $tarr[$x]['dept_id'], $level);

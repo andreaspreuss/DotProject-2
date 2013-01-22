@@ -1,8 +1,8 @@
 <?php
 /*
-Copyright (c) 2005 CaseySoftware, LLC <info@caseysoftware.com> 
-Initial Work:	Richard Thompson - Belfast, Northern Ireland 
-Developers:		Keith Casey - Washington, DC keith@caseysoftware.com 
+Copyright (c) 2005 CaseySoftware, LLC <info@caseysoftware.com>
+Initial Work:	Richard Thompson - Belfast, Northern Ireland
+Developers:		Keith Casey - Washington, DC keith@caseysoftware.com
 				Ivan Peevski - Adelaide, Australia cyberhorse@users.sourceforge.net
 */
 
@@ -21,7 +21,7 @@ if (@$a == 'setup') {
 	echo dPshowModuleConfig( $config );
 }
 
-class SRisks {   
+class SRisks {
 
 	function install() {
 		$ok=1;
@@ -62,7 +62,7 @@ class SRisks {
 		}
 		return null;
 	}
-	
+
 	function remove() {
 		$q = new DBQuery;
 		$q->dropTable('risks');
@@ -72,11 +72,10 @@ class SRisks {
 		$q->exec();
 		return null;
 	}
-	
+
 	function upgrade() {
 		return null;
 	}
 }
 
-?>	
-	
+?>

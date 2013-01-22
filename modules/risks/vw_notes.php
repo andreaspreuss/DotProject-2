@@ -1,8 +1,8 @@
 <?php
 /*
-Copyright (c) 2005 CaseySoftware, LLC <info@caseysoftware.com> 
-Initial Work:	Richard Thompson - Belfast, Northern Ireland 
-Developers:		Keith Casey - Washington, DC keith@caseysoftware.com 
+Copyright (c) 2005 CaseySoftware, LLC <info@caseysoftware.com>
+Initial Work:	Richard Thompson - Belfast, Northern Ireland
+Developers:		Keith Casey - Washington, DC keith@caseysoftware.com
 				Ivan Peevski - Adelaide, Australia cyberhorse@users.sourceforge.net
 */
 GLOBAL $AppUI;
@@ -16,7 +16,7 @@ if (! $canEdit)
 $viewNotes = false;
 $addNotes = false;
 $risk_id = intval( dPgetParam( $_REQUEST, 'risk_id', 0 ) );
-	
+
 $note = dPgetParam($_POST, 'note', false);
 
 if ($note) {
@@ -39,7 +39,7 @@ $q->leftJoin('users', 'u', 'risk_note_creator = user_id');
 $q->leftJoin('contacts', 'c', 'user_contact = contact_id');
 $q->addWhere('risk_note_risk = ' . $risk_id);
 $notes = $q->loadList();
-	
+
 echo '
 <table cellpadding="5" width="100%" class="tbl">
 <tr>

@@ -1,7 +1,9 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Add Risk"=>"Añadir Riesgo",
 "Add Risk Note"=>"Añadir notas al riesgo",
+"All Risks"=>"Todos los Riesgos",
 "Days"=>"Días",
 "Edit Risk"=>"Editar riesgo",
 "Hours"=>"Horas",

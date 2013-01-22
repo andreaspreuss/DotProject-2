@@ -16,32 +16,32 @@ class CHosting extends CDpObject {
 	var $domain_registrar = null;
 	var $domain_status = null;
 	var $domain_notes = null;
-	
+
 	var $hosting_id = null;
 	var $hosting_package_name = null;
 	var $hosting_expiry_date = null;
 	var $hosting_status = null;
 	var $hosting_notes = null;
-	
+
 	function CHosting() {
 		$this->CDpObject( 'hosting', 'domain_id' );
 	}
-	
+
 	function canDelete($message = null, $domain_id = null){
 		return true;
 	}
-	
+
 	function load($domain_id){
 		$q = new DBQuery;
-		$q->addTable('domains');
-		$q->addQuery("domains.domain_id, company_id, domain_name, domain_expiry_date, domain_registrar, domain_status,
+		$q->addTable('domains','dom');
+		$q->addQuery("dom.domain_id, company_id, domain_name, domain_expiry_date, domain_registrar, domain_status,
 			domain_notes, hosting_id, hosting_package_name, hosting_expiry_date, hosting_status, hosting_notes");
-		$q->addJoin('hosting', 'h', 'h.domain_id = domains.domain_id');
-		$q->addWhere('domains.domain_id = '.$domain_id);
+		$q->addJoin('hosting', 'h', 'h.domain_id = dom.domain_id');
+		$q->addWhere('dom.domain_id = '.$domain_id);
 		$results = $q->exec();
-		
+
 		$row = db_fetch_assoc($results);
-		
+
 		$this->domain_id = $row['domains.domain_id'];
 		$this->company_id = $row['company_id'];
 		$this->domain_name = $row['domain_name'];
@@ -49,27 +49,27 @@ class CHosting extends CDpObject {
 		$this->domain_registrar = $row['domain_registrar'];
 		$this->domain_status = $row['domain_status'];
 		$this->domain_notes = $row['domain_notes'];
-		
+
 		$this->hosting_id = $row['hosting_id'];
 		$this->hosting_package_name = $row['hosting_package_name'];
 		$this->hosting_expiry_date = $row['hosting_expiry_date'];
 		$this->hosting_status = $row['hosting_status'];
 		$this->hosting_notes = $row['hosting_notes'];
 	}
-	
+
 	function delete(){
 		$q = new DBQuery;
 		$q->setDelete('domains');
 		$q->addWhere('domain_id='.$this->domain_id);
 		$q->exec();
 		$q->clear();
-		
+
 		$q->setDelete('hosting');
 		$q->addWhere('domain_id='.$this->domain_id);
 		$q->exec();
 		$q->clear();
 	}
-	
+
 	function store(){
 		$q = new DBQuery;
 		$q->addTable('domains');
@@ -80,11 +80,11 @@ class CHosting extends CDpObject {
 		$q->addInsert('domain_status', $this->domain_status);
 		$q->addInsert('domain_notes', $this->domain_notes);
 		$q->exec();
-		
+
 		$domainID = db_insert_id();
-		
+
 		$q->clear();
-		
+
 		$q->addTable('hosting');
 		$q->addInsert('domain_id', $domainID);
 		$q->addInsert('hosting_package_name', $this->hosting_package_name);
@@ -103,11 +103,11 @@ function getCompanies(){
 	// 16 August 2003
 	// get the list of permitted companies
 	global $AppUI, $buffer, $company, $company_id, $company_prefix, $deny, $department, $dept_ids, $dPconfig, $orderby, $orderdir, $projects, $tasks_critical, $tasks_problems, $tasks_sum, $tasks_summy;
-	
+
 	$obj = new CCompany();
 
 	$companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
-	if(count($companies) == 0) $companies = array(0);	
+	if(count($companies) == 0) $companies = array(0);
 
 	// get the list of permitted companies
 	$companies = arrayMerge( array( '0'=>$AppUI->_('All') ), $companies );
@@ -139,46 +139,5 @@ function getCompanies(){
 		}
 	}
 	$buffer .= '</select>';
-}
-
-//writes out a single <option> element for display of departments
-function showchilddept( &$a, $level=1 ) {
-	Global $buffer, $department;
-	$s = '<option value="'.$a["dept_id"].'"'.(isset($department)&&$department==$a["dept_id"]?'selected="selected"':'').'>';
-
-	for ($y=0; $y < $level; $y++) {
-		if ($y+1 == $level) {
-			$s .= '';
-		} else {
-			$s .= '&nbsp;&nbsp;';
-		}
-	}
-
-	$s .= '&nbsp;&nbsp;'.$a["dept_name"]."</option>\n";
-	$buffer .= $s;
-
-//	echo $s;
-}
-
-//recursive function to display children departments.
-function findchilddept( &$tarr, $parent, $level=1 ){
-	$level = $level+1;
-	$n = count( $tarr );
-	for ($x=0; $x < $n; $x++) {
-		if($tarr[$x]["dept_parent"] == $parent && $tarr[$x]["dept_parent"] != $tarr[$x]["dept_id"]){
-			showchilddept( $tarr[$x], $level );
-			findchilddept( $tarr, $tarr[$x]["dept_id"], $level);
-		}
-	}
-}
-
-function addDeptId($dataset, $parent){
-	Global $dept_ids;
-	foreach ($dataset as $data){
-		if($data['dept_parent']==$parent){
-			$dept_ids[] = $data['dept_id'];
-			addDeptId($dataset, $data['dept_id']);
-		}
-	}
 }
 ?>

@@ -45,7 +45,7 @@ while($row = db_fetch_assoc($results)){
 				<tr>
 					<td><a href="index.php?m=hosting&a=addedit&domain_id=<?php echo $row['domain_id']; ?>"><?php echo $row['domain_name']; ?></a></td>
 					<td align="center"><?php echo $row['domain_expiry_date']; ?></td>
-				</tr>		
+				</tr>
 <?php
 }
 ?>

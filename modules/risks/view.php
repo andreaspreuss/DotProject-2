@@ -1,8 +1,8 @@
-<?php 
+<?php
 /*
-Copyright (c) 2005 CaseySoftware, LLC <info@caseysoftware.com> 
-Initial Work:	Richard Thompson - Belfast, Northern Ireland 
-Developers:		Keith Casey - Washington, DC keith@caseysoftware.com 
+Copyright (c) 2005 CaseySoftware, LLC <info@caseysoftware.com>
+Initial Work:	Richard Thompson - Belfast, Northern Ireland
+Developers:		Keith Casey - Washington, DC keith@caseysoftware.com
 				Ivan Peevski - Adelaide, Australia cyberhorse@users.sourceforge.net
 */
 
@@ -14,7 +14,7 @@ $denyView = getDenyRead( $m, $risk_id );
 
 if ($denyView) {
 	$AppUI->redirect( "m=help&a=access_denied" );
-} 
+}
 
 $riskProbability = dPgetSysVal( 'RiskProbability' );
 $riskStatus = dPgetSysVal( 'RiskStatus' );
@@ -48,7 +48,7 @@ if (!db_loadHash( $q->prepare(), $risk ) && $risk_id > 0) {
 	$titleBlock = new CTitleBlock( 'Invalid Risk ID', 'folder5.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=risks", "Risks list" );
 	$titleBlock->show();
-	
+
 	$tasks = array();
 } else {
 	if (isset($risk['risk_project']))
@@ -61,7 +61,7 @@ if (!db_loadHash( $q->prepare(), $risk ) && $risk_id > 0) {
 	}
 	else
 		$tasks = array();
-	
+
 // setup the title block
 	$ttl = $risk_id > 0 ? "Edit Risk" : "Add Risk";
 	$titleBlock = new CTitleBlock( $ttl, 'folder5.png', $m, "$m.$a" );
@@ -158,7 +158,7 @@ function delIt(){
 </table>
 
 
-<?php 
+<?php
 //include($baseDir . '/modules/risks/notes.php');
 //$query_string = "?m=tasks&a=view&task_id=$task_id";
 // Last parameter makes tab box javascript based.

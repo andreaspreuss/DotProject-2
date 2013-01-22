@@ -1,8 +1,8 @@
 <?php
 /*
-Copyright (c) 2005 CaseySoftware, LLC <info@caseysoftware.com> 
-Initial Work:	Richard Thompson - Belfast, Northern Ireland 
-Developers:		Keith Casey - Washington, DC keith@caseysoftware.com 
+Copyright (c) 2005 CaseySoftware, LLC <info@caseysoftware.com>
+Initial Work:	Richard Thompson - Belfast, Northern Ireland
+Developers:		Keith Casey - Washington, DC keith@caseysoftware.com
 				Ivan Peevski - Adelaide, Australia cyberhorse@users.sourceforge.net
 */
 if (!defined('DP_BASE_DIR')){
@@ -50,9 +50,9 @@ $q->addTable('projects');
 $projects = $q->loadHashList();
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Risks', 'scales.png', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Risks', 'risk_assessment.png', $m, "$m.$a" );
 $perms = & $AppUI->acl();
-// Use permissions check directly rather than $canEdit, because this 
+// Use permissions check directly rather than $canEdit, because this
 // file can be included by other modules, in which case the $canEdit will
 // have a different context.
 if ($perms->checkModule('risks', 'add')) {
@@ -74,7 +74,7 @@ $q->addQuery('*');
 $q->addTable('projects');
 if(isset($_GET['project_id']))
 	$q->addWhere('project_id = ' . $x);
-	
+
 $projects = $q->loadList();
 //--- print Table Headers ----//
 ?>
@@ -94,7 +94,7 @@ $projects = $q->loadList();
 
 $projects = array_merge(array(0=>array('project_id'=>0)), $projects);
 
-	foreach($projects as $p){	
+	foreach($projects as $p){
 		$q->clear();
 		$q->addQuery('*');
 		$q->addQuery('max(risk_note_date) as risk_note_date');
@@ -110,18 +110,18 @@ $projects = array_merge(array(0=>array('project_id'=>0)), $projects);
 			$q->addWhere('risk_status = ' . $riskFilter);
 
 		$risks = $q->loadList();
-		
+
 		if(!empty($risks)){
 //			if(!isset($_GET['project_id'])){
 				echo '<TR><TD colspan="12" style="background-color:#' . $p['project_color_identifier'] . '">
 					<a href="?m=projects&a=view&project_id=' . $p['project_id'] . '">
 						<font color="' . bestColor( $p["project_color_identifier"] ) . '">' . $p['project_name'] . '</font>&nbsp</a>
-					</TD></TR>';	
+					</TD></TR>';
 //		  	}
 			//---- Print Table Data ----//
 			foreach($risks as $row){
 				if (!$row['task_name'])
-					$row['task_name'] = $AppUI->_("No task specified"); 
+					$row['task_name'] = $AppUI->_("No task specified");
 
 				if($row['risk_status'] == 2){
 					$bg = "669999";
@@ -129,7 +129,7 @@ $projects = array_merge(array(0=>array('project_id'=>0)), $projects);
 					$bg = "";
 				}
 				$row['risk_status'] = $riskStatus[$row['risk_status']];
-				
+
 				foreach ($users as $k => $v ) {
 					if($k==$row['risk_owner']){
 						$row['risk_owner'] = $v;
@@ -140,8 +140,8 @@ $projects = array_merge(array(0=>array('project_id'=>0)), $projects);
 						$row['risk_project'] = $v;
 					}
 				}
-				
-				
+
+
 				?>
 				<TR>
 				<TD nowrap style="background-color:#<?php echo $bg; ?>">
@@ -168,7 +168,7 @@ $projects = array_merge(array(0=>array('project_id'=>0)), $projects);
 				<?php
 			}
 			//print spacer row
-			print"<tr><TD COLSPAN='12'>&nbsp</TD></tr>";	
+			print"<tr><TD COLSPAN='12'>&nbsp</TD></tr>";
 		}
 }
 /*<TD style="background-color:#<?php echo $bg; ?>"><?php echo($row['risk_description']); ?> &nbsp</TD>*/

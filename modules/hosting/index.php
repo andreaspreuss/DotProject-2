@@ -1,4 +1,4 @@
-<?php  
+<?php
 /* Hosting module -> $Id: index.php,v 1.1 2007/04/16 05:36:02 mbelos Exp $ */
 
 $AppUI->savePlace();
@@ -29,7 +29,7 @@ if (isset( $_POST['department'] )) {
 	unset($company_id);
 }
 
-//if $department contains the $company_prefix string that it's requesting a company and not a department.  So, clear the 
+//if $department contains the $company_prefix string that it's requesting a company and not a department.  So, clear the
 // $department variable, and populate the $company_id variable.
 /*
 if(!(strpos($department, $company_prefix)===false)){
@@ -44,7 +44,7 @@ if(!(strpos($company_id, $company_prefix)===false)){
 }
 
 if (isset( $_GET['orderby'] )) {
-    $orderdir = $AppUI->getState( 'HostIdxOrderDir' ) ? ($AppUI->getState( 'HostIdxOrderDir' )== 'asc' ? 'desc' : 'asc' ) : 'desc';    
+    $orderdir = $AppUI->getState( 'HostIdxOrderDir' ) ? ($AppUI->getState( 'HostIdxOrderDir' )== 'asc' ? 'desc' : 'asc' ) : 'desc';
     $AppUI->setState( 'HostIdxOrderBy', $_GET['orderby'] );
     $AppUI->setState( 'HostIdxOrderDir', $orderdir);
 }
@@ -54,7 +54,7 @@ $orderdir = $AppUI->getState( 'HostIdxOrderDir' ) ? $AppUI->getState( 'HostIdxOr
 getCompanies();
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Hosting', 'applet-48.png', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Hosting', 'applet3-48.png', $m, "$m.$a" );
 $titleBlock->addCell( $AppUI->_('Company') . '/' . $AppUI->_('Division') . ':');
 $titleBlock->addCell( $buffer, '', '<form action="index.php?m=hosting" method="post" name="pickCompany">', '</form>');
 $titleBlock->addCell();

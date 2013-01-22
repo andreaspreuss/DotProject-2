@@ -10,7 +10,7 @@ $config = array(
 	'mod_ui_name' => 'Hosting',
 	'mod_ui_icon' => 'helpdesk.png',
 	'mod_description' => 'Hosting status and domain names connected to companies',
-	'mod_config' => false 
+	'mod_config' => false
 );
 
 if (@$a == 'setup') {
@@ -49,7 +49,7 @@ class SHosting {
 		$q->createDefinition($sql);
 		$ok = $ok && $q->exec();
 		$q->clear();
-		
+
 		if (!$ok)
 			return false;
 		return null;
