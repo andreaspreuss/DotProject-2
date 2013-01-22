@@ -37,10 +37,13 @@ $titleBlock = new CTitleBlock( 'Inventory', "../modules/inventory/images/48_my_c
 if ( isset( $_GET[ 'quick_filter' ] ) )
 {
 	$databases = array( "user" => "users", "company" => "companies", "department" => "departments", "project" => "projects" );
-	$sql = "SELECT ".$_GET[ "quick_filter" ]."_company AS company_id FROM ".$databases[ $_GET[ 'quick_filter' ] ];
-	$sql .= " WHERE ".$_GET[ 'quick_filter' ]."_id=".$_GET[ 'quick_filter_id' ];
-	$row = db_loadList( $sql );
-	
+	$sql = new DBQuery();
+	$sql -> addTable($databases[ $_GET[ 'quick_filter' ]]);
+	$sql -> addQuery($_GET[ "quick_filter" ].'_company AS company_id');
+	$sql -> addWhere($_GET[ 'quick_filter' ]."_id=".$_GET[ 'quick_filter_id' ]);
+
+	$row = $sql->loadResult();
+
 	$AppUI->setState( 'InventoryIdxFilterCompany', $row[0][ 'company_id' ] );
 	$AppUI->setState( 'InventoryIdxFilterType', $_GET[ 'quick_filter' ] );
 	$AppUI->setState( 'InventoryIdxFilterIndex', $_GET[ 'quick_filter_id' ] );
@@ -105,15 +108,15 @@ $titleBlock->addCrumbRight(
 		  . '" onClick="document.itemFilter2.f3.value=0;'
 		  . ' document.itemFilter2.submit();">'
 		. "</form></TD>"
-	
-	
+
+
 		. '<TD><form action="?m=inventory" method="post" id="itemFilter3" name="itemFilter3">'
 		. "<INPUT TYPE='text' size='10' name='f4' onChange='document.itemFilter3.submit();' value='$f4'>"
 		. '<INPUT TYPE="button" name="clear" value="<--'.$AppUI->_('Clear')
 		  . '" onClick="document.itemFilter3.f4.value='."''".';'
 		  . ' document.itemFilter3.submit();">'
 		. '</FORM></TD>'
-	
+
 	, 'ALIGN="right"'
 	, '<table BORDER="0" CELLSPACING="0" CELLPADDING="0" ALIGN="right"><TR>'
 	, '</TR></table>'

@@ -10,7 +10,7 @@ function getElementById( _id )
 	isIE=document.all?true:false;
 	isDOM=document.getElementById?true:false;
 	isNS4=document.layers?true:false;
-	
+
 	if (isDOM)
 	{
 	  return document.getElementById(_id);
@@ -37,12 +37,12 @@ function emptyList( box )
 function fillList( box, arr, _selected, _optionzero ) {
 	// arr[0] holds the display text
 	// arr[1] are the values
-	
+
 	if ( typeof _selected == "undefined" ) _selected = 0;
 	if ( typeof _optionzero == "undefined" ) _optionzero = "";
-	
+
 	box.selectedIndex=0;
-	
+
 	try
 	{
 		if ( _optionzero != "" )
@@ -51,7 +51,7 @@ function fillList( box, arr, _selected, _optionzero ) {
 			box.options[0] = option;
 			if ( _selected == 0 ) box.selectedIndex = 0;
 		}
-		
+
 		for ( i = 0; i < arr[0].length; i++ )
 		{
 
@@ -63,7 +63,7 @@ function fillList( box, arr, _selected, _optionzero ) {
 			// Add to the end of the existing options
 
 			box.options[box.length] = option;
-			
+
 			if ( arr[1][i] == _selected)
 			{
 				box.selectedIndex=box.length-1;
@@ -88,7 +88,7 @@ function changeList( box, lists, id, _selected )
 {
 	// Isolate the appropriate list by using the value
 	// of the currently selected option
-	
+
 	if ( typeof selected == "undefined" ) selected = 0;
 
 	list = lists[box.options[box.selectedIndex].value];
@@ -112,10 +112,10 @@ function changeListByType( _main, _type, _id, _selected, _optionzero )
 
 	destination =  getElementById( _id );
 	emptyList( destination );
-	
+
 	box = getElementById( _main );
 	typebox = getElementById( _type );
-	
+
 	switch( typebox.options[ typebox.selectedIndex ].value )
 	{
 	case "department":
@@ -153,52 +153,51 @@ function changeListByType( _main, _type, _id, _selected, _optionzero )
 function generateJSarray( $prefix, $table, $specify_company = 0, $namefield = "name" )
 {
 	global $company_list;
-	
+
 	echo "var ".$prefix."_lists = new Array();";
-	
-	$sql = "
-	SELECT {$prefix}_id AS id, {$prefix}_{$namefield} AS name, {$prefix}_company AS company
-	FROM {$table}
-	";
-		
-	if ( $specify_company ) $sql .= "WHERE {$prefix}_company = $specify_company";
-	
-	if (($sql_list = db_loadList( $sql, NULL )))
+
+	$sql = new DBQuery();
+	$sql -> addQuery($prefix.'_id AS id, '.$prefix.'_'.$namefield.' AS name, '.$prefix.'_company AS company');
+	$sql -> addTable($table);
+
+	if ( $specify_company ) $sql -> addWhere($prefix.'_company = '.$specify_company);
+
+	if (($sql_list = $sql -> loadList()))
 	{
 	// create quick index table
-		
+
 		$elem_list = array();
 		foreach ( $sql_list as $row )
 		{
 			$elem_list[ $row[ "id" ] ] = $row;
 		}
-		
+
 	// create quick index table for the elements in the companies
-		
+
 		$company_idx = array();
 		reset( $elem_list );
 		foreach( $elem_list as $elem )
 		{
 			$company_idx[ $elem[ "company" ] ][] = $elem[ "id" ];
 		}
-		
+
 	// now go through each company in turn
-		
+
 		reset( $company_idx );
 		foreach ( $company_idx as $key => $company )
 		{
 			if ( !isset($company_list[ $key ] ) ) continue;
-			
+
 			echo $prefix."_lists[ ".$key." ] = new Array( ";
-			
+
 			$nametext  = "new Array( ";
 			$valuetext = "new Array( ";
-			
+
 			$lastval = end($company);
 			reset( $company );
-			
+
 	// and go through each element within that company
-			
+
 			foreach( $company as $id )
 			{
 				$nametext .= '"'.$elem_list[ $id ][ "name" ].'"';
@@ -208,9 +207,9 @@ function generateJSarray( $prefix, $table, $specify_company = 0, $namefield = "n
 					$nametext .= ", ";
 					$valuetext .= ", ";
 				}
-				
+
 			}
-			
+
 			echo $nametext." ),\n";
 			echo $valuetext." ) );\n";
 		}

@@ -22,9 +22,9 @@ if ( $add_remembered && $inventory_parent )
 		$AppUI->redirect();
 	}
 	$marked = get_marked_inventory();
-	
+
 	$msg = ((count( $marked ) > 1) ? $AppUI->_( "Items" ) : $AppUI->_( "Item" ))." ";
-	
+
 	foreach( $marked as $id )
 	{
 		$obj = new CInventory();
@@ -84,7 +84,7 @@ if ( $inventory_parent )
 		$obj->inventory_assign_from = $parent->inventory_assign_from;
 		$obj->inventory_assign_until = $parent->inventory_assign_until;
 		$obj->inventory_parent = $inventory_parent;
-		
+
 		$parent_name = $parent->inventory_name;
 	}
 }
@@ -133,7 +133,7 @@ if ($canAdd)
 		'<input type="submit" class="button" value="'.$AppUI->_('new inventory item').'">', '',
 		'<form action="?m=inventory&a=addedit&" method="post">', '</form>'
 	);
-	
+
 	if ( $inventory_id && $canAddSub )
 	{
 		$titleBlock->addCell( '<input type="submit" class="button" value="'.$AppUI->_('new sub-item').'">', ''
@@ -161,7 +161,7 @@ $titleBlock->show();
 <script type="text/javascript" src="<?php echo $dPconfig['base_url'];?>/lib/calendar/lang/calendar-<?php echo $AppUI->user_locale; ?>.js"></script>
 
 <script LANGUAGE="JavaScript">
-<!--		
+<!--
 
 function delIt()
 {
@@ -174,7 +174,7 @@ function delIt()
 var isIE=document.all?true:false;
 var isDOM=document.getElementById?true:false;
 var isNS4=document.layers?true:false;
-		
+
 /* _w : which ID (1) or (2) */
 /* _h : (h)ide or (s)how */
 function toggleT(_w,_h) {
@@ -199,7 +199,7 @@ function EnableDisable( _type )
 {
 	eval( "sel = document.forms['editFrm'].inventory_" + _type + ";" );
 	eval( "newsel = document.forms['editFrm'].inventory_new" + _type + ";" );
-	
+
     if ( sel.options[ sel.selectedIndex ].value == -1 )
 	{
 		toggleT( "new" + _type, "s" );
@@ -216,16 +216,16 @@ function EnableDisable( _type )
 function submitIt()
 {
 	var form = document.editFrm;
-	
+
 /* enable all the disabled fields so they are POSTed */
-	
+
 	form.companylist.disabled = false;
 	form.departmentlist.disabled = false;
 	form.date1.disabled = false;
 	form.date2.disabled = false;
 	form.date3.disabled = false;
 	form.date4.disabled = false;
-	
+
    	form.submit();
 }
 
@@ -288,7 +288,7 @@ function submitIt()
 		<BR /><BR />
 		<?php echo $AppUI->_( "Serial No" ); ?>: <BR />
 		<INPUT TYPE="TEXT" class="text" NAME="inventory_serial" VALUE="<?php echo dPformSafe( $obj->inventory_serial ); ?>" size="40" />
-		
+
 		<BR /><BR />
 		<?php echo $AppUI->_( "Asset No" )." (".$AppUI->_( "Leave blank to use default" ).")"; ?>: <BR />
 		<INPUT TYPE="TEXT" class="text" NAME="inventory_asset_no" VALUE="<?php echo dPformSafe( $obj->inventory_asset_no ); ?>" size="40" />
@@ -354,18 +354,18 @@ function submitIt()
 					</TD>
 				</TR>
 				</TABLE>
-				
+
 				<BR />
 					<?php echo $AppUI->_( "Purchase Status" ); ?>:<BR />
 					<SELECT NAME="inventory_purchase_state" ID="statelist" CLASS="text">
 						<OPTION VALUE="O" <?php if ( !$obj->inventory_purchase_state || $obj->inventory_purchase_state == "O" ) echo "SELECTED";?>>
 							<?php echo $AppUI->_( "Ordered" ); ?>
 						<OPTION VALUE="C" <?php if ($obj->inventory_purchase_state == "C" ) echo "SELECTED";?>>
-							<?php echo $AppUI->_( "Confirmed" ); ?> 
+							<?php echo $AppUI->_( "Confirmed" ); ?>
 						<OPTION VALUE="D" <?php if ($obj->inventory_purchase_state == "D" ) echo "SELECTED";?>>
-							<?php echo $AppUI->_( "Delayed" ); ?> 
+							<?php echo $AppUI->_( "Delayed" ); ?>
 						<OPTION VALUE="A" <?php if ($obj->inventory_purchase_state == "A" ) echo "SELECTED";?>>
-							<?php echo $AppUI->_( "Arrived" ); ?> 
+							<?php echo $AppUI->_( "Arrived" ); ?>
 					</SELECT>
 				<BR />
 				<BR />
@@ -374,7 +374,7 @@ function submitIt()
 					<a href="#" onClick="return showCalendar('date1', 'y-mm-dd');">
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 					</a>
-				
+
 				<BR />
 					<?php echo $AppUI->_( "Delivery Date" ); ?>:<BR />
 					<INPUT TYPE="TEXT" CLASS="text" DISABLED ID="date4" NAME="inventory_delivered" VALUE="<?php echo $delivered_date->format( '%Y-%m-%d' ); ?>" />
@@ -429,15 +429,15 @@ function submitIt()
 					<?php echo $AppUI->_( "Project" ); ?>: <BR />
 					<SELECT NAME="inventory_project" CLASS="text">
 					<?php
-						$usersql = "
-						SELECT project_id, project_short_name, project_name
-						FROM projects
-						ORDER BY project_short_name
-						";
-						
+						$usersql = new DBQuery();
+						$usersql-> addTable('projects');
+						$usersql->addQuery('project_id, project_short_name, project_name');
+						$usersql->addOrder('project_short_name');
+                                               $usersql->exec();
+
 						$project_list = array();
-						
-						if (($rows = db_loadList( $usersql, NULL )))
+
+						if (($rows = $usersql->loadList()))
 						{
 							foreach ($rows as $row)
 							{
@@ -456,16 +456,14 @@ function submitIt()
 					<?php echo $AppUI->_( "User" ); ?>: <BR />
 					<SELECT NAME="inventory_user" CLASS="text">
 					<?php
-						$usersql = "
-						SELECT user_id, user_contact, user_username
-						, contact_first_name AS user_first_name
-						, contact_last_name AS user_last_name
-						FROM users
-						LEFT JOIN contacts ON contact_id=user_contact
-						ORDER BY contact_first_name, contact_last_name
-						";
-						
-						if (($rows = db_loadList( $usersql, NULL )))
+                                               $usersql->clear();
+                                               $usersql-> addTable('users');
+                                               $usersql->addQuery('user_id, user_contact, user_username, contact_first_name AS user_first_name, '.
+                                                                  'contact_last_name AS user_last_name');
+                                               $usersql->addOrder('contact_first_name, contact_last_name');
+						$usersql->addJoin('contacts','con','con.contact_id=user_contact');
+
+						if (($rows = $usersql->loadList()))
 						{
 							foreach ($rows as $row)
 							{
@@ -473,7 +471,7 @@ function submitIt()
 								echo "<OPTION VALUE='".$row["user_id"].(($row[ "user_id" ] == $obj->inventory_user ) ? "' SELECTED>" : "'>" ).$username;
 							}
 						}
-				
+
 					?>
 					<OPTION VALUE="0" <?php if (!$obj->inventory_user) echo "SELECTED "; ?>><?php echo $AppUI->_( "Unassigned" ); ?>
 					</SELECT>
@@ -484,10 +482,10 @@ function submitIt()
 					<TABLE ALIGN="center" border="0">
 					<TR>
 						<TD>
-							<?php echo $AppUI->_( "From" ); ?>: 
+							<?php echo $AppUI->_( "From" ); ?>:
 						</TD>
 						<TD>
-							<?php echo $AppUI->_( "Until" ); ?>: 
+							<?php echo $AppUI->_( "Until" ); ?>:
 						</TD>
 					</TR>
 					<TR>
@@ -513,7 +511,7 @@ function submitIt()
 <TR>
 	<TD COLSPAN="2">
 		<HR />
-		<?php echo $AppUI->_( 'Notes' ); ?>: <BR /> 
+		<?php echo $AppUI->_( 'Notes' ); ?>: <BR />
 		<TEXTAREA CLASS="textarea" NAME="inventory_description" wrap="virtual" ROWS="10" COLS="60"><?php echo $obj->inventory_description; ?></TEXTAREA>
 	</TD>
 </TR>
@@ -523,7 +521,7 @@ function submitIt()
 	</TD>
 </TR>
 </FORM>
-	
+
 </TABLE>
 
 
@@ -536,11 +534,11 @@ if ( $inventory_id )
 	$_GET[ 'children' ] = $inventory_id;
 	include_once("{$dPconfig['root_dir']}/modules/inventory/vw_idx_items.php");
 	echo '<DIV style="text-align: right; padding: 4px; font-size: 14px;">';
-		
+
 	echo $AppUI->_( "Grand Total" );
 	echo ":&nbsp;&nbsp;&nbsp;";
 	echo $obj->inventory_cost + $obj->calcChildrenTotal( );
-		
+
 	echo '</DIV>';
 }
 

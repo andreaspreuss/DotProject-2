@@ -32,12 +32,12 @@ class CInventory extends CDpObject
 	var $inventory_delivered = NULL;
 // v0.3
 	var $inventory_quantity = NULL;
-	
+
 	function CInventory()
 	{
 		$this->CDpObject( 'inventory', 'inventory_id' );
 	}
-	
+
 	function check()
 	{
 		if ( !isset( $this->inventory_cost) )
@@ -46,19 +46,19 @@ class CInventory extends CDpObject
 		}
 		return NULL;
 	}
-	
+
 // calculates the price of this object *and* all its children
 // you can pass in the globals item_list and item_list_parents (created by load_all_items
 // in utility.php to speed up the process
-	
+
 	function calcChildrenTotal( $idx = 0, $item_list = NULL, $item_list_parents = NULL )
 	{
 		$total = 0;
-		
+
 		if ( !$idx ) $idx = $this->inventory_id;
-		
+
 // do we have a cache of items?
-		
+
 		if ( count( $item_list ) )
 		{
 			if ( isset( $item_list_parents[ $idx ] ) )
@@ -73,24 +73,29 @@ class CInventory extends CDpObject
 		}
 		else
 		{
-			$sql = "SELECT inventory_id,inventory_cost FROM inventory WHERE inventory_parent=$idx";
-			$child_list = db_loadList( $sql );
-			echo db_error();
+			$sql = new DBQuery();
+			$sql->addTable('inventory');
+			$sql->addQuery('inventory_id,inventory_cost');
+			$sql->addWhere("inventory_parent=$idx");
 
+			$child_list = $sql->loadList();
+
+			echo db_error();
+                       $sql->clear();
 			foreach ( $child_list as $child )
 			{
 				$total += $child[ 'inventory_cost' ];
 				$total += $this->calcChildrenTotal( $child[ 'inventory_id' ] );
 			}
 		}
-		
+
 		global $drawn_array;
-		
+
 		$drawn_array[ $idx ] = true;
-		
+
 		return $total;
 	}
-	
+
 	function getAssetNo()
 	{
 		if ( isset( $this->inventory_asset_no ) && $this->inventory_asset_no )
@@ -99,14 +104,19 @@ class CInventory extends CDpObject
 		}
 		return sprintf( "%06d", $this->inventory_id );
 	}
-	
+
 // if "delete_children" is true then all children are also deleted
-	
+
 	function delete( $idx, $delete_children = 0 )
 	{
-		$sql = "SELECT inventory_id FROM inventory WHERE inventory_parent=".$idx;
-		$child_list = db_loadList( $sql );
-		
+
+               $sql = new DBQuery();
+               $sql->addTable('inventory');
+               $sql->addQuery('inventory_id');
+               $sql->addWhere("inventory_parent=$idx");
+
+               $child_list = $sql->loadList();
+
 		foreach ( $child_list as $row )
 		{
 			if ( $delete_children )	// recursive delete of children
@@ -132,12 +142,12 @@ class CInventoryCategory extends CDpObject
 {
 	var $inventory_category_id = NULL;
 	var $inventory_category_name = NULL;
-	
+
 	function CInventoryCategory()
 	{
 		$this->CDpObject( 'inventory_categories', 'inventory_category_id' );
 	}
-	
+
 	function check()
 	{
 		return NULL;
@@ -149,12 +159,12 @@ class CInventoryBrand extends CDpObject
 {
 	var $inventory_brand_id = NULL;
 	var $inventory_brand_name = NULL;
-	
+
 	function CInventoryBrand()
 	{
 		$this->CDpObject( 'inventory_brands', 'inventory_brand_id' );
 	}
-	
+
 	function check()
 	{
 		return NULL;

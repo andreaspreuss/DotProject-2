@@ -42,7 +42,7 @@ if ( isset( $_POST[ "remember_more" ] ) )
 		$old_marks = $AppUI->getState( 'InventoryIdxMarked' ) ? $AppUI->getState( 'InventoryIdxMarked' ) : array();
 		$old_marks = array_unique( array_merge( $old_marks, $_POST[ "mark" ] ) );
 		$AppUI->setState( 'InventoryIdxMarked', $old_marks );
-		
+
 		$AppUI->setMsg( count( $_POST[ 'mark' ] )." "
 							.$AppUI->_("new items remembered" )
 							." (".$AppUI->_("Total").": ".count( $old_marks ).")"
@@ -121,7 +121,7 @@ if ( $del )
 	}
 	$AppUI->setMsg( 'Inventory Item' );
 	$obj = new CInventory();
-	
+
 	if ( ($msg = $obj->delete( $inventory_id, $del_children )) )
 	{
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
@@ -132,7 +132,7 @@ if ( $del )
 		$AppUI->setMsg( "deleted", UI_MSG_ALERT, true );
 		$AppUI->redirect();
 	}
-	
+
 }
 
 // create a new brand?
@@ -144,10 +144,10 @@ if ( $brand == -1 )
 		$AppUI->setMsg( "No permission to add new brand", UI_MSG_ERROR, true );
 		$AppUI->redirect();
 	}
-	
+
 	$newbrand = new CInventoryBrand();
 	$newbrand->inventory_brand_name = $_POST['inventory_newbrand'];
-	
+
 	if ( strlen( $newbrand->inventory_brand_name ) >= 2 )
 	{
 		$newbrand->store();
@@ -170,10 +170,10 @@ if ( $category == -1 )
 		$AppUI->setMsg( "No permission to add new category", UI_MSG_ERROR, true );
 		$AppUI->redirect();
 	}
-	
+
 	$newcat = new CInventoryCategory();
 	$newcat->inventory_category_name = $_POST['inventory_newcategory'];
-	
+
 	if ( strlen( $newcat->inventory_category_name ) > 1 )
 	{
 		$newcat->store();
@@ -252,9 +252,12 @@ if ( !$obj->store() ) $AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 function reassign( $oldobj, $newobj, $id = 0 )
 {
 	if ( $id == 0 ) $id = $newobj->inventory_id;
-	
-	$sql = "SELECT inventory_id FROM inventory WHERE inventory_parent=$id";
-	if ( $children = db_loadList( $sql ) )
+
+	$sql = new DBQuery();
+	$sql -> addTable('inventory');
+	$sql -> addQuery('inventory_id');
+	$sql -> addWhere('inventory_parent='.$id);
+	if ( $children = $sql->loadResult() )
 	{
 		foreach ( $children as $child_id )
 		{
