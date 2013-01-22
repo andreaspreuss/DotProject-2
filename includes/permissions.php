@@ -55,7 +55,7 @@ function checkFlag($flag, $perm_type, $old_flag) {
 /**
  * This function checks certain permissions for
  * a given module and optionally an item_id.
- * 
+ *
  * $perm_type can be PERM_READ or PERM_EDIT
  */
 function isAllowed($perm_type, $mod, $item_id = 0) {
@@ -77,82 +77,111 @@ function getPermission($mod, $perm, $item_id = 0) {
 	global $AppUI;
 	$item_id = intval($item_id);
 	$perms =& $AppUI->acl();
-	$dbprefix = dPgetConfig('dbprefix', '');
-	
+
 	// First check if the module is readable, i.e. has view permission.
 	$result = $perms->checkModuleItem($mod, $perm, $item_id);
-	
-	// We need to check if we are allowed to view in the parent module item.  
+
+	// We need to check if we are allowed to view in the parent module item.
 	// This can be done a lot better in PHPGACL, but is here for compatibility.
+	$sql=new DBQuery();
 	if ($item_id && $perm == 'view') {
 		if ($mod == 'task_log') {
-			$sql = ('SELECT task_log_task FROM '.$dbprefix.'task_log WHERE task_log_id =' . $item_id);
-			$task_id = db_loadResult($sql);
+                       $sql->clear();
+			$sql->addTable('task_log');
+			$sql->addQuery('task_log_task');
+			$sql->addWhere('task_log_id =' . $item_id);
+			$task_id = $sql->loadResult();
 			$result = $result && getPermission('tasks', $perm, $task_id);
 		} else if ($mod == 'tasks') {
-			$sql = ('SELECT task_project FROM '.$dbprefix.'tasks WHERE task_id =' . $item_id);
-			$project_id = db_loadResult($sql);
+                       $sql->clear();
+                       $sql->addTable('tasks');
+                       $sql-> addQuery('task_project');
+                       $sql->addWhere('task_id='.$item_id);
+			$project_id = $sql->loadResult();
 			$result = $result && getPermission('projects', $perm, $project_id);
 		} else if ($mod == 'projects') {
-			$sql = ('SELECT project_company FROM '.$dbprefix.'projects WHERE project_id =' . $item_id);
-			$company_id = db_loadResult($sql);
+                       $sql->clear();
+                       $sql->addTable('projects');
+                       $sql-> addQuery('project_company');
+                       $sql->addWhere('project_id='.$item_id);
+
+			$company_id = $sql->loadResult();
 			$result = $result && getPermission('companies', $perm, $company_id);
 		} else if ($mod == 'macroprojects') {
-			$sql = ('SELECT macroproject_company FROM '.$dbprefix.'macroprojects WHERE macroproject_id =' . $item_id);
-			$company_id = db_loadResult($sql);
+                       $sql->clear();
+                       $sql->addTable('macroprojects');
+                       $sql->addQuery('macroproject_company');
+                       $sql->addWhere('macroproject_id =' . $item_id);
+			$company_id = $sql->loadResult();
 			$result = $result && getPermission('companies', $perm, $company_id);
 		}
 	}
-	
+
 	// <RPC ADD>
 	if(!$result){
 		if($mod == 'tasks') {
-			$sql = ('SELECT count(*) FROM '.$dbprefix.'tasks t '
-					.'LEFT JOIN '.$dbprefix.'projects p ON p.project_id = t.task_project '
-					.'LEFT JOIN '.$dbprefix.'companies c ON p.project_company = c.company_id '
-					.'LEFT JOIN '.$dbprefix.'users u ON c.company_owner = u.user_id '
-					.'WHERE u.user_id = '.$GLOBALS['AppUI']->user_id.' '
-					.'AND t.task_id = '.$item_id.' ');
-			$result = $result || db_loadResult($sql);
-			$sql = ('SELECT count(*)  FROM '.$dbprefix.'tasks t '
-					.'LEFT JOIN '.$dbprefix.'projects p ON p.project_id = t.task_project '
-					.'LEFT JOIN '.$dbprefix.'project_departments pd ON pd.project_id = p.project_id '
-					.'LEFT JOIN '.$dbprefix.'departments d ON pd.department_id = d.dept_id '
-					.'LEFT JOIN '.$dbprefix.'users u ON d.dept_owner = u.user_id '
-					.'WHERE u.user_id = '.$GLOBALS['AppUI']->user_id.' '
-					.'AND t.task_id = '.$item_id.' ');
-			$result = $result || db_loadResult($sql);
-			$sql = ('SELECT count(*)  FROM '.$dbprefix.'tasks t '
-					.'LEFT JOIN '.$dbprefix.'projects p ON p.project_id = t.task_project '
-					.'LEFT JOIN '.$dbprefix.'project_departments pd ON pd.project_id = p.project_id '
-					.'LEFT JOIN '.$dbprefix.'departments d ON pd.department_id = d.dept_id '
-					.'LEFT JOIN '.$dbprefix.'departments d2 ON d.dept_parent = d2.dept_id '
-					.'LEFT JOIN '.$dbprefix.'users u ON d2.dept_owner = u.user_id '
-					.'WHERE u.user_id = '.$GLOBALS['AppUI']->user_id.' '
-					.'AND t.task_id = '.$item_id.' ');
-			$result = $result || db_loadResult($sql);
+                       $sql -> clear();
+
+                       $sql ->addTable('tasks t');
+                       $sql -> addQuery('COUNT(1)');
+                       $sql -> addJoin('projects','p','p.project_id = t.task_project ');
+                       $sql -> addJoin('companies','c','p.project_company = c.company_id ');
+                       $sql -> addJoin('users','u','c.company_owner = u.user_id ');
+                       $sql -> addWhere('u.user_id = '.$GLOBALS['AppUI']->user_id.' AND t.task_id = '.$item_id.' ');
+			$result = $result || $sql->loadResult();
+
+			$sql -> clear();
+
+			$sql -> addTable('tasks t');
+			$sql -> addQuery('COUNT(1)');
+			$sql -> addJoin('projects','p','p.project_id = t.task_project ');
+			$sql -> addJoin('project_departments','pd','pd.project_id = p.project_id ');
+			$sql -> addJoin('departments','d','pd.department_id = d.dept_id ');
+			$sql -> addJoin('users','u','d.dept_owner = u.user_id ');
+			$sql -> addWhere('u.user_id = '.$GLOBALS['AppUI']->user_id.' AND t.task_id = '.$item_id.' ');
+
+			$result = $result || $sql->loadResult();
+
+			$sql -> clear();
+			$sql -> addTable('tasks t');
+			$sql -> addQuery('COUNT(1)');
+			$sql -> addJoin('projects','p','p.project_id = t.task_project ');
+			$sql -> addJoin('project_departments','pd','pd.project_id = p.project_id ');
+			$sql -> addJoin('departments','d','pd.department_id = d.dept_id ');
+			$sql -> addJoin('departments','d2','d.dept_parent = d2.dept_id ');
+			$sql -> addJoin('users','u','d2.dept_owner = u.user_id ');
+			$sql -> addWhere('u.user_id = '.$GLOBALS['AppUI']->user_id.' AND t.task_id = '.$item_id.' ');
+
+			$result = $result || $sql->loadResult();
+
 		}elseif($mod == 'projects'){
-			$sql = ('SELECT count(*) FROM '.$dbprefix.'projects p '
-					.'LEFT JOIN '.$dbprefix.'companies c ON p.project_company = c.company_id '
-					.'LEFT JOIN '.$dbprefix.'users u ON c.company_owner = u.user_id '
-					.'WHERE u.user_id = '.$GLOBALS['AppUI']->user_id.' '
-					.'AND p.project_id = '.$item_id.' ');
-			$result = $result || db_loadResult($sql);
-			$sql = ('SELECT count(*)  FROM '.$dbprefix.'projects p '
-					.'LEFT JOIN '.$dbprefix.'project_departments pd ON pd.project_id = p.project_id '
-					.'LEFT JOIN '.$dbprefix.'departments d ON pd.department_id = d.dept_id '
-					.'LEFT JOIN '.$dbprefix.'users u ON d.dept_owner = u.user_id '
-					.'WHERE u.user_id = '.$GLOBALS['AppUI']->user_id.' '
-					.'AND p.project_id = '.$item_id.' ');
-			$result = $result || db_loadResult($sql);
-			$sql = ('SELECT count(*)  FROM '.$dbprefix.'projects p '
-					.'LEFT JOIN '.$dbprefix.'project_departments pd ON pd.project_id = p.project_id '
-					.'LEFT JOIN '.$dbprefix.'departments d ON pd.department_id = d.dept_id '
-					.'LEFT JOIN '.$dbprefix.'departments d2 ON d.dept_parent = d2.dept_id '
-					.'LEFT JOIN '.$dbprefix.'users u ON d2.dept_owner = u.user_id '
-					.'WHERE u.user_id = '.$GLOBALS['AppUI']->user_id.' '
-					.'AND p.project_id = '.$item_id.' ');
-			$result = $result || db_loadResult($sql);
+                       $sql -> clear();
+                       $sql -> addTable('projects p');
+                       $sql -> addQuery('COUNT(1)');
+                       $sql -> addJoin('companies','c','p.project_company = c.company_id ');
+                       $sql -> addJoin('users','u','c.company_owner = u.user_id ');
+                       $sql -> addWhere('u.user_id = '.$GLOBALS['AppUI']->user_id.' AND p.project_id = '.$item_id.' ');
+			$result = $result || $sql->loadResult();
+
+                       $sql -> clear();
+                       $sql -> addTable('projects p');
+                       $sql -> addQuery('COUNT(1)');
+                       $sql -> addJoin('project_departments','pd','pd.project_id = p.project_id ');
+                       $sql -> addJoin('departments','d','pd.department_id = d.dept_id ');
+                       $sql -> addJoin('users','u','d.dept_owner = u.user_id ');
+
+                       $sql -> addWhere('u.user_id = '.$GLOBALS['AppUI']->user_id.' AND p.project_id = '.$item_id.' ');
+			$result = $result || $sql->loadResult();
+
+			$sql -> clear();
+			$sql -> addTable('projects p');
+			$sql -> addQuery('COUNT(1)');
+			$sql -> addJoin('project_departments','pd','pd.project_id = p.project_id ');
+			$sql -> addJoin('departments','d','pd.department_id = d.dept_id ');
+			$sql -> addJoin('departments d2 ON d.dept_parent = d2.dept_id ');
+			$sql -> addJoin('users u ON d2.dept_owner = u.user_id ');
+			$sql -> addWhere('u.user_id = '.$GLOBALS['AppUI']->user_id.' AND p.project_id = '.$item_id.' ');
+			$result = $result || $sql->loadResult();
 		}
 	}
 	// </RPC ADD>
