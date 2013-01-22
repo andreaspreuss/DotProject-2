@@ -93,6 +93,7 @@
 "Help"=>"Ayuda",
 "Hide"=>"Ocultar",
 "History"=>"Historia",
+"Hosting"=>"Alojamiento Web",
 "In Planning"=>"En Planificación",
 "In Progress"=>"En Progreso",
 "Internal"=>"Interno",
