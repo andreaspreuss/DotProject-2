@@ -21,10 +21,10 @@ switch($sort){
 // Forums mini-table in project view action
 
 $q  = new DBQuery;
-$q->addTable('domains');
-$q->addQuery("domains.domain_id, company_id, domain_name, domain_expiry_date, domain_registrar, domain_status,
+$q->addTable('domains','dom');
+$q->addQuery("dom.domain_id, company_id, domain_name, domain_expiry_date, domain_registrar, domain_status,
 	domain_notes, hosting_id, hosting_package_name, hosting_expiry_date, hosting_status, hosting_notes");
-$q->addJoin('hosting', 'h', 'h.domain_id = domains.domain_id');
+$q->addJoin('hosting', 'h', 'h.domain_id = dom.domain_id');
 
 if($AppUI->getState('HostIdxCompany') != null){
 	if($AppUI->getState('HostIdxCompany') != "" || $AppUI->getState('HostIdxCompany') != 0 || $AppUI->getState('HostIdxCompany') != "0"){

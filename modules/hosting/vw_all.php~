@@ -1,5 +1,5 @@
 <?php
-/* Hosting module -> $Id: vw_expiring.php,v 1.1 2007/04/16 05:36:02 mbelos Exp $ */
+/* Hosting module -> $Id: vw_all.php,v 1.1 2007/04/16 05:36:02 mbelos Exp $ */
 
 global $AppUI;
 
@@ -19,11 +19,19 @@ switch($sort){
 }
 
 // Forums mini-table in project view action
+
 $q  = new DBQuery;
 $q->addTable('domains','dom');
 $q->addQuery("dom.domain_id, company_id, domain_name, domain_expiry_date, domain_registrar, domain_status,
 	domain_notes, hosting_id, hosting_package_name, hosting_expiry_date, hosting_status, hosting_notes");
-$q->addJoin('hosting', 'h', 'h.domain_id = dom.domain_id');
+$q->addJoin('hosting', 'h', 'h.domain_id = domains.domain_id');
+
+if($AppUI->getState('HostIdxCompany') != null){
+	if($AppUI->getState('HostIdxCompany') != "" || $AppUI->getState('HostIdxCompany') != 0 || $AppUI->getState('HostIdxCompany') != "0"){
+		$q->addWhere('domains.company_id = '.$AppUI->getState('HostIdxCompany'));
+	}
+}
+
 $q->addOrder($orderBy);
 $results = $q->exec();
 ?>
@@ -45,27 +53,12 @@ $domains = array();
 
 while($row = db_fetch_assoc($results)){
 	$domains[] = $row;
-	$expiry_date = explode("-", $row['domain_expiry_date']);
-	$expiry = mktime(0, 0, 0, $expiry_date[1], $expiry_date[2], $expiry_date[0]);
-	$timePeriod = 60 * 60 * 24 * 60; //30 days in seconds
-	
-	$latest_date = intval(date('Ymd', intval(mktime()) + $timePeriod));
-	$earliest_date = intval(date('Ymd', intval(mktime()) - $timePeriod));
-
-	$expiry_date_of_domain = intval($expiry_date[0].$expiry_date[1].$expiry_date[2]);
-
-	if($expiry_date_of_domain >= $earliest_date && $expiry_date_of_domain <= $latest_date){
-		if($expiry_date_of_domain <= intval(date('Ymd'))){
-			$modifier = "<strong style='color: red;'>";
-			$endModifier = "</strong>";
-		}
 ?>
 				<tr>
-					<td><a href="index.php?m=hosting&a=addedit&domain_id=<?php echo $row['domain_id']; ?>"><?php echo $modifier; ?><?php echo $row['domain_name']; ?><?php echo $endModifier; ?></a></td>
-					<td align="center"><?php echo $modifier; ?><?php echo $row['domain_expiry_date']; ?><?php echo $endModifier; ?></td>
+					<td><a href="index.php?m=hosting&a=addedit&domain_id=<?php echo $row['domain_id']; ?>"><?php echo $row['domain_name']; ?></a></td>
+					<td align="center"><?php echo $row['domain_expiry_date']; ?></td>
 				</tr>		
 <?php
-	}
 }
 ?>
 			</table>
@@ -77,28 +70,13 @@ while($row = db_fetch_assoc($results)){
 				<th align="center" nowrap="nowrap" width="150" height="20"><a href="index.php?m=hosting&tab=0&sort=<?php if($sort == "HED") echo "HEA"; else echo "HED"; ?>"><?php echo $AppUI->_('Expiry Date'); if($sort == "HED") echo " &or;"; elseif($sort == "HEA") echo " &and;"; ?></a></th>
 <?php
 foreach($domains as $domain){
-	$expiry_date = explode("-", $domain['hosting_expiry_date']);
-	$expiry = mktime(0, 0, 0, $expiry_date[1], $expiry_date[2], $expiry_date[0]);
-	$timePeriod = 60 * 60 * 24 * 60; //60 days in seconds
-
-	$latest_date = intval(date('Ymd', intval(mktime()) + $timePeriod));
-	$earliest_date = intval(date('Ymd', intval(mktime()) - $timePeriod));
-	
-	$expiry_date_of_hosting = intval($expiry_date[0].$expiry_date[1].$expiry_date[2]);
-	
-	if($expiry_date_of_hosting >= $earliest_date && $expiry_date_of_hosting <= $latest_date){
-		if($expiry_date_of_hosting <= intval(date('Ymd'))){
-			$modifier = "<strong style='color: red;'>";
-			$endModifier = "</strong>";
-		}
 ?>
 				<tr>
-					<td><a href="index.php?m=hosting&a=addedit&domain_id=<?php echo $domain['domain_id']; ?>"><?php echo $modifier; ?><?php echo $domain['domain_name']; ?><?php echo $endModifier; ?></a></td>
-					<td align="center"><?php echo $modifier; ?><?php echo $domain['hosting_package_name']; ?><?php echo $endModifier; ?></td>
-					<td align="center"><?php echo $modifier; ?><?php echo $domain['hosting_expiry_date']; ?><?php echo $endModifier; ?></td>
+					<td><a href="index.php?m=hosting&a=addedit&domain_id=<?php echo $domain['domain_id']; ?>"><?php echo $domain['domain_name']; ?></a></td>
+					<td align="center"><?php echo $domain['hosting_package_name']; ?></td>
+					<td align="center"><?php echo $domain['hosting_expiry_date']; ?></td>
 				</tr>
 <?php
-	}
 }
 ?>
 			</table>

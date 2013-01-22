@@ -54,7 +54,7 @@ $orderdir = $AppUI->getState( 'HostIdxOrderDir' ) ? $AppUI->getState( 'HostIdxOr
 getCompanies();
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Hosting', 'applet-48.png', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Hosting', 'applet3-48.png', $m, "$m.$a" );
 $titleBlock->addCell( $AppUI->_('Company') . '/' . $AppUI->_('Division') . ':');
 $titleBlock->addCell( $buffer, '', '<form action="index.php?m=hosting" method="post" name="pickCompany">', '</form>');
 $titleBlock->addCell();
