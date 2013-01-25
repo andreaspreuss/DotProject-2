@@ -1,14 +1,14 @@
 <?php /* ID: index.php 2007/04/10 12:46 weboholic */
 
-/* 
+/*
  *	@(c) 		2007 MG Training GmbH <http://www.mgtraining.com>
  *	@license		GNU GPL
  *				This software works only with dotProject <http://dotproject.net> and
  *	 			as such is published under the license of dotProject itself - GNU GPL
  *
  *				This module is distributed in the hope that it will be useful,
- *				but WITHOUT ANY WARRANTY; without even the implied warranty 
- *				of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+ *				but WITHOUT ANY WARRANTY; without even the implied warranty
+ *				of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *				See the GNU General Public License for more details.
  *
  *				This module has evolved from this dP module:
@@ -45,11 +45,11 @@
  *
  *
  *	@autor		Nikola Ivanov <execute | weboholic> | n.ivanov@mgtraining.com
- *			
+ *
  */
 
 
-	
+
 $perms =& $AppUI->acl();
 if( $perms->checkModule( 'mantis','access' ) ) {
 	// module configuration array,
@@ -60,7 +60,7 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 	$mantis = new PHPXMLRPCClient();
 	$mantis->createClient( $cnf['mantisxmlrpc'] .'dpserver.php',$cnf['mantishost'],$cnf['mantisport'],$cnf['mantismethod'] );
 	if( $cnf['mantismethod'] == 'https' ) require_once( 'mantis.config.ssl.php' );
-	
+
 	// DEBUG option, enable if problems occure
 	$mantis->setXMLRPCDebug(0);
 
@@ -72,20 +72,27 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 	// get project_id if any
 	$project_id = ( empty($_REQUEST['project_id']) ) ? 0 : $_REQUEST['project_id'];
 
-	// we will be working with enumerable arrays when fetching result sets
-	$db->setFetchMode(ADODB_FETCH_NUM);
-
-	// get username, password (a hash value only) and email of the currently browsing user 
-	$res = $db->Execute( "SELECT user_username,user_password FROM users,contacts WHERE user_id = '". $AppUI->user_id ."' " );
-	$row = $res->fetchRow();
+	// get username, password (a hash value only) and email of the currently browsing user
+	$sql = new DBQuery();
+	$sql -> addTable('users','users');
+	$sql -> addTable('contacts');
+	$sql -> addQuery('user_username,user_password');
+	$sql -> addWhere('user_id = '. $AppUI->user_id);
+	$sql -> exec();
+	$row = $sql->fetchRow();
 	$username = $row[0];
 	$password = $row[1];
-	
+
 	// get project names and ids
-	$sql = 'SELECT project_name,project_id FROM projects';
-	$sql = ( $project_id != 0 ) ? $sql .' WHERE project_id='. (int) mysql_real_escape_string($project_id) : $sql;
-	$res = $db->Execute( $sql );
-	while ( $row = $res->fetchRow() ) {
+	$sql -> clear();
+	$sql -> addTable('projects');
+	$sql -> addQuery('project_name, project_id');
+
+	if ( $project_id != 0 ){
+          $sql -> addWhere('project_id='. (int) mysql_real_escape_string($project_id));
+	}
+	$res = $sql -> exec();
+	while ( $row = $sql ->fetchRow() ) {
 		$dpprojects[$row[1]] = trim( strtolower($row[0]) );
 		if( $row[1] == $project_id ) $project_name = $row[0];
 	}
@@ -99,16 +106,16 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 		$mantis->addArg( array($username,$project_name) );
 		$res = $mantis->call();
 	}
-	
+
 	if( $res == 2 ) {
 		echo '<br /><br />Mantis returned an access denied code.';
 		echo '<br /><br />Please contact the administrator.';
 		die();
 	}
-	
+
 	$mantis->resetRequest();
 	$mantis->setFunction( 'MantisRPC' );
-	$mantis->addArg( array($username,$password) );	
+	$mantis->addArg( array($username,$password) );
 	if( !empty($project_name) ) {
 		$mantis->addArg( 'getMantisBugByProjectName' );
 		$mantis->addArg( $project_name );
@@ -127,7 +134,7 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 	$mantis->addArg( 'getUserAccessLevel' );
 	$mantis->addArg( $username );
 	$level = $mantis->call();
-	
+
 	if( $bugs == 0 ) {
 		if( $project_id == 0 ) {
 			echo '<br /><br />Since no project was selected and Mantis result set was empty, I assume that either:';
@@ -171,14 +178,14 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 							}
 							that.style.display = 'block';
 						}
-						
+
 						function ctrlChck() {
 							var d = document;
 							var bxs = d.getElementsByName('bugs[]');
 							for( var i = 0; i < bxs.length; i++ ) {
-								if( bxs[i].checked ) { 
+								if( bxs[i].checked ) {
 									return i;
-									break; 
+									break;
 								}
 							}
 							alert('<?php echo $AppUI->_( 'Please select a issue first!' ); ?>');
@@ -189,19 +196,19 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 							var d 	= document;
 							var bxs = d.getElementsByName('bugs[]');
 							d.getElementById('mantisframe').style.display = 'none';
-							
+
 							var i = ctrlChck();
 							if( i == 'false' ) return false;
-							
+
 							if( bool ) {
 								d.getElementById('loadbug').value = bxs[i].value;
 								var old = d.getElementsByName('bugstatus[]')[i].value;
 								var bxs = d.getElementsByName('newstatus[]');
 								for( var i = 0; i < bxs.length; i++ ) {
-									if( bxs[i].value == old ) { 
-										bxs[i].checked = true; 
-										bxs[i].disabled = true; 
-										break; 
+									if( bxs[i].value == old ) {
+										bxs[i].checked = true;
+										bxs[i].disabled = true;
+										break;
 									}
 								}
 							} else {
@@ -210,9 +217,9 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 								for( var i = 0; i < bxs.length; i++ ) {
 									bxs[i].checked = false;
 									bxs[i].disabled = false;
-								}							
+								}
 							}
-							
+
 							var ta1	= d.getElementById( 'mantis_buglisting' );
 							var ta2	= d.getElementById( 'mantis_bugbuttoning' );
 							var ta3	= d.getElementById( 'mantis_bugupdateing' );
@@ -226,7 +233,7 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 								ta3.style.visibility = 'hidden';
 							}
 						}
-						
+
 						function noteform(that) {
 							var d = document;
 							var c = d.getElementsByName('btnCancel');
@@ -244,10 +251,10 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 						<?php } ?>
 					</script>
 			<?php } ?>
-			
+
 			<?php if( $bool ) echo '<form method="POST" action="?m=mantis&a=taskimport" name="frmMantis">'; ?>
 			<?php if( $bool ) echo '<input type="hidden" name="project_id" value="'. $project_id .'">'; ?>
-			
+
 			<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl sortable" id="mantis_buglisting">
 			<thead>
 				<tr>
@@ -273,14 +280,14 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 						$bugdate = date( $cnf['dateformat'],$bug['date_submitted'] );
 						$bugstat = $bug['status'];
 						$dpprojid = $bug['dp_project_id'];
-						
+
 						$bugsummary 		= str_replace( "'","&apos;",$bugsummary );
 						$bugsummary_short  	= @substr( $bugsummary,0,180 );
-						$bugsummary_short 	.= ( strlen($bugsummary) > 180 ) ? ' ...' : ''; 
+						$bugsummary_short 	.= ( strlen($bugsummary) > 180 ) ? ' ...' : '';
 						$bugdesc 		= str_replace( "'","&apos;",$bugdesc );
 						$bugdesc_short  = @substr( $bugdesc,0,250 );
 						$bugdesc_short .= ( strlen($bugdesc) > 250 ) ? ' ...' : '';
-						
+
 						switch( $bugstat ) {
 							case 10:
 								$bugstatus = '10';
@@ -337,13 +344,13 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 								<td align="center" valign="top">
 									<input type="hidden" name="bugstatus[]" value="<?php echo $bugstatus; ?>" />
 									<input type="checkbox" name="bugs[]" value="<?php echo $bugid ?>" onclick="toggle_chckBoxes(this);">
-								</td> 
+								</td>
 							<?php } ?>
 						</tr>
 						<?php
 					} // end foreach
 					?>
-				</tbody>	
+				</tbody>
 			</table>
 			<?php if( $bool ) { ?>
 			<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl" id="mantis_bugbuttoning">
@@ -351,7 +358,7 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 					<td align="right">
 						<p align="right">
 							<input type="hidden" name="bug_action" id="bug_action" value="" />
-							<?php 
+							<?php
 								if( $canCreateTask ) {
 									$msg = $AppUI->_( 'Due to technical restrictions, already imported issues will be dublicated!\nContinue?' );
 									?>
@@ -375,7 +382,7 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 				<tr>
 					<td align="right" valign="top" colspan="7">
 						<input type="button" class="button" name="btnCancel" value="<?php echo $AppUI->_('Cancel'); ?>" onclick="updatestatus(false);" />
-						&nbsp;					
+						&nbsp;
 						<input type="button" class="button" name="btnReloadPage" value="<?php echo $AppUI->_( 'Load Changes to Overview' ); ?>" onclick="window.location.reload();" />
 					</td>
 				</tr>
@@ -397,17 +404,17 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 					<td align="center"><input type="checkbox" name="newstatus[]" value="80" onclick="noteform(this);" /></td>
 					<td align="center"><input type="checkbox" name="newstatus[]" value="90" onclick="noteform(this);" /></td>
 				</tr>
-				
+
 				<tr><td align="right" valign="top" colspan="7" style="height: 20px;">&nbsp;</td></tr>
-				
+
 				<tr>
 					<td colspan="7" align="center">
 						<iframe name="mantisframe" id="mantisframe" src="" width="96%" height="500" frameborder="0" style="display: none;"></iframe>
-					</td>	
+					</td>
 				</tr>
-				
-				<tr><td align="right" valign="top" colspan="7" style="height: 20px;">&nbsp;</td></tr>				
-				
+
+				<tr><td align="right" valign="top" colspan="7" style="height: 20px;">&nbsp;</td></tr>
+
 				<tr>
 					<td align="right" valign="top" colspan="7">
 						<input type="button" class="button" name="btnCancel" value="<?php echo $AppUI->_('Cancel'); ?>" onclick="updatestatus(false);" />
@@ -415,11 +422,11 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 						<input type="button" class="button" name="btnReloadPage" value="<?php echo $AppUI->_( 'Load Changes to Overview' ); ?>" onclick="window.location.reload();" />
 					</td>
 				</tr>
-			</tbody>	
-			</table>			
+			</tbody>
+			</table>
 			<input type="hidden" name="loadbug" id="loadbug" value="" />
 <?php } ?>
-			</form>	
+			</form>
 			<?php
 		} else {
 			echo '<br /><br />Mantis result set was empty, I assume that either:';
