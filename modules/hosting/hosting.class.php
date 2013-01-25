@@ -4,7 +4,7 @@
 require_once( $AppUI->getSystemClass ('dp' ) );
 require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
 require_once( $AppUI->getModuleClass( 'companies' ) );
-
+require_once( $AppUI->getModuleClass('departments') );
 /**
  * The Project Class
  */

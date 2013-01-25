@@ -15,8 +15,12 @@ $companies = $row->getAllowedRecords( $AppUI->user_id, 'company_id,company_name'
 $companies = arrayMerge( array( '0'=>'Select Company' ), $companies );
 
 // pull users
-$sql = "SELECT user_id, CONCAT_WS(', ',user_last_name,user_first_name) FROM users ORDER BY user_last_name";
-$users = db_loadHashList( $sql );
+$sql = new DBQuery();
+$sql -> addTable('users','users');
+$sql -> addQuery("user_id, CONCAT_WS(', ',cont.contact_last_name,cont.contact_first_name)");
+$sql -> addJoin('contacts','cont','users.user_contact=cont.contact_id');
+$sql -> addOrder('contact_last_name');
+$users = $sql -> loadHashList();
 
 // load the record data
 $row = new CInvoice();
@@ -32,9 +36,11 @@ if (!$row->load( $invoice_id ) && $invoice_id > 0) {
 
 // add in the existing company if for some reason it is dis-allowed
 if ($invoice_id && !array_key_exists( $row->invoice_company, $companies )) {
-	$companies[$row->invoice_company] = db_loadResult(
-		"SELECT company_name FROM companies WHERE company_id=$row->invoice_company"
-	);
+        $sql -> clear();
+        $sql -> addTable('companies');
+        $sql -> addQuery('company_name');
+        $sql -> addWhere('company_id='.$row->invoice_company);
+	$companies[$row->invoice_company] =$sql ->loadResult();
 }
 
 // format dates
@@ -97,7 +103,7 @@ function submitIt() {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Invoice Date');?></td>
 			<td>
 				<input type="text" class="text" name="invoice_date" id="date1" value="<?php echo $invoice_date->format( '%Y-%m-%d' );?>" />
-				
+
 				<a href="#" onClick="return showCalendar('date1', 'y-mm-dd');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
@@ -108,7 +114,7 @@ function submitIt() {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Due Date');?></td>
 			<td>
 				<input type="text" class="text" name="invoice_due" id="date2" value="<?php echo $invoice_due->format( '%Y-%m-%d');?>" />
-				
+
 				<a href="#" onClick="return showCalendar('date2', 'y-mm-dd');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>

@@ -1,4 +1,8 @@
 <?php /* PROJECTS $Id: do_project_aed.php,v 1.1 2007/04/18 08:57:05 weboholic Exp $ */
+if (!defined('DP_BASE_DIR')) {
+  die('You should not access this file directly.');
+}
+
 $obj = new CProject();
 $msg = '';
 
@@ -45,22 +49,26 @@ if ($del) {
 		$AppUI->setMsg( "Project deleted", UI_MSG_ALERT);
 		$AppUI->redirect( "m=projects" );
 	}
-} 
+}
 else {
 				// Mantis Integration
 				$mantis_pid = dPgetParam( $_POST,'project_id',0 );
 				if( $mantis_pid == 0 ) {
 					$mantis_old_pname = dPgetParam( $_POST,'project_name','' );
 					$mantis_pdescr = dPgetParam( $_POST,'project_description','' );
-				} else { 
-					global $db;
-					$mantis_res = $db->Execute( 'SELECT project_name FROM projects WHERE project_id = "'. $mantis_pid .'" ' ); 
-					$mantis_old_pname = $mantis_res->fetchRow();
+				} else {
+					$sql= new DBQuery();
+					$sql -> addTable('projects');
+					$sql -> addQuery('project_name');
+					$sql -> addWhere('project_id="'.$mantis_pid.'"');
+					$sql -> exec();
+					$mantis_old_pname = $sql -> fetchRow();
 					$mantis_old_pname = $mantis_old_pname[0];
 					$mantis_pdescr = NULL;
+					$sql -> clear();
 				}
 				if( isset( $_POST['idMantisIntegration'] ) && $_POST['idMantisIntegration'] == 1 ) {
-					include_once( './modules/mantis/createproject.php' );
+					include_once( '../mantis/createproject.php' );
 				}
 
 	if (($msg = $obj->store())) {
@@ -75,7 +83,7 @@ else {
 		$sql = $custom_fields->store( $obj->project_id ); // Store Custom Fields
 
 		$AppUI->setMsg( $isNotNew ? 'Project updated' : 'Project inserted', UI_MSG_OK);
-				
+
 				// Mantis Integration
 				if( isset( $_POST['idMantisIntegration'] ) && $_POST['idMantisIntegration'] == 1 ) {
 					syncMantis( true,$mantis_pid,$mantis_old_pname,$mantis_pdescr );

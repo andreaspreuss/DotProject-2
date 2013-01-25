@@ -18,17 +18,17 @@ $companies = arrayMerge( array( '0'=>$AppUI->_('Select A Company') ), $companies
 $types = dPgetSysVal ( 'PaymentType' );
 
 // load the record data
-$sql = "
-SELECT payments.*,users.user_first_name,users.user_last_name,
-companies.company_name
-FROM payments
-LEFT JOIN users ON users.user_id = payments.payment_owner
-LEFT JOIN companies ON companies.company_id = payments.payment_company
-WHERE payments.payment_id = $payment_id
-";
+// TODO FIX query to add contact information (not user information)
+$sql = new DBQuery();
+$sql -> addTable('payments','paym');
+$sql -> addQuery("paym.*,cont.contact_first_name,cont.contact_last_name,comp.company_name");
+$sql -> addJoin('users','users','users.user_id = paym.payment_owner');
+$sql -> addJoin('companies','comp','comp.company_id = paym.payment_company');
+$sql -> addJoin('contacts','cont','cont.contact_id=users.user_contact');
+$sql -> addWhere('paym.payment_id = '.$payment_id);
 
 $obj = null;
-if (!db_loadObject( $sql, $obj ) && $payment_id > 0) {
+if (!$sql -> loadObject($obj ) && $payment_id > 0) {
 	$AppUI->setMsg( 'Payment' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
@@ -41,8 +41,12 @@ $payment_date = new CDate( $obj->payment_date );
 
 // collect all the users for the payment owner list
 $owners = array( '0'=>'' );
-$sql = "SELECT user_id,CONCAT_WS(' ',user_first_name,user_last_name) FROM users ORDER BY user_first_name";
-$owners = db_loadHashList( $sql );
+$sql -> clear();
+$sql -> addTable('users','users');
+$sql -> addJoin('contacts','cont','cont.contact_id=users.user_contact');
+$sql -> addQuery('users.user_id,CONCAT_WS(\' \',cont.contact_first_name,cont.contact_last_name)');
+$sql -> addOrder('cont.contact_first_name');
+$owners = $sql -> loadHashList();
 
 // setup the title block
 $ttl = $payment_id > 0 ? "Edit Payment" : "Add Payment";
@@ -52,37 +56,31 @@ $titleBlock->show();
 
 // create invoices list
 $company = $obj->payment_company != null ? ' AND company_id = ' . $obj->payment_company : null;
+$sql -> clear();
+$sql -> addTable('invoices','inv');
+$sql -> addQuery('invoice_id, invoice_date,invoice_due, invoice_terms, invoice_company,comp.company_name,'.
+                 'SUM(t1.product_price*t1.product_qty) as invoice_grand_total');
+$sql ->addJoin('companies','comp','comp.company_id = inv.invoice_company');
+$sql -> addJoin('invoice_product','t1','inv.invoice_id = t1.product_invoice');
+$sql -> addWhere ('(invoice_owner='.$AppUI->user_id.' OR invoice_owner IS NULL OR invoice_owner = 0	)'.
+                   "$company AND invoice_status = 0");
+$sql -> addGroup('invoice_id','invoice_due DESC');
 
-$sql = "SELECT invoice_id, invoice_date,
-     invoice_due, invoice_terms, invoice_company,
-companies.company_name,
-SUM(t1.product_price*t1.product_qty) as invoice_grand_total
-FROM invoices
-LEFT JOIN companies ON company_id = invoice_company
-LEFT JOIN invoice_product t1 ON invoices.invoice_id = t1.product_invoice
-WHERE (invoice_owner=$AppUI->user_id
-		OR invoice_owner IS NULL OR invoice_owner = 0
-	)
-" . $company . "
-AND invoice_status = 0
-GROUP BY invoice_id
-ORDER BY invoice_due desc
-";
-$inv = db_loadList( $sql );
+$inv = $sql -> loadList();
 
 // select invoicess for payment in invoice_payment and place in $selected array
-$sql = "SELECT invoice_id
-FROM invoice_payment 
-WHERE payment_id = $payment_id
-";
+$sql ->clear();
+$sql -> addTable('invoice_payment');
+$sql -> addQuery('invoice_id');
+$sql -> addWhere('payment_id ='.$payment_id);
 
-$res = db_exec( $sql );
-$rn = db_num_rows( $res );
+$sql->exec();
+$rn = $sql->foundRows();
 
 if($rn > 0) {
-  while($row = db_fetch_row( $res )) {
+  while($row = $sql -> fetchRow()) {
     $selected[] = $row[0];
-  }	
+  }
 }
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo $AppUI->cfg['base_url'];?>/lib/calendar/calendar-dp.css" title="blue" />
@@ -197,7 +195,7 @@ foreach($inv as $row) {
   $s .= $CR . '<td align="center">';
   $s .= '<input type=checkbox name="invoice_list[]" value="'.@$row['invoice_id'] . '"';
   if(isset($selected)) {
-    if(in_array(@$row["invoice_id"], $selected)) { $s .= " checked"; } 
+    if(in_array(@$row["invoice_id"], $selected)) { $s .= " checked"; }
   }
   $s .= '></td>';
   $s .= $CR . '<td align="right" width="65"><a href="./index.php?m=invoicess&a=addedit&invoice_id="'.@$row['invoice_id'].'">' . $row["invoice_id"] . '</a></td>';

@@ -13,26 +13,20 @@ $obj = new CPayment();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
 
 // retrieve list of records
-$sql = "
-SELECT payments.*,
-     count(distinct invoice_payment.invoice_id) as invct,
-companies.company_name
-FROM permissions, payments
-LEFT JOIN invoice_payment ON payments.payment_id = invoice_payment.payment_id
-LEFT JOIN companies ON payments.payment_company = companies.company_id
-WHERE permission_user = $AppUI->user_id
-	AND permission_value <> 0
-	AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'payments' and permission_item = -1)
-		OR (permission_grant_on = 'payments' and permission_item = payments.payment_id)
-		)
-" . (count($deny) > 0 ? 'and payments.payment_id not in (' . implode( ',', $deny ) . ')' : '') . "
-GROUP BY payments.payment_id
-ORDER BY $orderby
-";
+$sql = new DBQuery();
+$sql -> addTable('permissions','perm');
+$sql -> addTable('payments','paym');
+$sql -> addQuery('paym.*,count(distinct inv.invoice_id) as invct,comp.company_name');
+$sql -> addJoin('invoice_payment','inv','paym.payment_id = inv.payment_id');
+$sql -> addJoin('companies','comp','paym.payment_company = comp.company_id');
+$sql -> addWhere("perm.permission_user = ".$AppUI-> user_id." AND perm.permission_value <> 0 ".
+                 " AND ((perm.permission_grant_on = 'all') OR (perm.permission_grant_on = 'payments' and permission_item = -1) ".
+                 " OR (perm.permission_grant_on = 'payments' and perm.permission_item = paym.payment_id)) ".
+                 (count($deny) > 0 ? 'and paym.payment_id not in (' . implode( ',', $deny ) . ')' : ''));
+$sql -> addOrder('paym.payment_id, '.$orderby);
 
-$rows = db_loadList( $sql );
+
+$rows = $sql -> loadList();
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Payments', 'applet3-48.png', $m, "$m.$a" );

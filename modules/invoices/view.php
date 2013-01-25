@@ -21,20 +21,16 @@ $msg = '';
 $obj = new CInvoice();
 
 // load the record data
-$sql = "
-SELECT
-	company_name,
-	invoices.*,
-SUM(t1.product_price*t1.product_qty) as invoice_grand_total
-FROM invoices
-LEFT JOIN companies ON company_id = invoice_company
-LEFT JOIN invoice_product t1 ON invoices.invoice_id = t1.product_invoice
-WHERE invoice_id = $invoice_id
-GROUP BY invoice_id
-";
+$sql = new DBQuery();
+$sql -> addTable('invoices','invoices');
+$sql -> addQuery('company_name,invoices.*,SUM(t1.product_price*t1.product_qty) as invoice_grand_total');
+$sql -> addJoin('companies','comp','company_id = invoice_company');
+$sql -> addJoin('invoice_product','t1','invoices.invoice_id = t1.product_invoice');
+$sql -> addWhere('invoice_id = '.$invoice_id);
+$sql -> addGroup('invoice_id');
 
 $obj = null;
-if (!db_loadObject( $sql, $obj )) {
+if (!$sql->loadObject($obj )) {
 	$AppUI->setMsg( 'Invoice' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();

@@ -23,10 +23,12 @@ if (@$a == 'setup') {
 	echo dPshowModuleConfig( $config );
 }
 
-class CSetupPayments {   
-
+class CSetupPayments {
 	function install() {
-	  $sql = "CREATE TABLE payments (" .
+          $ok=1;
+	  $sql = new DBQuery();
+	  $sql -> createTable('payments');
+	  $def="(" .
 	     "payment_id int(11) NOT NULL auto_increment," .
 	     "payment_company int(11) NOT NULL default '0'," .
 	     "payment_authcode int(11) NOT NULL default '0'," .
@@ -35,29 +37,44 @@ class CSetupPayments {
 	     "payment_date datetime NOT NULL default '0000-00-00 00:00:00'," .
 	     "payment_owner int(11) NOT NULL default '0'," .
 	     "PRIMARY KEY  (payment_id)" .
-	     ") TYPE=MyISAM";
-	  db_exec( $sql );
-	  $sql2 = "CREATE TABLE invoice_payment (" .
+	     ")";
+          $sql ->createDefinition($def);
+          $ok = $ok && $sql->exec();
+
+          $sql -> clear();
+          $sql -> createTable('invoice_payment');
+	  $def2 = "(" .
 	     "payment_id int(11) NOT NULL default '0'," .
 	     "invoice_id int(11) NOT NULL default '0'," .
 	     "KEY invoice_id (invoice_id)," .
 	     "KEY payment_id (payment_id)" .
-	     ") TYPE=MyISAM";
-	  db_exec( $sql2 );
+	     ") ";
+	  $sql -> createDefinition($def2);
+	  $ok = $ok && $sql->exec();
+	  $sql -> clear();
+	  if(!$ok){
+            return false;
+	  }
 	  return null;
 	}
-	
+
 	function remove() {
-		db_exec( "DROP TABLE payments" );
-		db_exec( "DROP TABLE invoice_payment" );
-		db_exec( "delete from permissions where permission_grant_on like 'payments'");
+                $q = new DBQuery;
+                $q->dropTable('payments');
+                $q->exec();
+                $q->clear();
+                $q->dropTable('invoice_payment');
+                $q->exec();
+                $q->clear();
+                 // TODO : find how to delete with DBQuery
+		//db_exec( "delete from permissions where permission_grant_on like 'payments'");
 		return null;
 	}
-	
+
 	function upgrade() {
 		return null;
 	}
 }
 
-?>	
-	
+?>
+

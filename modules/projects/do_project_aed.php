@@ -49,13 +49,33 @@ if ($del) {
 		$AppUI->setMsg("Project deleted", UI_MSG_ALERT);
 		$AppUI->redirect("m=projects");
 	}
-} 
+}
 else {
+// Mantis Integration
+        $mantis_pid = dPgetParam( $_POST,'project_id',0 );
+        if( $mantis_pid == 0 ) {
+        $mantis_old_pname = dPgetParam( $_POST,'project_name','' );
+        $mantis_pdescr = dPgetParam( $_POST,'project_description','' );
+        }
+        else {
+            $sql= new DBQuery();
+            $sql -> addTable('projects');
+            $sql -> addQuery('project_name');
+            $sql -> addWhere('project_id="'.$mantis_pid.'"');
+            $sql -> exec();
+            $mantis_old_pname = $sql -> fetchRow();
+            $mantis_old_pname = $mantis_old_pname[0];
+            $mantis_pdescr = NULL;
+        }
+        if( isset( $_POST['idMantisIntegration'] ) && $_POST['idMantisIntegration'] == 1 ) {
+          include_once( '../mantis/createproject.php' );
+        }
+
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg($msg, UI_MSG_ERROR);
 	} else {
 		$isNotNew = @$_POST['project_id'];
-		
+
 		if ($importTask_projectId = (int)dPgetParam($_POST, 'import_tasks_from', '0')) {
 			$scale_project = (int)dPgetParam($_POST, 'scale_project', '0');
 			$obj->importTasks($importTask_projectId, $scale_project);
@@ -65,8 +85,10 @@ else {
  		$custom_fields = New CustomFields($m, 'addedit', $obj->project_id, 'edit');
  		$custom_fields->bind($_POST);
  		$sql = $custom_fields->store($obj->project_id); // Store Custom Fields
-
-
+        // Mantis Integration
+                if( isset( $_POST['idMantisIntegration'] ) && $_POST['idMantisIntegration'] == 1 ) {
+                    syncMantis( true,$mantis_pid,$mantis_old_pname,$mantis_pdescr );
+                }
 	}
 	$AppUI->redirect();
 }

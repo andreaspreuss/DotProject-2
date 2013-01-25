@@ -21,33 +21,26 @@ $obj = new CInvoice();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
 
 // retrieve list of records
-$sql = "
-SELECT
-        invoice_id, invoice_status,
-	invoice_date, invoice_due,
-	invoice_terms,
-	invoice_company, company_name, invoice_status,
-	user_username,
-        SUM(t1.product_price*t1.product_qty) as invoice_grand_total
-FROM permissions,invoices
-LEFT JOIN companies ON company_id = invoices.invoice_company
-LEFT JOIN users ON invoices.invoice_owner = users.user_id
-LEFT JOIN invoice_product t1 ON invoices.invoice_id = t1.product_invoice
-WHERE permission_user = $AppUI->user_id
-	AND permission_value <> 0
-	AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'invoices' AND permission_item = -1)
-		OR (permission_grant_on = 'invoices' AND permission_item = invoice_id)
-		)"
-.(count($deny) > 0 ? "\nAND invoice_id NOT IN (" . implode( ',', $deny ) . ')' : '')
-.($company_id ? "\nAND invoice_company = $company_id" : '')
-."
-GROUP BY invoice_id
-ORDER BY $orderby
-";
+$sql = new DBQuery();
+$sql -> addTable('permissions');
+$sql -> addTable('invoices','invoices');
+$sql -> addQuery('invoice_id, invoice_status,'.
+        'invoice_date, invoice_due,'.
+        'invoice_terms,'.
+        'invoice_company, company_name, invoice_status,'.
+        'user_username,'.
+        'SUM(t1.product_price*t1.product_qty) as invoice_grand_total');
+$sql -> addJoin('companies','comp','company_id = invoices.invoice_company');
+$sql -> addJoin('users','users','invoices.invoice_owner = users.user_id');
+$sql -> addJoin('invoice_product','t1','invoices.invoice_id = t1.product_invoice');
+$sql -> addWhere('permission_user = '.$AppUI->user_id.' AND permission_value <> 0 AND ((permission_grant_on = \'all\') '.
+		' OR (permission_grant_on = \'invoices\' AND permission_item = -1) '.
+		' OR (permission_grant_on = \'invoices\' AND permission_item = invoice_id) '.
+		')'.(count($deny) > 0 ? " AND invoice_id NOT IN (" . implode( ',', $deny ) . ')' : '')
+.($company_id ? " AND invoice_company = $company_id" : ''));
+$sql -> addOrder('invoice_id, '.$orderby);
 
-$invoices = db_loadList( $sql );
+$invoices = $sql -> loadList();
 
 // get the list of permitted companies
 $obj = new CCompany();
@@ -69,9 +62,14 @@ if ($canEdit) {
 	);
 }
 $titleBlock->show();
-
+// TODO Add support for untabbed view
+/*
+if ( $tabBox->isTabbed() ) {
+        $tabBox->add("vw_all", "All");
+}
+*/
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=invoices&orderby=$orderby", "{$AppUI->cfg['root_dir']}/modules/invoices/", $tab );
+$tabBox = new CTabBox( "?m=invoices&orderby=$orderby", "{$dPconfig['root_dir']}/modules/invoices/", $tab );
 $tabBox->add( 'vw_idx_open', 'Open Invoices' );
 $tabBox->add( 'vw_idx_paid'  , 'Paid Invoices' );
 $tabBox->show();
