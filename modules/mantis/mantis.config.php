@@ -1,10 +1,10 @@
 <?php /* ID: mantis.config.php 2007/04/10 12:46 weboholic */
 // Change this to the path to PHPXMLRPC client.php
-require_once("../xmlrpc/PHPXMLRPC/client.php");
+require_once("../../xmlrpc/PHPXMLRPC/client.php");
 
 // Mantis host, w/o http, w/o trailing slash
 // either IP or domain name, NO localhost
-$cnf['mantishost'] = '172.20.70.63';
+$cnf['mantishost'] = 'bugs.iberux.org';
 
 // Web mantis path, + trailing slash
 $cnf['mantisuri'] = 'm/';
