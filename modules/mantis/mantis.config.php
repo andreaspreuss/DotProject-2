@@ -7,7 +7,7 @@ require_once("xmlrpc/PHPXMLRPC/client.php");
 $cnf['mantishost'] = 'bugs.iberux.org';
 
 // Web mantis path, + trailing slash
-$cnf['mantisuri'] = 'm/';
+$cnf['mantisuri'] = '/';
 
 // Web Server Port + Method; 80 = http; 443 = https
 $cnf['mantisport'] = '80';
@@ -15,7 +15,7 @@ $cnf['mantismethod'] = 'http';
 
 
 // Web path to mantis' xmlrpc folder, + tailing slash
-$cnf['mantisxmlrpc'] = '/m/xmlrpc/dotproject/';
+$cnf['mantisxmlrpc'] = '/xmlrpc/dotproject/';
 
 // date format, according to http://php.net/date function specifications
 $cnf['dateformat'] = 'n/j/y g:ia';

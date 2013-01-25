@@ -68,7 +68,7 @@ else {
             $mantis_pdescr = NULL;
         }
         if( isset( $_POST['idMantisIntegration'] ) && $_POST['idMantisIntegration'] == 1 ) {
-          include_once( '../mantis/createproject.php' );
+          include_once( 'modules/mantis/createproject.php' );
         }
 
 	if (($msg = $obj->store())) {

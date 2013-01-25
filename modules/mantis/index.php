@@ -62,7 +62,7 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 	if( $cnf['mantismethod'] == 'https' ) require_once( 'mantis.config.ssl.php' );
 
 	// DEBUG option, enable if problems occure
-	$mantis->setXMLRPCDebug(0);
+	$mantis->setXMLRPCDebug(3);
 
 	// draw page title in dotproject
 	$AppUI->savePlace();
