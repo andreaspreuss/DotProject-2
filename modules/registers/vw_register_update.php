@@ -1,4 +1,4 @@
-<?php 
+<?php
 GLOBAL $AppUI;
 
 // check permissions
@@ -167,7 +167,10 @@ $task_log_costcodes = array_merge($task_log_costcodes, db_loadColumn($sql));
 </tr>
 <tr>
 <?php
- $contactos = db_loadHashList ("select contact_id,contact_company from contacts");
+ $q = new DBQuery();
+ $q -> addTable('contacts');
+ $q -> addQuery('contact_id,contact_company');
+ $contactos = $q -> loadHashList();
  $contactos = arrayMerge( array( '0'=> $AppUI->_('none') ), $contactos);
 
 ?>
@@ -181,7 +184,10 @@ $task_log_costcodes = array_merge($task_log_costcodes, db_loadColumn($sql));
 </tr>
 <tr>
 <?php
- $projects = db_loadHashList ("select project_id,project_name from projects");
+ $q -> clear();
+ $q -> addTable('projects');
+ $q -> addQuery('project_id,project_name');
+ $projects = $q -> loadHashList();
  $projects = arrayMerge( array( '0'=> $AppUI->_('none') ), $projects);
 
 ?>
@@ -215,7 +221,10 @@ $task_log_costcodes = array_merge($task_log_costcodes, db_loadColumn($sql));
 </tr>
 <tr>
 <?php
- $users = db_loadHashList ("select user_id,user_username from users");
+  $q -> clear();
+  $q -> addTable('users');
+  $q -> addQuery('user_id,user_username');
+ $users = $q -> loadHashList();
 ?>
 	<td align="right"><?php echo $AppUI->_('Owner');?></td>
 	<td>

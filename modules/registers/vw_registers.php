@@ -1,5 +1,5 @@
 
-<?php 
+<?php
 global $AppUI, $tab, $df, $canEdit, $m;
 
 $filter = intval( dPgetParam( $_GET, 'filter', 0 ) );
@@ -43,23 +43,31 @@ $order_by = dPgetParam( $_GET, 'order_by', 'register_start_date' );
 <?php
 $register_state=dPgetsysVal('RegisterState');
 
-$sql = "
-SELECT registers.*
-FROM registers";
+$q = new DBQuery();
+$q -> addTable('registers');
+$q -> addQuery('*');
 
-if ($filter > 0)
- $sql .= " WHERE register_format=$filter";
+if ($filter > 0){
+    $q -> addWhere('register_format = '.$filter);
+}
 
-$sql .= " ORDER BY $order_by";
+$q -> addOrder($order_by);
+$logs = $q -> loadList();
 
-$logs = db_loadList( $sql );
+$q -> clear();
+$q -> addTable('users');
+$q -> addQuery('user_id,user_username');
+$users = $q -> loadHashList();
 
-$sql = "select user_id,user_username from users";
-$users = db_loadhashList($sql);
-$sql = "select project_id, project_name from projects";
-$projects = db_loadhashList($sql);
-$sql = "select contact_id,contact_company from contacts";
-$contacts = db_loadhashList($sql);
+$q -> clear();
+$q -> addTable('projects');
+$q -> addQuery('project_id,project_name');
+$projects = $q -> loadHashList();
+
+$q -> clear();
+$q -> addTable('contacts');
+$q -> addQuery('contact_id,contact_company');
+$contacts = $q -> loadHashList();
 $s = '';
 foreach ($logs as $row) {
 	$s .= '<tr bgcolor="white" valign="top">';
@@ -96,7 +104,7 @@ foreach ($logs as $row) {
 		$s .= $descrip."<div style='font-weight: bold; text-align: right'><a title='$transla' class='hilite'>[".$AppUI->_("translation")."]</a></div>";
 	}
 // end auto-translation code
-			
+
 	$s .= '</td>';*/
 /*	$s .= "\n\t<td>";
 	if ($canEdit) {

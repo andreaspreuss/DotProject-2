@@ -1,174 +1,217 @@
 <?php
-/*
-Copyright (c) 2005 CaseySoftware, LLC <info@caseysoftware.com>
-Initial Work:	Richard Thompson - Belfast, Northern Ireland
-Developers:		Keith Casey - Washington, DC keith@caseysoftware.com
-				Ivan Peevski - Adelaide, Australia cyberhorse@users.sourceforge.net
-*/
-
-// Add / Edit contact
-$risk_id = dPgetParam($_GET, 'risk_id', 0);
-
-// check permissions
-$denyView = getDenyRead( $m, $risk_id );
-
-if ($denyView) {
-	$AppUI->redirect( "m=help&a=access_denied" );
+if (!defined('DP_BASE_DIR')) {
+    die('You should not access this file directly.');
 }
 
-$riskProbability = dPgetSysVal( 'RiskProbability' );
-$riskStatus = dPgetSysVal( 'RiskStatus' );
-$riskImpact = dPgetSysVal( 'RiskImpact' );
+$risk_id = intval(dPgetParam($_GET, 'id', 0));
 
-$riskDuration = array(1=>$AppUI->_('Hours'), 24=>$AppUI->_('Days'), 168=>$AppUI->_('Weeks'));
-
+$riskProbability = dPgetSysVal('RiskProbability');
+foreach ($riskProbability as $key => $value) {
+    $riskProbability[$key] = str_replace("&amp;eacute;", "é", htmlspecialchars($AppUI->_($value)));
+}
+$riskStatus = dPgetSysVal('RiskStatus');
+foreach ($riskStatus as $key => $value) {
+    $riskStatus[$key] = str_replace("&amp;atilde;", "ã", htmlspecialchars($AppUI->_($value)));
+}
+$riskImpact = dPgetSysVal('RiskImpact');
+foreach ($riskImpact as $key => $value) {
+    $riskImpact[$key] = str_replace("&amp;eacute;", "é", htmlspecialchars($AppUI->_($value)));
+}
+$riskPotential = dPgetSysVal('RiskPotential');
+foreach ($riskPotential as $key => $value) {
+    $riskPotential[$key] = str_replace("&amp;atilde;", "ã", htmlspecialchars($AppUI->_($value)));
+}
+$riskActive = dPgetSysVal('RiskActive');
+foreach ($riskActive as $key => $value) {
+    $riskActive[$key] = str_replace("&amp;atilde;", "ã", htmlspecialchars($AppUI->_($value)));
+}
+$riskStrategy = dPgetSysVal('RiskStrategy');
+foreach ($riskStrategy as $key => $value) {
+    $riskStrategy[$key] = $AppUI->_($value);
+}
+$riskPriority = dPgetSysVal('RiskPriority');
+foreach ($riskPriority as $key => $value) {
+    $riskPriority[$key] = str_replace("&amp;eacute;", "é", htmlspecialchars($AppUI->_($value)));
+}
 
 $q = new DBQuery();
+$q->addQuery('*');
+$q->addTable('risks');
+$q->addWhere('risk_id = ' . $risk_id);
+
+// check if this record has dependancies to prevent deletion
+$msg = '';
+$obj = new CRisks();
+$canDelete = $obj->canDelete($msg, $risk_id);
+
+// load the record data
+$obj = null;
+if ((!db_loadObject($q->prepare(), $obj)) && ($risk_id > 0)) {
+    $AppUI->setMsg('LBL_RISKS');
+    $AppUI->setMsg("invalidID", UI_MSG_ERROR, true);
+    $AppUI->redirect();
+}
+
+// collect all the users for the company owner list
+$q = new DBQuery;
 $q->addQuery('user_id');
 $q->addQuery('CONCAT( contact_first_name, \' \', contact_last_name)');
 $q->addTable('users');
 $q->leftJoin('contacts', 'c', 'user_contact = contact_id');
 $q->addOrder('contact_first_name, contact_last_name');
-$users = $q->loadHashList();
-//$users = db_loadHashList( $sql );
+$owners = $q->loadHashList();
 
 $q->clear();
 $q->addQuery('project_id, project_name');
 $q->addTable('projects');
+$q->addOrder('project_name');
 $projects = $q->loadHashList();
-$projects[0] = '';
 
-//Pull contact information
-$q->clear();
-$q->addQuery('*');
-$q->addTable('risks');
-$q->addWhere('risk_id = ' . $risk_id);
-
-if (!db_loadHash( $q->prepare(), $risk ) && $risk_id > 0) {
-	$titleBlock = new CTitleBlock( 'Invalid Risk ID', 'folder5.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=risks", "Risks list" );
-	$titleBlock->show();
-
-	$tasks = array();
-} else {
-	if (isset($risk['risk_project']))
-	{
-		$q->clear();
-		$q->addQuery('task_id, task_name');
-		$q->addTable('tasks');
-		//$q->addWhere('task_project = ' . $risk['risk_project']);
-		$tasks = $q->loadHashList();
-	}
-	else
-		$tasks = array();
+$projectSelected = intval(dPgetParam($_GET, 'project_id'));
+$t = intval(dPgetParam($_GET, 'tab'));
+$vw = dPgetParam($_GET, 'vw');
 
 // setup the title block
-	$ttl = $risk_id > 0 ? "Edit Risk" : "Add Risk";
-	$titleBlock = new CTitleBlock( $ttl, 'folder5.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=risks", "risks list" );
-	$titleBlock->addCrumb( "?m=risks&a=addedit&risk_id=$risk_id", "edit risk" );
-	if ($canDelete) {
-		$titleBlock->addCrumbRight(
-			'<a href="javascript:delIt()">'
-				. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
-				. $AppUI->_('delete risk') . '</a>'
-		);
-	}
-	$titleBlock->show();
+$titleBlock = new CTitleBlock("LBL_VIEW", 'risks.png', $m, "$m.$a");
+if ($projectSelected == null) {
+//    $titleBlock->addCrumb("?m=$m", "lista de riscos"); 
+    $href = './index.php?m=$m';
+} else {
+    if ($vw == null) {
+        $href = "?m=projects&a=view&project_id=" . $projectSelected . 'tab=' . $t;
+    } else {
+        $href = "index.php?m$m=&a=" . $vw . '&id=' . $risk_id . '&project_id=' . $projectSelected . 'tab=' . $t;
+    }
+}
+$titleBlock->show();
 ?>
 <script language="javascript">
-function delIt(){
-	var form = document.editrisk;
-	if(confirm( "<?php echo $AppUI->_('risksDelete');?>" )) {
-		form.del.value = "<?php echo $risk_id;?>";
-		form.submit();
-	}
-}
+    function submitIt() {
+        var f = document.uploadFrm;
+        f.submit();
+    }
+    function delIt() {
+        if (confirm("<?php echo $AppUI->_('LBL_DELETE_MSG', UI_OUTPUT_JS); ?>")) {
+            var f = document.uploadFrm;
+            f.del.value='1';
+            f.submit();
+        }
+    }
 </script>
-<form name="editrisk" action="?m=risks" method="post">
-	<input type="hidden" name="dosql" value="do_risk_aed" />
-	<input type="hidden" name="del" value="0" />
-	<input type="hidden" name="risk_id" value="<?php echo $risk_id;?>" />
-</form>
-<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
-<tr>
-	<td width="50%">
-		<table width="100%" cellspacing="1" cellpadding="2">
-		<tr>
-			<td nowrap="nowrap" colspan=2><strong><?php echo $AppUI->_('Details');?></strong></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Risk Name');?>:</td>
-			<td class="hilite"><?php echo $risk["risk_name"];?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Description');?>:</td>
-			<td class="hilite"><?php echo $risk["risk_description"];?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Probability');?>:</td>
-			<td class="hilite"><?php echo $risk["risk_probability"]; ?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Impact');?>:</td>
-			<td class="hilite"><?php echo $risk['risk_impact']; ?> x <?php echo $riskDuration[$risk['risk_duration_type']]; ?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Status');?>:</td>
-			<td class="hilite"><?php echo $riskStatus[$risk["risk_status"]];?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Owner');?>:</td>
-			<td class="hilite"><?php echo $users[$risk["risk_owner"]];?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project');?>:</td>
-			<td class="hilite">
-				<a href="?m=projects&a=view&project_id=<?php echo $risk['risk_project']; ?>">
-					<?php	echo $projects[$risk["risk_project"]];?>
-				</a>
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task');?>:</td>
-			<td class="hilite">
-				<a href="?m=tasks&a=view&task_id=<?php echo $risk['risk_task']; ?>">
-					<?php echo $tasks[$risk['risk_task']]; ?>
-				</a>
-			</td>
-    </tr>
-  	</table>
-  </td>
-  <td width="50%" valign="top">
-		<table cellspacing="1" cellpadding="2" border="0" width="100%">
-  <tr><td></td></tr>
-  <tr>
-  	<td>
-		<?php echo $AppUI->_('Notes');?>:<br />
-		</td>
-	</tr>
-	<tr>
-		<td class="hilite">
-		<?php echo $risk["risk_notes"];?>
-		</td>
-	</tr>
-	</table>
-	</td>
-</tr>
+
+<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
+
+    <form name="uploadFrm" action="?m=risks" method="post">
+        <input type="hidden" name="dosql" value="do_risks_aed" />
+        <input type="hidden" name="del" value="0" />
+        <input type="hidden" name="risk_id" value="<?php echo $risk_id; ?>" />
+
+        <tr>
+            <td width="100%" valign="top" align="center">
+                <table cellspacing="1" cellpadding="2" width="60%">
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_NAME'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo $obj->risk_name; ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_DESCRIPTION'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo dPformSafe(@$obj->risk_description); ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_PROBABILITY'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo $riskProbability[@$obj->risk_probability] ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_IMPACT'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo $riskImpact[@$obj->risk_impact] ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_PRIORITY'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo $riskPriority[@$obj->risk_priority] ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_STATUS'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo $riskStatus[@$obj->risk_status] ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_OWNER'); ?>:</td>
+                        <?php
+                        foreach ($owners as $k => $v) {
+                            if ($k == @$obj->risk_responsible) {
+                                @$obj->risk_responsible = $v;
+                            }
+                        }
+                        ?>
+                        <td nowrap="nowrap"><?php echo dPformSafe(@$obj->risk_responsible); ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_PROJECT'); ?>:</td>
+                        <?php
+                        foreach ($projects as $k => $v) {
+                            if ($k == @$obj->risk_project) {
+                                @$obj->risk_project = $v;
+                            }
+                        }
+                        ?>
+                        <td nowrap="nowrap"><?php echo dPformSafe(@$obj->risk_project); ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_TASK'); ?>:</td>
+                        <td>
+                            <?php
+                            $tasks = array();
+                            $q->clear();
+                            $q->addQuery('task_id, task_name');
+                            $q->addTable('tasks');
+                            $q->addOrder('task_name');
+                            $tasks = $q->loadHashList();
+                            $tasks[0] = $AppUI->_('LBL_NOT_DEFINED');
+                            $tasks[-1] = $AppUI->_('LBL_ALL_TASKS');
+
+                            foreach ($tasks as $k => $v) {
+                                if ($k == @$obj->risk_task) {
+                                    @$obj->risk_task = $v;
+                                }
+                            }
+                            echo dPformSafe(@$obj->risk_task);
+                            ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_NOTES'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo dPformSafe(@$obj->risk_notes); ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_POTENTIAL'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo $riskPotential[@$obj->risk_potential] ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_LESSONS'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo dPformSafe(@$obj->risk_lessons_learned); ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_ACTIVE'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo $riskActive[@$obj->risk_active] ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_STRATEGY'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo $riskStrategy[@$obj->risk_strategy] ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_PREVENTION_ACTIONS'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo dPformSafe(@$obj->risk_prevention_actions); ?></td>
+                    </tr>
+                    <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('LBL_CONTINGENCY_PLAN'); ?>:</td>
+                        <td nowrap="nowrap"><?php echo dPformSafe(@$obj->risk_contingency_plan); ?></td>
+                    </tr>
+                </table>
+        </tr>
+        <tr>
+            <td align="center">
+                <input type="button" class="button" value="<?php echo $AppUI->_('LBL_RETURN'); ?>" onclick="{location.href = '<?php echo $href; ?>';}" 
+
+            </td>
+        </tr>
+    </form>
 </table>
-
-
-<?php
-//include($baseDir . '/modules/risks/notes.php');
-//$query_string = "?m=tasks&a=view&task_id=$task_id";
-// Last parameter makes tab box javascript based.
-$tab = dPgetParam($_GET, 'tab', 0);
-$tabBox = new CTabBox( "?m=risks&a=view&risk_id=$risk_id", "", $tab, '' );
-
-global $tab;
-$tabBox->add( "{$dPconfig['root_dir']}/modules/risks/vw_notes", 'Risk Notes' );
-$tabBox->add( "{$dPconfig['root_dir']}/modules/risks/vw_note_add", 'Add Risk Note' );
-
-$tabBox->loadExtras($m, $a);
-$tabBox->show('', true);
-} ?>

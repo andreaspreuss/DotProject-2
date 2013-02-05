@@ -1,5 +1,5 @@
 
-<?php 
+<?php
 global $AppUI, $tab, $df, $canEdit, $m;
 
 $filter = intval( dPgetParam( $_GET, 'filter', 0 ) );
@@ -12,9 +12,11 @@ $order_by = dPgetParam( $_GET, 'order_by', 'SGD_Logs_document_name' );
  <input type="hidden" name="tab" value="2">
 
 <?php
- $sql="select user_id,user_username from users";
+ $q = new DBQuery();
+ $q -> addTable('users');
+ $q -> addQuery('user_id,user_username');
  echo "<td>";
- $users=arrayMerge(array("0"=>""),db_loadhashList($sql));
+ $users=arrayMerge(array("0"=>""),$q -> loadHashList());
 echo $AppUI->_('Filter User: ') ." " .arraySelect( $users, 'filter', 'size="1" class="text" onChange="document.filterView.submit();"',$filter, false );
  echo "</td>";
  echo "<td align=\"right\">";
@@ -33,19 +35,23 @@ echo $AppUI->_('Filter User: ') ." " .arraySelect( $users, 'filter', 'size="1" c
 	<th width="100"><?php echo $AppUI->_('Action');?></th>
 </tr>
 <?php
-$sql = "
-SELECT SGD_Logs.*
-FROM SGD_Logs";
+ $q -> clear();
+ $q -> addTable('SGD_Logs');
+ $q -> addQuery('*');
 
-if ($filter > 0)
- $sql .= " WHERE SGD_Logs_user_id=$filter";
+if ($filter > 0){
+ $q -> addWhere('SGD_Logs_user_id='.$filter);
+ }
 
-$sql .= " ORDER BY $order_by";
+ $q -> addOrder($order_by);
 
-$logs = db_loadList( $sql );
+$logs = $q -> loadList();
 
-$sql = "select user_id,user_username from users";
-$users = db_loadhashList($sql);
+$q -> clear();
+$q -> addTable('users');
+$q -> addQuery('user_id,user_username');
+
+$users = $q -> loadHashList();
 $s = '';
 foreach ($logs as $row) {
 	$s .= '<tr bgcolor="white" valign="top">';

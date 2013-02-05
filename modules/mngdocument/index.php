@@ -47,11 +47,15 @@ $titleBlock->show();
 
  function MostrarObjeto($Codigo,$Ident,$CodigoOpen,$ListaAbierta,$Repositorio)
  {
-  $sql="select SGD_id,SGD_name,SGD_type,SGD_date,SGD_description from SGD where SGD_parent=$Codigo order by SGD_type asc";
-  
-  $resultado=db_exec($sql);
+  $q = new DBQuery();
+  $q -> addTable('SGD');
+  $q -> addQuery('SGD_id,SGD_name,SGD_type,SGD_date,SGD_description');
+  $q -> addWhere('SGD_parent = '.$Codigo);
+  $q -> addOrder('SGD_type asc');
+
+  $q -> exec();
   $blancos=str_repeat("&nbsp;&nbsp;&nbsp;",$Ident);
-  while ($row=db_fetch_row($resultado))
+  while ($row=$q -> fetchRow())
   {
    $CanEdit=!getDenyEdit( 'mngdocument',$row[0] );
    $CanRead=!getDenyRead( 'mngdocument',$row[0] );
@@ -168,7 +172,7 @@ $titleBlock->show();
   {
    if ($Lista!=$close)
     array_push($ListaAbiertaN,$Lista);
-  } 
+  }
   $ListaAbierta=$ListaAbiertaN;
  }
 

@@ -5,14 +5,17 @@ $act = dPgetParam( $_POST,'bug_action',0 );
 $canCreateTask = $perms->checkModule( 'tasks','add' );
 
 if( $perms->checkModule( 'mantis','access' ) ) {
-	// get usernam and password (a hash value only) of the currently browsing user 
-	$db->setFetchMode(ADODB_FETCH_NUM);
-	$res = $db->Execute( "SELECT user_username,user_password FROM users,contacts WHERE user_id = '". $AppUI->user_id ."' " );
-	$row = $res->fetchRow();
+	// get usernam and password (a hash value only) of the currently browsing user
+	$sql = new DBQuery();
+	$sql -> addTable('users');
+	$sql -> addQuery('user_username,user_password');
+	$sql -> addWhere('user_id='.$AppUI->user_id);
+	$sql -> exec();
+	$row = $sql -> fetchRow();
 	$username = $row[0];
 	$password = $row[1];
-	
-	require_once( 'mantis.config.php' );	
+
+	require_once( 'mantis.config.php' );
 	$mantis = new PHPXMLRPCClient();
 	$mantis->createClient( $cnf['mantisxmlrpc'] .'dpserver.php',$cnf['mantishost'],$cnf['mantisport'],$cnf['mantismethod'] );
 	if( $cnf['mantismethod'] == 'https' ) require_once( 'mantis.config.ssl.php' );
@@ -24,7 +27,7 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 	$mantis->addArg( 'getUserAccessLevel' );
 	$mantis->addArg( $username );
 	$level = $mantis->call();
-		
+
 	if( file_exists( dPgetConfig('root_dir')."/modules/tasks/tasks.class.php" ) && $act == 'task' && $canCreateTask ) {
 		if( !($perms->checkModule('tasks', 'add')) ) $AppUI->redirect( "m=public&a=access_denied&err=noedit" );
 		function createTask( $obj ) {
@@ -38,19 +41,19 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 			// If we have an array of pre_save functions, perform them in turn.
 			if ( isset($pre_save) ) foreach( $pre_save as $pre_save_function ) $pre_save_function();
 			else dprint( __FILE__,__LINE__,1,'No pre_save functions.' );
-			
+
 			$msg = $obj->store();
-			if( $msg ) return false;	
+			if( $msg ) return false;
 			if( isset($post_save) ) foreach( $post_save as $post_save_function ) $post_save_function();
 			if( $notify ) if ( $msg = $obj->notify($comment) ) $AppUI->setMsg( $msg,UI_MSG_ERROR );
-			
+
 			return true;
 		}
-	
+
 		require_once( dPgetConfig('root_dir').'/modules/tasks/tasks.class.php' );
-		
+
 		$count = count($_POST['bugs']);
-		if( $count == 0 ) $AppUI->redirect( 'm=projects&a=view&project_id='. $pid ); 
+		if( $count == 0 ) $AppUI->redirect( 'm=projects&a=view&project_id='. $pid );
 		if( $pid == '' || $pid == 0 ) $AppUI->redirect( 'm=projects&a=view&project_id='. $pid );
 
 		foreach( $_POST['bugs'] as $b ) {
@@ -61,7 +64,7 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 			$mantis->addArg($b);
 			$result = $mantis->call();
 			if( ERROR::isError($result) ) die($result->getErrstr());
-			
+
 			$obj = new CTask();
 			$obj->task_id = false;
 			$obj->task_name = $result['summary'];
@@ -83,5 +86,5 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 	}
 } else {
 	$AppUI->redirect('m=public&a=access_denied');
-}	
+}
 ?>

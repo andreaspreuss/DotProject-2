@@ -1,81 +1,163 @@
 <?php
-/*
-Copyright (c) 2005 CaseySoftware, LLC <info@caseysoftware.com>
-Initial Work:	Richard Thompson - Belfast, Northern Ireland
-Developers:		Keith Casey - Washington, DC keith@caseysoftware.com
-				Ivan Peevski - Adelaide, Australia cyberhorse@users.sourceforge.net
-*/
 
-// MODULE CONFIGURATION DEFINITION
+if (!defined('DP_BASE_DIR')) {
+    die('You should not access this file directly.');
+}
+/**
+ *  Name: Risks
+ *  Directory: risks
+ *  Version 1.0
+ *  Type: user
+ *  UI Name: Risks
+ *  UI Icon: ?
+ */
 $config = array();
-$config['mod_name'] = 'Risks';
-$config['mod_version'] = '2.0';
-$config['mod_directory'] = 'risks';
-$config['mod_setup_class'] = 'SRisks';
-$config['mod_type'] = 'user';
-$config['mod_ui_name'] = 'Risks';
-$config['mod_ui_icon'] = '';
-$config['mod_description'] = 'Risks management';
+$config['mod_name'] = 'Risks'; // name the module
+$config['mod_version'] = '1.0'; // add a version number
+$config['mod_directory'] = 'risks'; // tell dotProject where to find this module
+$config['mod_setup_class'] = 'CSetupRisks'; // the name of the PHP setup class (used below)
+$config['mod_type'] = 'user'; //'core' for standard dP modules, 'user' for additional modules from dotmods
+$config['mod_ui_name'] = 'Risks'; // the name that is shown in the main menu of the User Interface
+$config['mod_ui_icon'] = 'risks.png'; // name of a related icon //TODO
+$config['mod_description'] = 'Risks Plan'; // some description of the module //TODO
+$config['mod_config'] = false; // show 'configure' link in viewmods
+//$config['permissions_item_table'] = 'risks'; // tell dotProject the database table name
+$config['permissions_item_field'] = 'risk_id'; // identify table's primary key (for permissions)
+$config['permissions_item_label'] = 'risk_name'; // identify "title" field in table
 
 if (@$a == 'setup') {
-	echo dPshowModuleConfig( $config );
+    echo dPshowModuleConfig($config);
 }
 
-class SRisks {
+class CSetupRisks {
 
-	function install() {
-		$ok=1;
-		$q = new DBQuery();
-		$q->createTable('risks');
-		$sql = '(
- risk_id int(10) unsigned NOT NULL auto_increment,
- risk_name varchar(50) default NULL,
- risk_description text,
- risk_probability tinyint(3) default 100,
- risk_status text default NULL,
- risk_owner int(10) default NULL,
- risk_project int(10) default NULL,
- risk_task int(10) default NULL,
- risk_impact int(10) default NULL,
- risk_duration_type tinyint(10) default 1,
- risk_notes text,
- PRIMARY KEY  (risk_id),
- UNIQUE KEY risk_id (risk_id),
- KEY risk_id_2 (risk_id))';
-		$q->createDefinition($sql);
-		$ok=$ok && $q->exec();
+    function configure() {
+        return true;
+    }
 
-		$q->clear();
-		$q->createTable('risk_notes');
-		$sql = '(
-  risk_note_id int(11) NOT NULL auto_increment,
-  risk_note_risk int(11) NOT NULL default \'0\',
-  risk_note_creator int(11) NOT NULL default \'0\',
-  risk_note_date datetime NOT NULL,
-  risk_note_description text NOT NULL,
-  PRIMARY KEY  (risk_note_id))';
+    function remove() {
+        $q = new DBQuery();
+        $q->dropTable('risks');
+        $q->exec();
 
-		$q->createDefinition($sql);
-		$ok= $ok && $q->exec();
-		if(!$ok){
-			return false;
-		}
-		return null;
-	}
+        $q->clear();
+        $q->setDelete('sysvals');
+        $q->addWhere("sysval_title IN ('RiskImpact', 'RiskProbability', 'RiskStatus', 'RiskPotential', 'RiskPriority', 'RiskActive', 'RiskStrategy')");
+        $q->exec();
 
-	function remove() {
-		$q = new DBQuery;
-		$q->dropTable('risks');
-		$q->exec();
-		$q->clear();
-		$q->dropTable('risk_notes');
-		$q->exec();
-		return null;
-	}
+        unlink(DP_BASE_DIR . "/modules/projects/locales/pt_br.inc");
+        unlink(DP_BASE_DIR . "/modules/projects/locales/en.inc");
+    }
 
-	function upgrade() {
-		return null;
-	}
+    function upgrade($old_version) {
+// Place to put upgrade logic, based on the previously installed version.
+// Usually handled via a switch statement.
+// Since this is the first version of this module, we have nothing to update.
+        return true;
+    }
+
+    function install() {
+        //$this->installProjectsTranslationFile();
+        $q = new DBQuery();
+        $q->createTable('risks');
+        $q->createDefinition("(
+                              `risk_id` int(11) NOT NULL AUTO_INCREMENT ,
+                              `risk_name` varchar(255) NOT NULL,
+                              `risk_responsible` int(11) NOT NULL,
+                              `risk_description` varchar(2000) DEFAULT NULL,
+                              `risk_probability` varchar(15) NOT NULL,
+                              `risk_impact` varchar(15) NOT NULL,
+                              `risk_answer_to_risk` varchar(2000) DEFAULT NULL,
+                              `risk_status` varchar(15) NOT NULL,
+                              `risk_project` int(11) DEFAULT NULL,
+                              `risk_task` int(11) DEFAULT NULL,
+                              `risk_notes` varchar(2000) DEFAULT NULL,
+                              `risk_potential_other_projects` varchar(2) NOT NULL,
+                              `risk_lessons_learned` varchar(2000) DEFAULT NULL,
+                              `risk_priority` varchar(15) NOT NULL,
+                              `risk_active` int(11) NOT NULL,
+                              `risk_strategy` int(11) NOT NULL,
+                              `risk_prevention_actions` varchar(2000) DEFAULT NULL,
+                              `risk_contingency_plan` varchar(2000) DEFAULT NULL,
+                              PRIMARY KEY (`risk_id`)
+                              )");
+
+        //$q->exec($sql);
+        $q->exec();
+
+        $q = new DBQuery();
+        $q->addTable('sysvals');
+        $q->addInsert('sysval_title', 'RiskImpact');
+        $q->addInsert('sysval_key_id', 1);
+        $q->addInsert('sysval_value', "0|" . 'LBL_SUPER_LOW_M' . "\n1|" . 'LBL_LOW_M' . "\n2|" . 'LBL_MEDIUM_M' . "\n3|" . 'LBL_HIGH_M' . "\n4|" . 'LBL_SUPER_HIGH_M');
+        $q->exec();
+
+        $q->clear();
+        $q->addTable('sysvals');
+        $q->addInsert('sysval_title', 'RiskProbability');
+        $q->addInsert('sysval_key_id', 1);
+        $q->addInsert('sysval_value', "0|" . 'LBL_SUPER_LOW_F' . "\n1|" . 'LBL_LOW_F' . "\n2|" . 'LBL_MEDIUM_F' . "\n3|" . 'LBL_HIGH_F' . "\n4|" . 'LBL_SUPER_HIGH_F');
+        $q->exec();
+
+        $q->clear();
+        $q->addTable('sysvals');
+        $q->addInsert('sysval_title', 'RiskStatus');
+        $q->addInsert('sysval_key_id', 1);
+        $q->addInsert('sysval_value', "0|" . 'LBL_OPEN' . "\n1|" . 'LBL_CLOSED' . "\n2|" . 'LBL_NOT_APLICABLE');
+        $q->exec();
+
+        $q->clear();
+        $q->addTable('sysvals');
+        $q->addInsert('sysval_title', 'RiskPotential');
+        $q->addInsert('sysval_key_id', 1);
+        $q->addInsert('sysval_value', "0|" . 'LBL_NO' . "\n1|" . 'LBL_YES');
+        $q->exec();
+
+        $q->clear();
+        $q->addTable('sysvals');
+        $q->addInsert('sysval_title', 'RiskPriority');
+        $q->addInsert('sysval_key_id', 1);
+        $q->addInsert('sysval_value', "0|" . 'LBL_LOW_F' . "\n1|" . 'LBL_MEDIUM_F' . "\n2|" . 'LBL_HIGH_F');
+        $q->exec();
+
+        $q->clear();
+        $q->addTable('sysvals');
+        $q->addInsert('sysval_title', 'RiskActive');
+        $q->addInsert('sysval_key_id', 1);
+        $q->addInsert('sysval_value', "0|" . 'LBL_YES' . "\n1|" . 'LBL_NO');
+        $q->exec();
+
+        $q->clear();
+        $q->addTable('sysvals');
+        $q->addInsert('sysval_title', 'RiskStrategy');
+        $q->addInsert('sysval_key_id', 1);
+        $q->addInsert('sysval_value', "0|" . 'LBL_ACCEPT' . "\n1|" . 'LBL_ELIMINATE' . "\n2|" . 'LBL_MITIGATE' . "\n3|" . 'LBL_TRANSFER');
+        $q->exec();
+        return NULL;
+    }
+
+    private function installProjectsTranslationFile() {
+        $translationFileUS = DP_BASE_DIR . "/modules/risks/locales/en.inc";
+        $translationFilePTBR = DP_BASE_DIR . "/modules/risks/locales/pt_br.inc";
+        echo $translationFilePTBR;
+        mkdir(DP_BASE_DIR . "/modules/projects/locales");
+        $us_contents = file_get_contents($translationFileUS);
+        $ptBR_contents = file_get_contents($translationFilePTBR);
+        $destFileUS = DP_BASE_DIR . "/modules/projects/locales/en.inc";
+        $destFilePTBR = DP_BASE_DIR . "/modules/projects/locales/pt_br.inc";
+        $this->updateFile($destFileUS, $us_contents);
+        $this->updateFile($destFilePTBR, $ptBR_contents);
+    }
+
+    private function updateFile($fileName, $content) {
+        if (!file_exists($fileName)) {
+            $fileName = str_replace("\\", "/", $fileName);
+        }
+        $fp = fopen($fileName, 'a');
+        fwrite($fp, $content);
+        fclose($fp);
+    }
+
 }
 
 ?>

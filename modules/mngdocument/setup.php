@@ -27,10 +27,12 @@ if (@$a == 'setup') {
 	echo dPshowModuleConfig( $config );
 }
 
-class CSetupMngDocument {   
+class CSetupMngDocument {
 
 	function install() {
-		$sql = "CREATE TABLE SGD (" .
+		$q = new DBQuery();
+		$q -> createTable('SGD');
+		$q -> createDefinition("(" .
   			"SGD_id int(11) NOT NULL auto_increment," .
 			"SGD_name varchar(50) NOT NULL default ''," .
   			"SGD_description varchar(250) default NULL," .
@@ -39,30 +41,38 @@ class CSetupMngDocument {
   			"SGD_parent int(11) NOT NULL default '0'," .
   			"SGD_state tinyint(4) NOT NULL default '0'," .
   			"PRIMARY KEY  (SGD_id)" .
-			") TYPE=MyISAM;";
-		db_exec( $sql );
-		$sql = "CREATE TABLE SGD_Logs (" .
+			")");
+		$q -> exec();
+		$q -> clear();
+		$q -> createTable('SGD_Logs');
+		$q -> createDefinition("(" .
   			"SGD_Logs_id int(11) NOT NULL auto_increment," .
   			"SGD_Logs_document_name varchar(50) NOT NULL default ''," .
   			"SGD_Logs_user_id int(11) NOT NULL default '0'," .
   			"SGD_Logs_date varchar(20) NOT NULL default ''," .
   			"SGD_Logs_action varchar(20) NOT NULL default ''," .
   			"PRIMARY KEY  (SGD_Logs_id)" .
-			") TYPE=MyISAM;";
-		db_exec( $sql );
+			")");
+		$q -> exec();
 		return null;
 	}
-	
+
 	function remove() {
-		db_exec( "DROP TABLE SGD" );
-		db_exec( "DROP TABLE SGD_Logs" );
+		$q = new DBQuery();
+		$q -> dropTable('SGD');
+		$q -> exec();
+
+		$q -> clear();
+		$q -> dropTable('SGD_Logs');
+		$q -> exec();
+
 		return null;
 	}
-	
+
 	function upgrade() {
 		return null;
 	}
 }
 
-?>	
-	
+?>
+
