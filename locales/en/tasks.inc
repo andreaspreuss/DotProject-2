@@ -350,3 +350,13 @@
 "with tax",
 "This task is only financial",
 "Detailed budget",
+
+"1LBLESTIMATIONS" => "Estimations",
+"3LBLACAOCORRETIVA"=>"Change Request",
+"7LBLQUALIDADE"=>"Quality",
+"3LBLACAOCORRETIVA"=>"Change Request",
+"7LBLQUALIDADE"=>"Quality",
+"1LBLESTIMATIONS" => "Estimations",
+"1LBLESTIMATIONS" => "Estimations",
+"3LBLACAOCORRETIVA"=>"Change Request",
+"7LBLQUALIDADE"=>"Quality",

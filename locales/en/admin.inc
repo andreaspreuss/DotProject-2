@@ -168,3 +168,7 @@
 "updated",
 "users list",
 "view this user",
+
+"5LBLCUSTO"=>"Cost",
+"5LBLCUSTO"=>"Cost",
+"5LBLCUSTO"=>"Cost",

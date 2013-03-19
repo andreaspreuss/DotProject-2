@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"5LBLCUSTO"=>"Coste",
 "ALL"=>"TODO",
 "Access"=>"Acceso",
 "Active Sessions"=>"Sesiones activas",
