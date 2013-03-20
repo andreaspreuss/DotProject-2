@@ -62,7 +62,7 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 	if( $cnf['mantismethod'] == 'https' ) require_once( 'mantis.config.ssl.php' );
 
 	// DEBUG option, enable if problems occure
-	$mantis->setXMLRPCDebug(3);
+	$mantis->setXMLRPCDebug(0);
 
 	// draw page title in dotproject
 	$AppUI->savePlace();
@@ -255,94 +255,50 @@ if( $perms->checkModule( 'mantis','access' ) ) {
 			<?php if( $bool ) echo '<form method="POST" action="?m=mantis&a=taskimport" name="frmMantis">'; ?>
 			<?php if( $bool ) echo '<input type="hidden" name="project_id" value="'. $project_id .'">'; ?>
 
-			<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl sortable" id="mantis_buglisting">
+			<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl" id="mantis_buglisting">
 			<thead>
 				<tr>
-					<th width="50"><?php echo $AppUI->_('ID'); ?></th>
-					<th width="120"><?php echo $AppUI->_('Submit Date'); ?></th>
-					<th width="150"><?php echo $AppUI->_('Project'); ?></th>
-					<th width="75"><?php echo $AppUI->_('User'); ?></th>
-					<th width="100"><?php echo $AppUI->_('Status'); ?></th>
-					<th nowrap="nowrap"><?php echo $AppUI->_('Summary'); ?></th>
-					<th nowrap="nowrap"><?php echo $AppUI->_('Description'); ?></th>
+					<th><?php echo $AppUI->_('ID'); ?></th>					
+					<th><?php echo $AppUI->_('Project'); ?></th>
+					<th><?php echo $AppUI->_('User'); ?></th>
+					<th><?php echo $AppUI->_('Severity');?>
+					<th><?php echo $AppUI->_('Priority');?>
+					<th><?php echo $AppUI->_('Status'); ?></th>
+					<th><?php echo $AppUI->_('Reproducibility'); ?></th>
+					<th><?php echo $AppUI->_('Resolution'); ?></th>
 					<?php if( $bool ) { ?>
-						<th width="50"><?php echo $AppUI->_('Selection'); ?></th>
+						<th><?php echo $AppUI->_('Selection'); ?></th>
 					<?php } ?>
 				</tr>
 			</thead>
 				<?php
 					foreach( $bugs as $bug ) {
-						$bugid = str_pad( $bug['id'],7,'0',STR_PAD_LEFT );
+						$bugid = str_pad( $bug['bug_text_id'],7,'0',STR_PAD_LEFT );
 						$bugprojname = $bug['project_name'];
 						$bugsummary = $bug['summary'];
 						$bugdesc = $bug['description'];
-						$buguser = $bug['reporter_name'];
-						$bugdate = date( $cnf['dateformat'],$bug['date_submitted'] );
-						$bugstat = $bug['status'];
+						$bugsev  = $bug['severity_name'];
+						$bugpri  = $bug['priority_name'];
+						$buguser = $bug['reporter_name'];						
+						$bugstat = $bug['status_name'];
+						$bugres  = $bug['resolution_name'];
+						$bugrep  = $bug['reproducibility_name'];
 						$dpprojid = $bug['dp_project_id'];
-
-						$bugsummary 		= str_replace( "'","&apos;",$bugsummary );
-						$bugsummary_short  	= @substr( $bugsummary,0,180 );
-						$bugsummary_short 	.= ( strlen($bugsummary) > 180 ) ? ' ...' : '';
-						$bugdesc 		= str_replace( "'","&apos;",$bugdesc );
-						$bugdesc_short  = @substr( $bugdesc,0,250 );
-						$bugdesc_short .= ( strlen($bugdesc) > 250 ) ? ' ...' : '';
-
-						switch( $bugstat ) {
-							case 10:
-								$bugstatus = '10';
-								$status = $AppUI->_('New');
-								$status_color = '#ffa0a0'; # red
-								break;
-							case 20:
-								$bugstatus = '20';
-								$status = $AppUI->_('Feedback');
-								$status_color = '#ff50a8'; # purple
-								break;
-							case 30:
-								$bugstatus = '30';
-								$status = $AppUI->_('Acknowledged');
-								$status_color = '#ffd850'; # orange
-								break;
-							case 40:
-								$bugstatus = '40';
-								$status = $AppUI->_('Confirmed');
-								$status_color =  '#ffffb0'; # yellow
-								break;
-							case 50:
-								$bugstatus = '50';
-								$status = $AppUI->_('Assigned');
-								$status_color = '#c8c8ff'; # blue
-								break;
-							case 80:
-								$bugstatus = '80';
-								$status = $AppUI->_('Resolved');
-								$status_color = '#cceedd'; # buish-green
-								break;
-							case 90:
-								$bugstatus = '90';
-								$status = $AppUI->_('Closed');
-								$status_color = '#e8e8e8'; # light gray
-								break;
-							default:
-								$bugstatus = 'unk';
-								$status = $AppUI->_('Unknown');
-								$status_color = '#ffffff'; # white
-								break;
-						}
+						
 						?>
 					<tbody>
 						<tr>
-							<td align="right" valign="top"><a href="<?php echo 'http://'. $cnf['mantishost'].'/'.$cnf['mantisuri'] .'view.php?id='. (int) $bugid; ?>" target="_blank" ><?php echo $bugid; ?></a></td>
-							<td align="center" valign="top"><?php echo $bugdate ?></td>
-							<td align="left" valign="top"><?php echo $bugprojname ?></td>
-							<td align="left" valign="top"><?php echo $buguser ?></td>
-							<td align="left" style="background-color:<?php echo $status_color; ?>" valign="top"><strong><b><?php echo $status ?></b></strong></td>
-							<td valign="top" style="text-align: justify;"><?php echo $bugsummary_short; ?></td>
-							<td valign="top" style="text-align: justify;"><?php echo $bugdesc_short; ?></td>
+							<td align="right" valign="top"><a href="<?php echo 'http://'. $cnf['mantishost'].'/'.$cnf['mantisuri'] .'view.php?id='. (int) $bugid; ?>" target="_blank" ><?php echo $bugid; ?></a></td>							
+							<td align="left" valign="top"><?php echo $bugprojname; ?></td>
+							<td align="left" valign="top"><?php echo $buguser; ?></td>
+							<td align="left" valign="top"><?php echo $bugsev; ?>
+							<td align="left" valign="top"><?php echo $bugpri; ?>
+							<td align="left" style="background-color:<?php echo $status_color; ?>" valign="top"><strong><b><?php echo $bugstat ?></b></strong></td>
+							<td align="left" valign="top"><?php echo $bugrep; ?>							
+							<td align="left" valign="top"><?php echo $bugres; ?>
 							<?php if( $bool ) { ?>
 								<td align="center" valign="top">
-									<input type="hidden" name="bugstatus[]" value="<?php echo $bugstatus; ?>" />
+									<input type="hidden" name="bugstatus[]" value="<?php echo $bugstat; ?>" />
 									<input type="checkbox" name="bugs[]" value="<?php echo $bugid ?>" onclick="toggle_chckBoxes(this);">
 								</td>
 							<?php } ?>
