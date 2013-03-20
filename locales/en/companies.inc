@@ -76,3 +76,4 @@
 "1LBLORGONOGRAM" => "Organizational diagram",
 "1LBLORGONOGRAM" => "Organizational diagram",
 "1LBLMONITORAMENTO"=>"Monitoring",
+"1LBLMONITORAMENTO"=>"Monitoring",

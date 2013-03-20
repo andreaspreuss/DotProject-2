@@ -360,3 +360,5 @@
 "1LBLESTIMATIONS" => "Estimations",
 "3LBLACAOCORRETIVA"=>"Change Request",
 "7LBLQUALIDADE"=>"Quality",
+"3LBLACAOCORRETIVA"=>"Change Request",
+"7LBLQUALIDADE"=>"Quality",
