@@ -1,4 +1,4 @@
-<?php /* FORUMS $Id: index.php 6149 2012-01-09 11:58:40Z ajdonnison $ */
+<?php /* FORUMS $Id: index.php 6199 2013-01-15 06:12:03Z ajdonnison $ */
 if (!defined('DP_BASE_DIR')) {
   die('You should not access this file directly');
 }
@@ -37,7 +37,7 @@ $max_msg_length = 30;
 /* Query modified by Fergus McDonald 2005/08/12 to address slow join issue */
 
 $q  = new DBQuery;
-$q->addTable('forums');
+$q->addTable('forums','forums');
 $q->addTable('projects', 'p');
 $q->addTable('users', 'u');
 $q->addQuery("forum_id, forum_project, forum_description, forum_owner, forum_name");
@@ -122,7 +122,7 @@ foreach ($forums as $row) {
 	<td colspan="6" style="background-color:#<?php echo $row["project_color_identifier"];?>">
 		<a href="?m=projects&amp;a=view&amp;project_id=<?php echo $row["forum_project"];?>">
 			<font color=<?php echo bestColor($row["project_color_identifier"]);?>>
-			<strong><?php echo $row["project_name"];?></strong>
+			<strong><?php echo $AppUI->___($row["project_name"]);?></strong>
 			</font>
 		</a>
 	</td>
@@ -149,10 +149,10 @@ foreach ($forums as $row) {
 
 	<td>
 		<span style="font-size:10pt;font-weight:bold">
-			<a href="?m=forums&amp;a=viewer&amp;forum_id=<?php echo $row["forum_id"];?>"><?php echo $row["forum_name"];?></a>
+			<a href="?m=forums&amp;a=viewer&amp;forum_id=<?php echo $row["forum_id"];?>"><?php echo $AppUI->___($row["forum_name"]);?></a>
 		</span>
 		<br /><?php echo $row["forum_description"];?>
-		<br /><font color="#777777"><?php echo $AppUI->_('Owner').' '.$row["user_username"];?>,
+		<br /><font color="#777777"><?php echo $AppUI->_('Owner').' '.$AppUI->___($row["user_username"]);?>,
 		<?php echo $AppUI->_('Started').' '.$create_date->format($df);?>
 		</font>
 	</td>
@@ -174,7 +174,7 @@ foreach ($forums as $row) {
 
 		echo '<br />&gt;&nbsp;<a href="?m=forums&amp;a=viewer&amp;forum_id='.$row['forum_id']
 			.'&amp;message_id='.$id.'">'
-			.'<font color="#777777">'.$row['message_body'];
+			.'<font color="#777777">'.$AppUI->___($row['message_body']);
 		echo $row['message_length'] > $max_msg_length ? '...' : '';
 		echo '</font></a>';
 	} else {

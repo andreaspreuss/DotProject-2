@@ -1,4 +1,4 @@
-<?php  /* FORUMS $Id: view_messages.php 6149 2012-01-09 11:58:40Z ajdonnison $ */
+<?php  /* FORUMS $Id: view_messages.php 6199 2013-01-15 06:12:03Z ajdonnison $ */
 if (!defined('DP_BASE_DIR')) {
   die('You should not access this file directly.');
 }
@@ -167,7 +167,7 @@ foreach ($messages as $row) {
 			if (!$hideEmail) {
 				$s .= '<a href="mailto:' . $editor[0]['contact_email'] . '">';
 			}
-			$s .= ('<font size="1">' . $AppUI->___($editor[0]['contact_first_name']) . ' ' . $AppUI->___($editor[0]['contact_last_name']) 
+			$s .= ('<font size="1">' . $AppUI->___($editor[0]['contact_first_name'] . ' ' . $editor[0]['contact_last_name']) 
 			       . '</font>');
 			if (! $hideEmail) {
 				$s .= '</a>';

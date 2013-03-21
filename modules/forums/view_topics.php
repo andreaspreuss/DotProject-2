@@ -1,4 +1,4 @@
-<?php /* FORUMS $Id: view_topics.php 6038 2010-10-03 05:49:01Z ajdonnison $ */
+<?php /* FORUMS $Id: view_topics.php 6199 2013-01-15 06:12:03Z ajdonnison $ */
 if (!defined('DP_BASE_DIR')) {
 	die('You should not access this file directly.');
 }

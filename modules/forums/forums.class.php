@@ -1,10 +1,10 @@
-<?php /* FORUMS $Id: forums.class.php 5872 2009-04-25 00:09:56Z merlinyoda $ */
-if (!defined('DP_BASE_DIR')) {
-	die('You should not access this file directly.');
+<?php /* FORUMS $Id: forums.class.php 5422 2007-10-13 21:58:07Z caseydk $ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
 }
 
-
-require_once($AppUI->getSystemClass('libmail'));
+require_once( $AppUI->getSystemClass( 'libmail' ) );
+require_once( $AppUI->getModuleClass( 'projects' ) );
 
 class CForum extends CDpObject {
 	var $forum_id = NULL;
@@ -22,13 +22,13 @@ class CForum extends CDpObject {
 	function __construct() {
 		// empty constructor
 		parent::__construct('forums', 'forum_id');
-	}
+	} 
 
-	function bind($hash) {
-		if (!is_array($hash)) {
+	function bind( $hash ) {
+		if (!is_array( $hash )) {
 			return "CForum::bind failed";
 		} else {
-			bindHashToObject($hash, $this);
+			bindHashToObject( $hash, $this );
 			return NULL;
 		}
 	}
@@ -43,21 +43,25 @@ class CForum extends CDpObject {
 
 	function store() {
 		$msg = $this->check();
-		if ($msg) {
+		if( $msg ) {
 			return "CForum::store-check failed<br />$msg";
 		}
-		if ($this->forum_id) {
-			$ret = db_updateObject('forums', $this, 'forum_id', false); // ! Don't update null values
-			if ($this->forum_name) {
+		if( $this->forum_id ) {
+			$ret = db_updateObject( 'forums', $this, 'forum_id', false ); // ! Don't update null values
+			$details['changes'] = $ret;
+			if($this->forum_name) {
 				// when adding messages, this functon is called without first setting 'forum_name'
-				addHistory('forums', $this->forum_id, 'update', $this->forum_name);
+				$details['name'] = $this->forum_name;
 			}
+			addHistory('forums', $this->forum_id, 'update', $details);
 		} else {
-			$this->forum_create_date = db_datetime(time());
-			$ret = db_insertObject('forums', $this, 'forum_id');
-			addHistory('forums', $this->forum_id, 'add', $this->forum_name);
+			$this->forum_create_date = db_datetime( time() );
+			$ret = db_insertObject( 'forums', $this, 'forum_id' );
+			$details['changes'] = $ret;
+			$details['name'] = $this->forum_name;
+			addHistory('forums', $this->forum_id, 'add', $details);
 		}
-		if (!$ret) {
+		if( !$ret ) {
 			return "CForum::store failed <br />" . db_error();
 		} else {
 			return NULL;
@@ -77,18 +81,37 @@ class CForum extends CDpObject {
 			$q->clear();
 			return db_error();
 		}
-		// $sql = "DELETE FROM forum_messages WHERE message_forum = $this->forum_id";
 		$q->clear();
 		$q->setDelete('forum_messages');
 		$q->addWhere('message_forum = '.$this->forum_id);
 		if (!$q->exec()) {
 			$result =  db_error();
 		} else {
-			addHistory('forums', $this->forum_id, 'delete', $this->forum_name);
+			$details['name'] = $this->forum_name;
+			addHistory('forums', $this->forum_id, 'delete', $details);
 			$result =  NULL;
 		}
 		$q->clear();
 		return $result;
+	}
+	
+	function search($keyword)
+	{
+		global $AppUI;
+		$perms = &$AppUI->acl();
+		$list = parent::search($keyword);
+		
+		$q = new DBQuery();
+		$q->addQuery('forum_name, message_id, message_forum, message_title');
+		$q->addTable('forums');
+		$q->addJoin('forum_messages', 'f', 'forum_id = message_forum');
+		$q->addWhere("(message_title LIKE '%$keyword%' OR message_body LIKE '%$keyword%')");
+		$messages = $q->loadList();
+		foreach($messages as $message)
+	    if ($perms->checkModuleItem($this->_tbl, 'view', $message['message_id']))
+				$list[$message['message_forum']] = $message['forum_name'] . ' ==> ' . $message['message_title']; 
+					
+		return $list;
 	}
 }
 
@@ -104,14 +127,14 @@ class CForumMessage {
 	var $message_published = NULL;
 
 	function __construct() {
-		// empty constructor
-	}
+ 		// empty constructor
+ 	}
 
-	function bind($hash) {
-		if (!is_array($hash)) {
+	function bind( $hash ) {
+		if (!is_array( $hash )) {
 			return "CForumMessage::bind failed";
 		} else {
-			bindHashToObject($hash, $this);
+			bindHashToObject( $hash, $this );
 			return NULL;
 		}
 	}
@@ -126,22 +149,23 @@ class CForumMessage {
 
 	function store() {
 		$msg = $this->check();
-		if ($msg) {
+		if( $msg ) {
 			return "CForumMessage::store-check failed<br />$msg";
 		}
 		$q  = new DBQuery;
-		if ($this->message_id) {
+		if( $this->message_id ) {
 			// First we need to remove any forum visits for this message
 			// otherwise nobody will see that it has changed.
 			$q->setDelete('forum_visits');
 			$q->addWhere('visit_message = '.$this->message_id);
 			$q->exec(); // No error if this fails, it is not important.
-			$ret = db_updateObject('forum_messages', $this, 'message_id', false); // ! Don't update null values
+			$ret = db_updateObject( 'forum_messages', $this, 'message_id', false ); // ! Don't update null values
 			$q->clear();
 		} else {
-			$this->message_date = db_datetime(time());
-			$new_id = db_insertObject('forum_messages', $this, 'message_id'); ## TODO handle error now
-			echo db_error(); ## TODO handle error better
+			$date = new CDate();
+			$this->message_date = $date->format( FMT_DATETIME_MYSQL );
+			$new_id = db_insertObject( 'forum_messages', $this, 'message_id' ); ## TODO handle error now
+			echo db_error(); //TODO handle error better
 
 			$q->addTable('forum_messages');
 			$q->addQuery('count(message_id), MAX(message_date)');
@@ -149,7 +173,7 @@ class CForumMessage {
 
 			$res = $q->exec();
 			echo db_error(); ## TODO handle error better
-			$reply = db_fetch_row($res);
+			$reply = db_fetch_row( $res );
 			$q->clear();
 
 			//update forum descriptor
@@ -161,10 +185,10 @@ class CForumMessage {
 
 			$forum->store(); ## TODO handle error now
 
-			return $this->sendWatchMail(false);
+			return $this->sendWatchMail( false );
 		}
 
-		if (!$ret) {
+		if( !$ret ) {
 			return "CForumMessage::store failed <br />" . db_error();
 		} else {
 			return NULL;
@@ -208,8 +232,8 @@ class CForumMessage {
 		return $result;
 	}
 
-	function sendWatchMail($debug=false) {
-		GLOBAL $AppUI, $debug, $dPconfig;
+	function sendWatchMail( $debug=false ) {
+		GLOBAL $AppUI, $debug;
 		$subj_prefix = $AppUI->_('forumEmailSubj', UI_OUTPUT_RAW);
 		$body_msg = $AppUI->_('forumEmailBody', UI_OUTPUT_RAW);
 		
@@ -237,53 +261,41 @@ class CForumMessage {
 		  $forum_name = 'Unknown';
 		}
 
-		// SQL-Query to check if the message should be delivered to all users (forced)
-		// In positive case there will be a (0,0,0) row in the forum_watch table
-		$q->clear();
-		$q->addTable('forum_watch');
-		$q->addQuery('*');
-		$q->addWhere('watch_user = 0 AND watch_forum = 0 AND watch_topic = 0');
-		$resAll = $q->exec();
-		$AllCount = db_num_rows($resAll);
-
 		$q->clear();
 		$q->addTable('users');
 		$q->addQuery('DISTINCT contact_email, user_id, contact_first_name, contact_last_name');
 		$q->addJoin('contacts', 'con', 'contact_id = user_contact');
-
-		if ($AllCount < 1)		//message is only delivered to users that checked the forum watch
-		{	
-			$q->addTable('forum_watch');
-			$q->addWhere("user_id = watch_user
-				AND (watch_forum = $this->message_forum OR watch_topic = $this->message_parent)");
-		}
+		
+		$q->addTable('forum_watch');
+		$q->addWhere('user_id = watch_user');
+		$q->addWhere('user_id <> ' . $AppUI->user_id);
+		$q->addWhere("(watch_forum = $this->message_forum OR watch_topic = $this->message_parent)");
 
 		if (!($res = $q->exec())) {
 			$q->clear();
 			return;
 		}
-		if (db_num_rows($res) < 1) {
+		if (db_num_rows( $res ) < 1) {
 			return;
 		}
 
 		$mail = new Mail;
-		$mail->Subject("$subj_prefix $this->message_title", isset($GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "");
+		$mail->Subject( "$subj_prefix $this->message_title", isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "");
 
 		$body = "$body_msg";
 
 		$body .= "\n\n" . $AppUI->_('Forum', UI_OUTPUT_RAW) . ": $forum_name";
 		$body .= "\n" . $AppUI->_('Subject', UI_OUTPUT_RAW) . ": {$this->message_title}";
 		$body .= "\n" . $AppUI->_('Message From', UI_OUTPUT_RAW) . ": $message_from";
-		$body .= "\n\n".DP_BASE_URL.'/index.php?m=forums&a=viewer&forum_id='.$this->message_forum;
+		$body .= "\n\n" . DP_BASE_URL . '/index.php?m=forums&a=viewer&forum_id='.$this->message_forum;
 		$body .= "\n\n$this->message_body";
  
-		$mail->Body($body, isset($GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "");
-		$mail->From($AppUI->_('forumEmailFrom', UI_OUTPUT_RAW));
+		$mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : ""  );
+		$mail->From( $AppUI->_('forumEmailFrom', UI_OUTPUT_RAW) );
 
-		$perms =& $AppUI->acl();
-		while ($row = db_fetch_assoc($res)) {
-			if ($mail->ValidEmail($row['contact_email']) && $perms->checkLogin($row['user_id'])) {
-				$mail->To($row['contact_email'], true);
+		while ($row = db_fetch_assoc( $res )) {
+			if ($mail->ValidEmail( $row['contact_email'] )) {
+				$mail->To( $row['contact_email'], true );
 				$mail->Send();
 			}
 		}

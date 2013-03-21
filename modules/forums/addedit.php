@@ -7,7 +7,6 @@ if (!defined('DP_BASE_DIR')) {
 
 $forum_id = intval(dPgetParam($_GET, 'forum_id', 0));
 $forum_project = intval(dPgetParam($_GET, 'forum_project', 0));
-$forum_macroproject = intval(dPgetParam($_GET, 'forum_macroproject', 0));
 
 // check permissions for this record
 $canEdit = getPermission($m, 'edit', $forum_id);
@@ -17,8 +16,6 @@ if (!$canEdit || !$canAuthor) {
 
 // load the companies class to retrieved denied projects
 require_once($AppUI->getModuleClass('projects'));
-// load the companies class to retrieved denied macroprojects
-require_once($AppUI->getModuleClass('macroprojects'));
 
 $forum_id = intval(dPgetParam($_GET, 'forum_id', 0));
 
@@ -36,8 +33,6 @@ $status = isset($forum_info["forum_status"]) ? $forum_info["forum_status"] : -1;
 
 // get any project records denied from viewing
 $projObj = new CProject();
-// get any macroproject records denied from viewing
-$macroprojObj = new CMacroProject();
 
 //Pull project Information
 $q = new DBQuery;
@@ -53,21 +48,6 @@ echo db_error();
 
 if (!in_array($forum_project, array_keys($projects))) {
 	$forum_project = 0;
-}
-//Pull macroproject Information
-$q->clear();
-$q->addTable('macroprojects');
-$q->addQuery('macroproject_id, macroproject_name');
-$q->addWhere('macroproject_status <> 7');
-$q->addOrder('macroproject_name');
-$macroprojObj->setAllowedSQL($AppUI->user_id, $q);
-if (isset($company_id))
-	$q->addWhere("macroproject_company = $company_id");
-$macroprojects = array('0' => '') + $q->loadHashList();
-echo db_error();
-
-if (!in_array($forum_macroproject, array_keys($macroprojects))) {
-	$forum_macroproject = 0;
 }
 
 $perms =& $AppUI->acl();
@@ -94,9 +74,6 @@ function submitIt() {
 	} else if (form.forum_project.selectedIndex < 1) {
 		alert("<?php echo $AppUI->_('forumSelectProject', UI_OUTPUT_JS);?>");
 		form.forum_project.focus();
-	} else if (form.forum_macroproject.selectedIndex < 1) {
-		alert("<?php echo $AppUI->_('forumSelectMacroProject', UI_OUTPUT_JS);?>");
-		form.forum_macroproject.focus();
 	} else if (form.forum_owner.selectedIndex < 1) {
 		alert("<?php echo $AppUI->_('forumSelectOwner', UI_OUTPUT_JS);?>");
 		form.forum_owner.focus();
@@ -139,27 +116,12 @@ function delIt() {
 			</td>
 		</tr>
 		<tr>
-			<?php if ($forum_macroproject)
-			{?>
-				<td align="right"><?php echo $AppUI->_('Related MacroProject');?></td>
-				<td>
-			<?php
-				echo arraySelect($macroprojects, 'forum_macroproject', 'size="1" class="text"', ($forum_info['forum_macroproject'] != '' ? $forum_info['forum_macroproject'] : $forum_macroproject));
-			?>
-				</td>
-			<?php 
-			}
-			else
-			{?>
-				<td align="right"><?php echo $AppUI->_('Related Project');?></td>
-				<td>
-			<?php
-				echo arraySelect($projects, 'forum_project', 'size="1" class="text"', ($forum_info['forum_project'] != '' ? $forum_info['forum_project'] : $forum_project));
-			?>
-				</td>
-			<?php 
-			}
-			?>
+			<td align="right"><?php echo $AppUI->_('Related Project');?></td>
+			<td>
+		<?php
+			echo arraySelect($projects, 'forum_project', 'size="1" class="text"', ($forum_info['forum_project'] != '' ? $forum_info['forum_project'] : $forum_project));
+		?>
+			</td>
 		</tr>
 		<tr>
 			<td align="right"><?php echo $AppUI->_('Owner');?>:</td>
