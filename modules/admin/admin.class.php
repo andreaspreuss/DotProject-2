@@ -1,4 +1,4 @@
-<?php /* ADMIN $Id: admin.class.php 5872 2009-04-25 00:09:56Z merlinyoda $ */
+<?php /* ADMIN $Id: admin.class.php 6191 2013-01-05 04:28:23Z ajdonnison $ */
 if (!defined('DP_BASE_DIR')) {
   die('You should not access this file directly.');
 }
@@ -34,9 +34,9 @@ class CUser extends CDpObject {
 	var $user_pic = NULL;
 	var $user_owner = NULL; */
 
-	function CUser() {
-		$this->CDpObject('users', 'user_id');
-	}
+	public function __construct() {
+		parent::__construct('users', 'user_id');
+ 	}
 
 	function check() {
 		if ($this->user_id === NULL) {

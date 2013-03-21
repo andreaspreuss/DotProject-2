@@ -1,4 +1,4 @@
-<?php /* DEPARTMENTS $Id: departments.class.php 5941 2010-01-05 01:55:05Z merlinyoda $ */
+<?php /* DEPARTMENTS $Id: departments.class.php 6191 2013-01-05 04:28:23Z ajdonnison $ */
 if (!defined('DP_BASE_DIR')) {
   die('You should not access this file directly.');
 }
@@ -23,9 +23,9 @@ class CDepartment extends CDpObject {
 	var $dept_desc = NULL;
 	var $dept_owner = NULL;
 
-	function CDepartment() {
-		// empty constructor
-	}
+	public function __construct() {
+ 		// empty constructor
+ 	}
 
 	function load($oid) {
 		$q  = new DBQuery;

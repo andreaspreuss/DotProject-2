@@ -1,4 +1,4 @@
-<?php /* FILES $Id: links.class.php 5872 2009-04-25 00:09:56Z merlinyoda $ */
+<?php /* FILES $Id: links.class.php 6191 2013-01-05 04:28:23Z ajdonnison $ */
 if (!defined('DP_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
@@ -23,9 +23,9 @@ class CLink extends CDpObject {
 	var $link_category = NULL;
 
 	
-	function CLink() {
-		$this->CDpObject('links', 'link_id');
-	}
+	function __construct() {
+		parent::__construct('links', 'link_id');
+ 	}
 
 	function check() {
 	// ensure the integrity of some variables

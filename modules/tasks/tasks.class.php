@@ -75,9 +75,9 @@ class CTask extends CDpObject
 	var $task_type	 = NULL;
 	
 	
-	function CTask() {
-		$this->CDpObject('tasks', 'task_id');
-	}
+	public function __construct() {
+		parent::__construct('tasks', 'task_id');
+ 	}
 	
 	function __toString() {
 		return $this -> link . '/' . $this -> type . '/' . $this -> length;

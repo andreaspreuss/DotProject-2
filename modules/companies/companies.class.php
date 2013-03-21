@@ -1,4 +1,4 @@
-<?php /* COMPANIES $Id: companies.class.php 6117 2011-02-02 11:27:13Z ajdonnison $ */
+<?php /* COMPANIES $Id: companies.class.php 6191 2013-01-05 04:28:23Z ajdonnison $ */
 if (!defined('DP_BASE_DIR')) {
   die('You should not access this file directly.');
 }
@@ -6,7 +6,7 @@ if (!defined('DP_BASE_DIR')) {
 /**
  *	@package dotProject
  *	@subpackage modules
- *	@version $Revision: 6117 $
+ *	@version $Revision: 6191 $
 */
 
 require_once($AppUI->getSystemClass ('dp'));
@@ -43,10 +43,9 @@ class CCompany extends CDpObject {
 	
 	var $company_custom = null;
 
-	function CCompany() {
-		$this->CDpObject('companies', 'company_id');
-	}
-    
+	public function __construct() {
+		parent::__construct('companies', 'company_id');
+ 	}
 // overload check
 	function check() {
 		if ($this->company_id === NULL) {

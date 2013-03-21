@@ -21,10 +21,9 @@ class CProjectDesignerOptions extends CDpObject {
         var $pd_option_view_addtasks = NULL;
         var $pd_option_view_files = NULL;
 
-        function CProjectDesignerOptions() {
-                $this->CDpObject( 'project_designer_options', 'pd_option_id' );
-        }                    
-
+		function __construct() {
+                parent::__construct( 'project_designer_options', 'pd_option_id' );
+        } 
         function store() {
                   $q = new DBQuery;
                   $q->addTable('project_designer_options');

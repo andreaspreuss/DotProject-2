@@ -1,4 +1,4 @@
-<?php /* $Id: index.php 6182 2012-11-02 09:17:02Z ajdonnison $ */
+<?php /* $Id: index.php 6191 2013-01-05 04:28:23Z ajdonnison $ */
 
 /* {{{ Copyright (c) 2003-2005 The dotProject Development Team <core-developers@dotproject.net>
 

@@ -18,9 +18,9 @@ class CResource extends CDpObject {
   var $resource_max_allocation = null;
   var $resource_note = null;
 
-  function CResource() {
-    parent::CDpObject('resources', 'resource_id');
-  }
+	function __construct() {
+    	parent::__construct('resources', 'resource_id');
+    }
 
   function &loadTypes() {
     // If we have loaded the resource types before then we don't need to

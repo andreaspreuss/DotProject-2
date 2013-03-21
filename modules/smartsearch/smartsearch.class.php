@@ -1,4 +1,4 @@
-<?php /* SMARTSEARCH$Id: smartsearch.class.php 5989 2010-06-26 00:37:14Z merlinyoda $ */
+<?php /* SMARTSEARCH$Id: smartsearch.class.php 6191 2013-01-05 04:28:23Z ajdonnison $ */
 if (!defined('DP_BASE_DIR')) {
   die('You should not access this file directly.');
 }
@@ -37,7 +37,7 @@ class smartsearch  {
 //	$search_options['all_words']==""			match any of the words /default/
 //	$search_options['all_words']=="on"			match all words
 
-	function smartsearch() {
+	function __construct() {
 		return null;
 	}
 	

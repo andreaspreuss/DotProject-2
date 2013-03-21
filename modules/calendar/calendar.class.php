@@ -1,4 +1,4 @@
-<?php /* CALENDAR $Id: calendar.class.php 6171 2012-06-19 09:05:19Z ajdonnison $ */
+<?php /* CALENDAR $Id: calendar.class.php 6191 2013-01-05 04:28:23Z ajdonnison $ */
 if (!defined('DP_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
@@ -67,7 +67,7 @@ class CMonthCalendar {
 	/**
 	 * @param Date $date
 	 */
- function CMonthCalendar($date=null) {
+	public function __construct($date=null) {
 		$this->setDate($date);
 		
 		$this->classes = array();
@@ -473,9 +473,9 @@ class CEvent extends CDpObject {
 	var $event_notify = null;
 	var $event_cwd = null;
 	
-	function CEvent() {
-		$this->CDpObject('events', 'event_id');
-	}
+	public function __construct() {
+		parent::__construct('events', 'event_id');
+ 	}
 	
 	// overload check operation
 	function check() {

@@ -1,4 +1,4 @@
-<?php /* CONTACTS $Id: contacts.class.php 5934 2009-12-29 05:52:11Z merlinyoda $ */
+<?php /* CONTACTS $Id: contacts.class.php 6191 2013-01-05 04:28:23Z ajdonnison $ */
 if (!defined('DP_BASE_DIR')) {
   die('You should not access this file directly.');
 }
@@ -6,7 +6,7 @@ if (!defined('DP_BASE_DIR')) {
 /**
  *	@package dotProject
  *	@subpackage modules
- *	@version $Revision: 5934 $
+ *	@version $Revision: 6191 $
  */
 
 require_once($AppUI->getSystemClass ('dp'));
@@ -49,9 +49,9 @@ class CContact extends CDpObject{
 	var $contact_owner = NULL;
 	var $contact_private = NULL;
 	
-	function CContact() {
-		$this->CDpObject('contacts', 'contact_id');
-	}
+	public function __construct() {
+		parent::__construct('contacts', 'contact_id');
+ 	}
 	
 	function check() {
 		if ($this->contact_id === NULL) {

@@ -1,4 +1,4 @@
-<?php /* PROJECTS $Id: projects.class.php 6140 2011-06-20 11:07:49Z cyberhorse $ */
+<?php /* PROJECTS $Id: projects.class.php 6191 2013-01-05 04:28:23Z ajdonnison $ */
 if (!defined('DP_BASE_DIR')) {
 	die('You should not access this file directly.');
 }
@@ -6,7 +6,7 @@ if (!defined('DP_BASE_DIR')) {
 /**
  *	@package dotProject
  *	@subpackage modules
- *	@version $Revision: 6140 $
+ *	@version $Revision: 6191 $
 */
 
 require_once ($AppUI->getSystemClass ('dp'));
@@ -44,9 +44,9 @@ class CProject extends CDpObject {
 	var $project_priority = NULL;
 	var $project_type = NULL;
 
-	function CProject() {
-		$this->CDpObject('projects', 'project_id');
-	}
+	function __construct() {
+		parent::__construct('projects', 'project_id');
+ 	}
 
 	function check() {
 		if (empty($this->project_name)) {
@@ -83,7 +83,7 @@ class CProject extends CDpObject {
 						 . ' * IF(t1.task_duration_type = 24, ' . $working_hours
 						 . ', t1.task_duration_type)) AS project_percent_complete');
 			$q->addJoin('tasks', 't1', 'p.project_id = t1.task_project');
-			$q->addWhere('project_id = ' . $oid);// . ' AND t1.task_id = t1.task_parent'); ==>on veut le calculer en prenant en compte toutes les tâches
+			$q->addWhere('project_id = ' . $oid);// . ' AND t1.task_id = t1.task_parent'); ==>on veut le calculer en prenant en compte toutes les tï¿½ches
 			$this->project_percent_complete = $q->loadResult();
 		}
 		return $result;
@@ -507,7 +507,7 @@ function projects_list_data($user_id=false) {
 		$q->addJoin('user_tasks', 'ut', 'ut.task_id = t.task_id');
 		$q->addWhere('ut.user_id = ' . $user_id);
 	}
-	//$q->addWhere('t.task_id = t.task_parent'); ==>on veut le calculer en prenant en compte toutes les tâches
+	//$q->addWhere('t.task_id = t.task_parent'); ==>on veut le calculer en prenant en compte toutes les tï¿½ches
 	$q->addGroup('t.task_project');
 	$tasks_sum = $q->exec();
 	$q->clear();
@@ -718,10 +718,10 @@ function projects_list_data($user_id=false) {
 }
 
 // Update project_percent_complete in database
-// Author : Henri Saulmé
+// Author : Henri Saulmï¿½
 function smartUpdateProjectPercentComplete($project){
  	$q = new DBQuery();
-	// Récupère l'avancement stocké en base
+	// Rï¿½cupï¿½re l'avancement stockï¿½ en base
 	$q->addTable('projects', 'pr');
 	$q->addQuery('pr.project_percent_complete');
 	$q->addWhere('pr.project_id = '. $project);
@@ -741,7 +741,7 @@ function smartUpdateProjectPercentComplete($project){
 	$q->addTable('projects', 'p');
 	if($oldProject != intval($newProject))//si on a une nouvelle valeur de project_percent_complete
 	{
-		$q->addWhere('project_id = ' . $project);//on veut s'occuper uniquement de la ligne concernée
+		$q->addWhere('project_id = ' . $project);//on veut s'occuper uniquement de la ligne concernï¿½e
 		$q->addUpdate('project_percent_complete', $newProject);//on update le project_percent_complete de la ligne
 		$q->exec();
 		$q->clear();
@@ -750,7 +750,7 @@ function smartUpdateProjectPercentComplete($project){
 
 //Update project_percent_complete of every projets
 //in database 
-//Auteur : Henri Saulmé
+//Auteur : Henri Saulmï¿½
 function updateProjectPercentComplete(){ 
 	$q = new DBQuery();
 	$q->dropTemp(array('tasks_sum'));
@@ -775,7 +775,7 @@ function updateProjectPercentComplete(){
 	foreach($projects as $row)
 	{
 		$q->addTable('projects', 'p');
-		$q->addWhere('project_id = ' . $row['project_id']);//on veut s'occuper uniquement de la ligne concernée
+		$q->addWhere('project_id = ' . $row['project_id']);//on veut s'occuper uniquement de la ligne concernï¿½e
 		$q->addUpdate('project_percent_complete', $row['project_percent_complete']);//on update le project_percent_complete de la ligne
 		$q->exec();
 		$q->clear(); 
