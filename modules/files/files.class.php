@@ -44,12 +44,12 @@ class CFile extends CDpObject {
 	//var $file_helpdesk_item = NULL;
 	
 	
-	function CFile() {
+	function __construct() {
 		global $AppUI, $helpdesk_available;
 		if ($helpdesk_available) {
 			$this->file_helpdesk_item = NULL;
 		}
-		$this->CDpObject('files', 'file_id');
+		parent::__construct('files', 'file_id');
 	}
 	
 	function store() {
@@ -556,7 +556,7 @@ class CFileFolder extends CDpObject {
 	var $file_folder_description = null;
 	
 	function CFileFolder() {
-		$this->CDpObject('file_folders', 'file_folder_id');
+		parent::__construct('file_folders', 'file_folder_id');
 	}
 	
 	function check() {
