@@ -38,6 +38,7 @@
 "Not associated to projects",
 "Notify Assignees of Task or Project Owner by Email",
 "Notify Project and Task Contacts",
+"No Result(s)",
 "Page(s)",
 "Please select a project first!",
 "Please type",

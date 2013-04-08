@@ -39,6 +39,7 @@
 "Move to Project"=>"Mover a proyecto",
 "New File"=>"Nuevo Fichero",
 "No Project Association"=>"No asociado a proyecto",
+"No Result(s)"=>"Sin resultado(s)",
 "Not associated to projects"=>"No asociado a proyectos",
 "Notify Assignees of Task or Project Owner by Email"=>"Notificar a los Usuarios Asignados o al Dueño del Proyecto por Correo Electrónico",
 "Notify Project and Task Contacts"=>"Notificar a los contactos de proyecto y tarea",

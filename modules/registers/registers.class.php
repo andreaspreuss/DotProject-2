@@ -23,8 +23,8 @@ class CRegister extends CDpObject {
 	var $register_state = NULL;
 
 
-	function CRegister() {
-		$this->CDpObject( 'registers', 'register_id' );
+	function __construct() {
+		parent::__construct( 'registers', 'register_id' );
 	}
 }
 ?>

@@ -1,44 +1,12 @@
 <?php
 GLOBAL $AppUI;
 
-// check permissions
-/*$canEdit = !getDenyEdit( 'tasks', $task_id );
-if (!$canEdit) {
-	$AppUI->redirect( "m=public&a=access_denied" );
-}*/
-
-//$task_log_id = intval( dPgetParam( $_GET, 'task_log_id', 0 ) );
 $register_id = intval( dPgetParam( $_GET, 'register_id', 0 ) );
 $register = new CRegister();
 
 if ($register_id) {
 	$register->load( $register_id );
-}/* else {
-	$register->task_log_task = $register_id;
-	$log->task_log_name = $obj->task_name;
-}*/
-
-// Lets check which cost codes have been used before
-/*$sql = "select distinct task_log_costcode
-        from task_log
-        where task_log_costcode != ''
-        order by task_log_costcode";
-$task_log_costcodes = array(""); // Let's add a blank default option
-$task_log_costcodes = array_merge($task_log_costcodes, db_loadColumn($sql));
-*/
-
-//if ($canEdit) {
-// Task Update Form
-//	$df = $AppUI->getPref( 'SHDATEFORMAT' );
-//	$log_date = new CDate( $log->task_log_date );
-
-//	if ($register_id) {
-//		echo $AppUI->_( "Edit Register" );
-//	} else {
-//		echo $AppUI->_( "Add Register" );
-//	}
-//	$start_date = new CDate();
-//	$end_date = new CDate();
+}
 ?>
 
 <script>
