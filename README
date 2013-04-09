@@ -24,7 +24,8 @@ Parts of dotProject include libraries from other projects which are used and re-
 This custom version's page is https://github.com/davmont/DotProject
 
 ATTENTION: This version is "highly unstable" (not dotProject core, but the whole thing),
-		   as I am trying to adapt "legacy" dotmods modules to current dotProject. I
-		   do this in my free time and try to improve my PHP skills while I do so.
+		   as I am trying to adapt "legacy" dotmods modules to current dotProject. 
+		   
+		   Therefore, some optional modules might or might not work.
 
 ****************************************************
