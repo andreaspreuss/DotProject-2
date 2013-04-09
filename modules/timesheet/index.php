@@ -96,17 +96,11 @@ function sendIt() {
 	} 
 }
 </script>
-<table width="98%" border="0" cellpadding="0" cellspacing="2"> 
-<tr> 
-	<td><img src="./images/icons/projects.gif" alt="" border="0" width=42 height=42></td> 
-	<td nowrap>
-		<span class="title"><?php echo $AppUI->_( 'Timesheet' );?></span>
-	</td> 
-	<td align="right" width="100%"></td> 
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">' );?></td> 
-</tr> 
-</table>
-
+<?php 
+$titleBlock = new CTitleBlock("Timesheet", 'applet3-48.png', $m, "$m.$a");
+$titleBlock->show();
+//TODO : Check this "bad HTML Code?
+?>
 <!-- ################# Bad HTML Code -->
 <?php
 
@@ -167,30 +161,25 @@ for ($day = 0; $day < 7; $day++) {
 $date_temp = $time_set -> format("%Y-%m-%d");
 
 //pull data for this timesheet
-$timesheet_sql = "
+$q = new DBQuery();
+$q -> addTable('timesheet');
+$q -> addQuery('*');
+$q -> addWhere("timesheet_date = '$date_temp' AND user_id = $AppUI->user_id");
 
-SELECT timesheet.* 
-from timesheet
-WHERE timesheet_date = '$date_temp'
-AND user_id = $AppUI->user_id
-";
+$result = $q->exec();
+$timesheet_row = $q -> fetchRow();
 
-$result = db_exec ( $timesheet_sql );
-$timesheet_row = db_fetch_assoc ( $result );
+$q -> clear();
+$q -> addTable('task_log','l');
+$q -> addQuery('l.*, u.user_username, t.task_name, t.task_id, t.task_description, p.project_short_name, p.project_id, p.project_description, c.company_name');
+$q -> addJoin('users', 'u', 'user_id=task_log_creator');
+$q -> addJoin('tasks', 't', 'task_id = task_log_task');
+$q -> addJoin('projects','p','project_id = task_project');
+$q -> addJoin('companies','c','company_id = project_company');
+$q -> addWhere("task_log_date = '$date_temp'and user_id = $AppUI->user_id");
+$q -> addOrder('task_log_date');
 
-
-$log_sql = "
-SELECT task_log.*, user_username, tasks.task_name, tasks.task_id, tasks.task_description, projects.project_short_name, projects.project_id, projects.project_description, companies.company_name
-FROM task_log
-LEFT JOIN users ON user_id = task_log_creator
-LEFT JOIN tasks ON task_id = task_log_task
-LEFT JOIN projects ON project_id = task_project
-LEFT JOIN companies ON company_id = project_company
-WHERE task_log_date = '$date_temp'and user_id = $AppUI->user_id
-ORDER BY task_log_date
-";
-
-$logs = db_loadList( $log_sql );
+$logs = $q -> loadList();
 $s = '';
 $logged_hours = 0;
 
@@ -215,21 +204,21 @@ foreach ($logs as $log_row) {
 		<input name="timesheet_id[]" value="<?php echo $timesheet_row["timesheet_id"] ?>" type="hidden">
 	</td> 
 	<td nowrap><input type="text" size="5" name="timesheet_time_in[]" value="<?php 
-		if (db_num_rows($result)) {
+		if ($q ->foundRows()) {
 			$timeIn = splitTime( $timesheet_row["timesheet_time_in"] );
 			if (intval($timeIn->hour) or intval($timeIn->minute)) echo "$timeIn->hour:$timeIn->minute";
 		}
 		?>">
 	</td> 
 	<td nowrap><input type="text" size="5" name="timesheet_time_out[]" value="<?php 
-		if (db_num_rows($result)) {
+		if ($q ->foundRows()) {
 			$timeOut = splitTime( $timesheet_row["timesheet_time_out"] );
 			if (intval($timeOut->hour) or intval($timeOut->minute)) echo "$timeOut->hour:$timeOut->minute";
 		}
 		?>">
 	</td> 
 	<td nowrap><input type="text" size="5" name="timesheet_time_break[]" value="<?php 
-		if (db_num_rows($result)) {
+		if ($q ->foundRows()) {
 			$timeBreak = splitTime( $timesheet_row["timesheet_time_break"] );
 			if (intval($timeBreak->hour) or intval($timeBreak->minute)) echo "$timeBreak->hour:$timeBreak->minute";
 		}

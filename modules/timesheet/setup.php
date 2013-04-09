@@ -42,9 +42,9 @@ class CSetupTimesheet {
 	Install routine
 */
 	function install() {
-		$sql = "
-			CREATE TABLE timesheet (
-				timesheet_id int(11) not NULL auto_increment,
+		$q = new DBQuery();
+		$q -> createTable('timesheet');
+		$q -> createDefinition('(timesheet_id int(11) not NULL auto_increment,
 				user_id int(11) not NULL,
 				timesheet_date date not NULL,
 				timesheet_time_in time not NULL,
@@ -52,26 +52,37 @@ class CSetupTimesheet {
 				timesheet_time_break time not NULL,
 				timesheet_time_break_start time not NULL,
 				timesheet_note varchar(255),
-				PRIMARY KEY (timesheet_id)
-			) TYPE=MyISAM
-			";
-			db_exec( $sql );
-			
-		$sv = new CSysVal( 1, 'BillingCategory', "0|Billable\n1|Unbillable" );
-		$sv->store();
-		$sv = new CSysVal( 1, 'WorkCategory', "0|Programming\n1|Design" );
-		$sv->store();
+				PRIMARY KEY (timesheet_id))');			
+		$q -> exec();
+
+		$q->clear();
+		$q->addTable('sysvals');
+		$q->addInsert('sysval_title', 'BillingCategory');
+		$q->addInsert('sysval_key_id', 1);
+		$q->addInsert('sysval_value', '0|Billable\n1|Unbillable');
+		$q->exec();
+		
+		$q->clear();
+		$q->addTable('sysvals');
+		$q->addInsert('sysval_title', 'WorkCategory');
+		$q->addInsert('sysval_key_id', 1);
+		$q->addInsert('sysval_value', '0|Programming\n1|Design');
+		$q->exec();
+		
 		return true;
 	}
 /*
 	Removal routine
 */
 	function remove() {
-		$sql = "DROP TABLE timesheet";
-		db_exec( $sql );
+		$q = new DBQuery();
+		$q -> dropTable('timesheet');
+		$q -> exec();		
 		
-		//$sql = "DELETE FROM sysvals WHERE sysval_title = 'BillingCategory' or sysval_title = 'WorkCategory'";
-		//db_exec( $sql );
+		$q->clear();
+		$q->setDelete('sysvals');
+        $q->addWhere("sysval_title IN ('BillingCategory', 'WorkCategory')");
+        $q->exec();		
 
 		return true;
 	}

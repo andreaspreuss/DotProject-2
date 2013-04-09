@@ -2,8 +2,12 @@
 	global $wk;
 	$thisDate = new CDate(); // set date for displaying and timesheet_date
 	//check if user is on break
-	$sql = "SELECT timesheet_time_break_start from timesheet where user_id = $AppUI->user_id and timesheet_date = '" . $thisDate->format("%Y-%m-%d") . "'";
-	$column_list = db_loadColumn($sql);
+	$q = new DBQuery();
+	$q -> addTable('timesheet');
+	$q -> addQuery('timesheet_time_break_start');
+	$q -> addWhere("user_id = $AppUI->user_id AND timesheet_date = '" . $thisDate->format("%Y-%m-%d") . "'");
+	
+	$column_list = $q->loadColumn();
 	
 	list(, $on_break) = each($column_list);
 	if ($on_break == '00:00:00') $on_break = 0;

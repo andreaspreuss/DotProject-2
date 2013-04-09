@@ -13,13 +13,16 @@ class Timesheet {
 	var $timesheet_time_break_start = NULL;
 	var $timesheet_note = NULL;
         
-	function Timesheet() {
+	function __construct() {
 		// empty constructor
 	}
 
 	function load( $oid ) {
-		$sql = "SELECT * FROM timesheet WHERE timesheet_id = $oid";
-		return db_loadObject( $sql, $this );
+		$q = new DBQuery();
+		$q -> addTable('timesheet');
+		$q -> addQuery('*');
+		$q -> addWhere('timesheet_id = '.$oid);
+		return $q->loadObject($this);
 	}
 
 	function bind( $hash ) {
@@ -40,6 +43,7 @@ class Timesheet {
 	}
 
 	function store() {
+		$q = new DBQuery();
 		$msg = $this->check();
 		if( $msg ) {
 			return get_class( $this )."::store-check failed";
@@ -56,8 +60,11 @@ class Timesheet {
 		}
 	}
 	function delete() {
-		$sql = "DELETE FROM timesheet WHERE timesheet_id = $this->timesheet_id";
-		if (!db_exec( $sql )) {
+		$q = new DBQuery();
+		$q -> setDelete('timesheet');
+		$q -> addWhere('timesheet_id = '.$this->timesheet_id);
+		
+		if (!$q->exec()) {
 			return db_error();
 		} else {
 			return NULL;

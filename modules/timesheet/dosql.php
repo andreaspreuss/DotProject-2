@@ -11,12 +11,14 @@ $timesheet_date = $_POST['timesheet_date'];
 $timesheet_time_in = $_POST['timesheet_time_in'];
 $timesheet_time_out = $_POST['timesheet_time_out'];
 $timesheet_time_break = $_POST['timesheet_time_break'];
-
+$q = new DBQuery();
 if ($punchIn) {
 	$timesheet = new Timesheet();
-	$sql = "SELECT * from timesheet where user_id = $AppUI->user_id and timesheet_date = '" . $_POST['timesheet_date'] . "'";
+	$q -> addTable('timesheet');
+	$q -> addQuery('*');
+	$q -> addWhere("user_id = $AppUI->user_id and timesheet_date = '" . $_POST['timesheet_date'] . "'");	
 	
-	if (!db_loadObject($sql, $timesheet)) { // timesheet doesn't exist yet.  Create it.
+	if (!$q -> loadObject($timesheet)) { // timesheet doesn't exist yet.  Create it.
 		$timesheet->timesheet_id = "";
 		$timesheet->user_id = $AppUI->user_id;
 		$timesheet->timesheet_date = $_POST['timesheet_date'];
@@ -37,9 +39,11 @@ if ($punchIn) {
 	}
 } else if ($punchOut) {
 	$timesheet = new Timesheet();
-	$sql = "SELECT * from timesheet where user_id = $AppUI->user_id and timesheet_date = '" . $_POST['timesheet_date'] . "'";
+	$q -> addTable('timesheet');
+	$q -> addQuery('*');
+	$q -> addWhere("user_id = $AppUI->user_id and timesheet_date = '" . $_POST['timesheet_date'] . "'");	
 	
-	if (!db_loadObject($sql, $timesheet)) { // timesheet doesn't exist yet.  Create it.
+	if (!$q -> loadObject($timesheet)) { // timesheet doesn't exist yet.  Create it.
 		$timesheet->timesheet_id = "";
 		$timesheet->user_id = $AppUI->user_id;
 		$timesheet->timesheet_date = $_POST['timesheet_date'];
@@ -60,9 +64,11 @@ if ($punchIn) {
 	}
 } else if ($break) {
 	$timesheet = new Timesheet();
-	$sql = "SELECT * from timesheet where user_id = $AppUI->user_id and timesheet_date = '" . $_POST['timesheet_date'] . "'";
+	$q -> addTable('timesheet');
+	$q -> addQuery('*');
+	$q -> addWhere("user_id = $AppUI->user_id and timesheet_date = '" . $_POST['timesheet_date'] . "'");
 
-	if (!db_loadObject($sql, $timesheet)) { // timesheet doesn't exist yet.  Create it.
+	if (!$q -> loadObject($timesheet)) { // timesheet doesn't exist yet.  Create it.
 		$timesheet->timesheet_id = "";
 		$timesheet->user_id = $AppUI->user_id;
 		$timesheet->timesheet_date = $_POST['timesheet_date'];
@@ -113,14 +119,7 @@ if ($punchIn) {
 		$this_post['user_id'] = $AppUI->user_id;
 		
 		
-		if (($this_post['timesheet_id']) or ($this_post['timesheet_time_in'] or $this_post['timesheet_time_out'] or $this_post['timesheet_time_break'])) {	
-			/*
-			print "timesheet_id = " . $this_post["timesheet_id"] . "<br>";
-			print "time_in = " . $this_post["timesheet_time_in"] . "<br>";
-			print "time_out = " . $this_post["timesheet_time_out"] . "<br>";
-			print "time_break = " . $this_post["timesheet_time_break"] . "<br>";
-			print "<BR>";
-			*/
+		if (($this_post['timesheet_id']) or ($this_post['timesheet_time_in'] or $this_post['timesheet_time_out'] or $this_post['timesheet_time_break'])) {			
 			
 			if (($msg = $timesheet->bind( $this_post ))) {
 				$AppUI->setMsg( $msg, UI_MSG_ERROR );
