@@ -60,17 +60,10 @@ function sendIt() {
 	}
 }
 </script>
-<table width="98%" border="0" cellpadding="0" cellspacing="2">
-<tr>
-	<td><img src="./images/icons/projects.gif" alt="" border="0" width=42 height=42></td>
-	<td nowrap>
-		<span class="title"><?php echo $AppUI->_( 'View My Timesheet' );?></span>
-	</td>
-	<td align="right" width="100%"></td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">' );?></td>
-</tr>
-</table>
-
+<?php 
+$titleBlock = new CTitleBlock("View My Timesheet", 'applet3-48.png', $m, "$m.$a");
+$titleBlock->show();
+?>
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
 	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>

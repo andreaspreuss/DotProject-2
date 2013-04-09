@@ -113,8 +113,12 @@ $filters = array(
 	'employee' => 'Employee TimeSheets',
 );
 ?>
+<?php 
+$titleBlock = new CTitleBlock($AppUI->getState( 'TtrackIdxFilter' ) !== NULL ? $filters[$AppUI->getState( 'TtrackIdxFilter' )] : 'My TimeSheets' . ' Overview', 'applet3-48.png', $m, "$m.$a");
+$titleBlock->show();
 
-
+/*
+ TODO : Fix the code to show the droplist
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
 <tr>
 	<td><img src="./images/icons/projects.gif" alt="" border="0" width=42 height=42></td>
@@ -132,13 +136,8 @@ $filters = array(
         </td>
 </tr>
 </table>
+*/
 
-
-<?php
-// echo "tab setting = [$tab]";
-// tabbed information boxes
-/* More errors associated with attempts to use deprecated $root_dir variable. */
-/*$tabBox = new CTabBox( "?m=timetrack", "$root_dir/modules/timetrack/", $tab );*/
 $tabBox = new CTabBox( "?m=timetrack", "./modules/timetrack/", $tab );
 $tabBox->add( 'vw_idx_active', 'Active TimeSheets' );
 $tabBox->add( 'vw_idx_archived', 'Submitted TimeSheets' );

@@ -40,34 +40,34 @@ class CSetupTimeTrack {
 	Install routine
 */
 	function install() {
-               $ok=1;
-               $sql = new DBQuery();
-               $sql -> createTable('timetrack_data');
-               $sql -> createDefinition("(
+        $ok=1;
+        $q = new DBQuery();
+        $q -> createTable('timetrack_data');
+        $q -> createDefinition("(
 			  tt_data_id int(11) NOT NULL auto_increment,
-			  tt_data_timesheet_id int(11) unsigned NOT NULL default '0',
+			  tt_data_timesheet_id int(11) unsigned NOT NULL default 0,
 			  tt_data_date datetime NOT NULL default '0000-00-00 00:00:00',
 			  tt_data_client_id int(6) unsigned default NULL,
 			  tt_data_project_id int(11) unsigned default NULL,
 			  tt_data_task_id int(11) unsigned default NULL,
 			  tt_data_description varchar(44) NOT NULL default '',
-			  tt_data_hours float NOT NULL default '0',
-			  tt_data_change_date timestamp(14) NOT NULL,
+			  tt_data_hours float NOT NULL default 0,
+			  tt_data_change_date timestamp NOT NULL,
 			  tt_data_note varchar(255) default NULL,
 			  PRIMARY KEY  (tt_data_id)
-			)");
-		$ok = $ok & $sql ->exec();
+		)");
+		$ok = $ok & $q ->exec();
+		
+		$q =new DBQuery();
 
-		$sql ->clear();
-
-		$sql -> createTable('timetrack_idx');
-		$sql -> createDefinition("(
+		$q -> createTable('timetrack_idx');
+		$q -> createDefinition("(
                             tt_id int(11) NOT NULL auto_increment,
-                            tt_user_id int(11) NOT NULL default '0',
-                            tt_week int(2) NOT NULL default '0',
+                            tt_user_id int(11) NOT NULL default 0,
+                            tt_week int(2) NOT NULL default 0,
                             tt_active tinyint(4) default NULL,
                             tt_note_id int(11) default NULL,
-                            tt_year int(4) NOT NULL default '0',
+                            tt_year int(4) NOT NULL default 0,
                             tt_submitted date default NULL,
                             tt_start_date datetime default NULL,
                             tt_end_date datetime default NULL,
@@ -76,12 +76,11 @@ class CSetupTimeTrack {
                             tt_approve_note varchar(80) default NULL,
                             tt_approve_note_date date NOT NULL default '0000-00-00',
                             PRIMARY KEY  (tt_id)
-                          )");
-		$sql -> createDefinition($query);
-                $ok = $ok & $sql ->exec();
-               if(!$ok){
-                  return $ok;
-               }
+                          )");		
+        $ok = $ok & $q ->exec();
+        if(!$ok){
+          return $ok;
+        }
 		return null;
 	}
 /*
