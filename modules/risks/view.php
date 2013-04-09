@@ -209,8 +209,7 @@ $titleBlock->show();
         </tr>
         <tr>
             <td align="center">
-                <input type="button" class="button" value="<?php echo $AppUI->_('LBL_RETURN'); ?>" onclick="{location.href = '<?php echo $href; ?>';}" 
-
+                <input type="button" class="button" value="<?php echo $AppUI->_('LBL_RETURN'); ?>" onclick="{location.href = '<?php echo $href; ?>';}"/>
             </td>
         </tr>
     </form>
