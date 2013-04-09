@@ -33,7 +33,7 @@ $titleBlock->show();
   </tr>
   <tr>
     <td align="right">&nbsp;</td>
-    <td align="right"><input type="submit" class="button" name="restore" value="<?php echo $AppUI->_('upload'); ?>"</td>
+    <td align="right"><input type="submit" class="button" name="restore" value="<?php echo $AppUI->_('upload'); ?>" /></td>
   </tr>
 </table>
 </div>

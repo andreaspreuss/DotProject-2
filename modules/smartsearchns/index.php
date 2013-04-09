@@ -144,7 +144,7 @@ else {
 						<?php 
 							echo ($ssearch["mod_$temp"]=='on') ? "checked='checked'" :'';
 							echo '>'.$AppUI->_($objarray[$temp]);
-						?> 
+						?> />
 				</td></tr>
 				<?php 	}?>
 				</table>

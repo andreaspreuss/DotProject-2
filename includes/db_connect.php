@@ -406,7 +406,7 @@ function db_updateObject($table, &$object, $keyName, $updateNulls=true, $descrip
 						$keyDesc = db_loadResult('SELECT permissions_item_label FROM '.$dbprefix.'modules'
 						                         . " WHERE permissions_item_table = '" . $table . "'");
 					} else {
-					$keyDesc = db_loadResult('SELECT permissions_item_label FROM modules'
+					$keyDesc = db_loadResult('SELECT permissions_item_label FROM '.$dbprefix.'modules'
 					                         . " WHERE permissions_item_table = '" . $table . "'");
 					}
 				}

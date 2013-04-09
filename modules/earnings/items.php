@@ -454,7 +454,7 @@ if ( $tab ) {
 					$&nbsp;<input type="text" name="adhoc_earning_item_rate" size="6" maxlength="10" value="0.00">
 				</td>
 			<?php } else { ?>
-				<td><input type="hidden" name="adhoc_earning_item_rate" size="6" maxlength="10" value="0.00"</td>
+				<td><input type="hidden" name="adhoc_earning_item_rate" size="6" maxlength="10" value="0.00" /></td>
 			<?php } ?>
 			<td valign="top">
 					<center><input type="button" name="btnAdHoc" value=" add " onClick="addAdHoc();"></center></form>

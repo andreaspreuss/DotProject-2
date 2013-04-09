@@ -41,7 +41,7 @@ $df = $AppUI->getPref('SHDATEFORMAT');
    $end_date = intval($p['project_end_date']) ? new CDate($p['project_end_date']) : null;
 ?>
   <tr>
-	<td> <a href="?m=closure&amp;a=addedit&amp;pma_id=<?php echo $p['pma_id'];?>"><img src="./images/icons/pencil.gif" alt="Edit post mortem analysis"</a> </td>	
+	<td> <a href="?m=closure&amp;a=addedit&amp;pma_id=<?php echo $p['pma_id'];?>"><img src="./images/icons/pencil.gif" alt="Edit post mortem analysis"/></a> </td>	
 
  	<td> <a href="?m=closure&amp;a=view&amp;pma_id=<?php echo $p['pma_id'];?>"><?php echo $p['project_name']; ?></a> </td>
 	

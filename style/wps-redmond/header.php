@@ -50,7 +50,7 @@ else
 		echo "\n";
 		?>
 		</td>
-		<form name="frm_new" method=GET action="./index.php">
+		<form name="frm_new" method="get" action="./index.php">
 <?php
 	echo '        <td nowrap="nowrap" align="right">';
 	$newItem = array( ""=>'- New Item -' );
