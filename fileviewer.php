@@ -1,4 +1,4 @@
-<?php /* $Id$ */
+<?php /* $Id: fileviewer.php 6201 2013-01-15 06:41:50Z ajdonnison $ */
 
 /*
 All files in this work, except the modules/ticketsmith directory, are now
@@ -101,14 +101,11 @@ if (!$canRead) {
 $file_id = isset($_GET['file_id']) ? (int)$_GET['file_id'] : 0;
 
 if ($file_id) {
-	// projects that are denied access
+	// projects tat are denied access
 	require_once($AppUI->getModuleClass('projects'));
-	require_once($AppUI->getModuleClass('macroprojects'));
 	require_once($AppUI->getModuleClass('files'));
 	$project = new CProject;
-	$macroproject = new CMacroProject;
 	$allowedProjects = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
-	$allowedMacroProjects = $macroproject->getAllowedRecords($AppUI->user_id, 'macroproject_id, macroproject_name');
 	$fileclass = new CFile;
 	$fileclass->load($file_id);
 	$allowedFiles = $fileclass->getAllowedRecords($AppUI->user_id, 'file_id, file_name');
@@ -121,9 +118,6 @@ if ($file_id) {
 	$q->addTable('files');
 	if ($fileclass->file_project) {
 		$project->setAllowedSQL($AppUI->user_id, $q, 'file_project');
-	}
-	if ($fileclass->file_macroproject) {
-		$macroproject->setAllowedSQL($AppUI->user_id, $q, 'file_macroproject');
 	}
 	$q->addWhere('file_id = '.$file_id);
 	
@@ -185,4 +179,3 @@ if ($file_id) {
 	$AppUI->setMsg('fileIdError', UI_MSG_ERROR);
 	$AppUI->redirect();
 }
-?>
