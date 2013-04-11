@@ -122,10 +122,10 @@ function delIt() {
 		<tr>
 			<td align="right" valign="top" width="100"><?php echo $AppUI->_('Address');?>:</td>
 			<td>
-                    <?php echo $AppUI->___(@$row->contact_address1);?><br />
-			        <?php echo $AppUI->___(@$row->contact_address2);?><br />
-			        <?php echo $AppUI->___(@$row->contact_city . ', ' . @$row->contact_state . ' ' . @$row->contact_zip);?><br />
-			        <?php echo $AppUI->___(@$row->contact_country);?><br />
+                    <?php echo NULL==@$row->contact_address1? '': $AppUI->___(@$row->contact_address1).'<br />','';?>
+			        <?php echo NULL==@$row->contact_address2? '': $AppUI->___(@$row->contact_address2).'<br />';?>
+			        <?php echo $AppUI->___( (NULL==@$row->contact_city ? '': @$row->contact_city . ', ') . @$row->contact_state . ' ' . @$row->contact_zip);?><br />
+			        <?php echo NULL==@$row->contact_country?'':$AppUI->___(@$row->contact_country).'<br />';?>
 			        
            </td>
 		</tr>
