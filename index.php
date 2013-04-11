@@ -1,4 +1,4 @@
-<?php /* $Id: index.php 6191 2013-01-05 04:28:23Z ajdonnison $ */
+<?php /* $Id: index.php 6206 2013-02-26 04:10:17Z ajdonnison $ */
 
 /* {{{ Copyright (c) 2003-2005 The dotProject Development Team <core-developers@dotproject.net>
 
@@ -117,7 +117,7 @@ if (dPgetParam($_POST, 'lostpass', 0)) {
 // and HTTP auth methods now supported.
 if (isset($_REQUEST['login'])) {
 	$username = dPgetCleanParam($_POST, 'username', '');
-	$password = dPgetCleanParam($_POST, 'password', '');
+	$password = dPgetParam($_POST, 'password', '');
 	$redirect = dPgetCleanParam($_REQUEST, 'redirect', '');
 	$AppUI->setUserLocale();
 	@include_once(DP_BASE_DIR . '/locales/' . $AppUI->user_locale . '/locales.php');
