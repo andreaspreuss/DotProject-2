@@ -1,3 +1,5 @@
+@import "../tasks.css";
+
 /* dotPROJECT REQUIRED CLASSES */
 BODY {
 	background-color: #FFFFFF;
@@ -154,37 +156,35 @@ Begin IE TD buttonizing
 */
 
 TD.clsBtnUp {
-	cursor: hand;
+	cursor: pointer;
 	color: #FFFFFF;
-	padding: 0 3;
+	padding: 0px 3px;
 	border: inset 2px;
 }
 
 TD.clsBtnDown {
-	cursor: hand;
+	cursor: pointer;
 	color: #FFFFFF;
-	padding: 0 3;
+	padding: 0px 3px;
 	border: inset 2px;
 }
 
 TD.clsBtnOn {
-	cursor: hand;
+	cursor: pointer;
 	color: #FFFFFF;
-	padding: 0 3;
+	padding: 0px 3px;
 	border: outset #eeeeee 2px;
 }
 
 TD.clsBtnOff {
 	color: #FFFFFF;
-	padding: 0 3;
-	tab-index: 0;
+	padding: 0px 3px;
 	border: solid #559999 2px;
 }
 
 TD.topBtnOff {
 	color: #FFFFFF;
-	padding: 0 3;
-	/* tab-index: 0; //tab index not valid for TD */
+	padding: 0px 3px;
 	border: solid #cccccc 2px;
 }
 
@@ -209,7 +209,7 @@ table.tbl TH {
 	list-style-position: inside;
 }
 
-table.tbl td {
+table.tbl tr {
 	background-color: #ECECEC;
 }
 
@@ -225,8 +225,8 @@ table.std TH {
 	font: 13px verdana, arial, helvetica, sans-serif;
 	font-weight: bold;
 	text-align: center;
-	color: black;
-	margin-bottom: 0;
+	color: white;
+	margin-bottom: 0px;
 	padding: 1px 1px 1px 1px;
 	list-style-type: disc;
 	list-style-position: inside;
@@ -260,21 +260,11 @@ A.hdr:link, A.hdr:active, A.hdr:visited {
 }
 
 /* tabbed boxes */
+
 td.tabon {
-	/*
-	border-top: outset #ffffff 1px;
-	border-left: outset #ffffff 1px;
-	border-right: outset #cccccc 2px;
-	border-bottom: none;
-	*/
 	background: #ffffff url('images/bar_top_Selectedmiddle.gif') repeat-x top;
 }
 td.taboff {
-	/* border-top: solid #cccccc 1px;
-	border-left: solid #cccccc 1px;
-	border-right: solid #cccccc 1px;
-	border-bottom: solid #cccccc 2px;
-	*/
 	background: #ffffff url('images/bar_top_middle.gif') repeat-x top;
 }
 td.tabsp {
@@ -345,9 +335,10 @@ table.popcal td.empty {
 	background-color: #e0e0e0;
 }
 
-table.mocal td.day  {
+table.mocal td.day a {
 	background-color: #ffffff;
 	text-align: center;
+	display: block;
 }
 
 table.popcal td.today {
@@ -479,14 +470,3 @@ table.tbl td.event td {
 }
 
 .hidden {display:none;}
-
-th strong {
-  float: left;
-  margin-top: 2px;
-}
-th form {
-  float: right;
-  padding: 0;
-  margin: 0;
-  margin-top: 1px;
-}
