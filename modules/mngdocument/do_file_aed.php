@@ -13,14 +13,9 @@ $delall = dPgetParam( $_POST, 'delall', '' );
 
 
 
-$obj = new CFile();
+$obj = new CFile("SGD","SGD_id");
 
-$obj->_tbl="SGD";
-$obj->_tbl_key="SGD_id";
-
-$log = new CFileLog ();
-$log->_tbl="SGD_Logs";
-$log->_tbl_key="SGD_Log_id";
+$log = new CFileLog ("SGD_Logs","SGD_Log_id");
 
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
