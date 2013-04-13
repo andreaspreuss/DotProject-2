@@ -17,8 +17,8 @@ class CFile extends CDpObject {
 	var $SGD_state = NULL;
 
 	
-	function CFile() {
-		$this->CDpObject( 'mngdocument', 'file_id' );
+	function __construct() {
+		parent::__construct( 'mngdocument', 'file_id' );
 	}
 
 	function check() {
