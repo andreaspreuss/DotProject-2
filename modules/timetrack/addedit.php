@@ -13,32 +13,31 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 
 //pull data 
 // if we have a TID, then we editing an existing row
-$sql = " 
-SELECT timetrack_data.*, project_name, task_name
-FROM timetrack_data
-LEFT JOIN projects ON project_id = tt_data_project_id
-LEFT JOIN tasks ON task_id = tt_data_task_id
-WHERE tt_data_id = $tid 
-"; 
-db_loadHash( $sql, $tt_data );
+$q = new DBQuery();
+$q -> addTable('timetrack_data','d');
+$q -> addQuery('d.*,p.project_name,t.task_name');
+$q -> addJoin('projects','p','project_id = tt_data_project_id');
+$q -> addJoin('tasks','t','t.task_id = d.tt_data_task_id');
+$q -> addWhere('tt_data_id = '.$tid);
+$tt_data=$q -> loadHash();
 ##echo '<pre>';print_r($tt_data);echo '</pre>';##
 
 $date = @$tt_data["tt_data_date"] ? CDate::fromDateTime( $tt_data["tt_data_date"] ) : new CDate();
 
 // get user -> tasks
-$sql = "
-SELECT u.task_id, t.task_name, t.task_project,
-	p.project_name, p.project_company, c.company_name
-FROM user_tasks u, tasks t
-LEFT JOIN projects p ON p.project_id = t.task_project
-LEFT JOIN companies c ON c.company_id = p.project_company
-WHERE u.user_id = $AppUI->user_id
-	AND u.task_id = t.task_id
-ORDER by p.project_name, t.task_name
-";
+$q= new DBQuery();
+$q -> addTable('user_tasks','u');
+$q -> addTable('tasks','t');
+$q -> addQuery('u.task_id, t.task_name, t.task_project,
+	p.project_name, p.project_company, c.company_name');
+$q -> addJoin('projects','p','p.project_id = t.task_project');
+$q -> addJoin('companies','c','c.company_id = p.project_company');
+$q -> addWhere('u.user_id = '.$AppUI->user_id);
+$q -> addWhere('u.task_id = t.task_id');
+$q -> addOrder('p.project_name, t.task_name');
 ##echo "<pre>$sql</pre>";
 
-$res = db_exec( $sql );
+$res = $q -> exec();
 echo db_error();
 $tasks = array();
 $project = array();
