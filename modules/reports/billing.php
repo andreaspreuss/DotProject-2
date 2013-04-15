@@ -22,32 +22,34 @@ $start_date = $AppUI->getState( 'start_date_billing' );
 $end_date   = $AppUI->getState( 'end_date_billing' );
 
 
-$select_sql = "select task_log_hours, task_log_bill_category, ";
+$q = new DBQuery();
+$q -> addQuery('task_log_hours, task_log_bill_category');
+
 $displayed_columns = array();
 
 // select sql
 if ($show_details) {
-	$select_sql .= " task_log_work_category as task_log_cost_code, task_log_description as task_log_summary,";
+	$q -> addQuery('task_log_work_category as task_log_cost_code, task_log_description as task_log_summary');
 	$displayed_columns[] = SUMMARY;
 }
 if ($list_by_task) {
-	$select_sql .= " task_name, task_id,";
+	$q -> addQuery('task_name, task_id');
 	$displayed_columns[] = TASK;
 }
 if ($list_by_project) {
-	$select_sql .= " project_name, project_id,";
+	$q -> addQuery('project_name, project_id');
 	$displayed_columns[] = PROJECT;
 }
 if ($list_by_company) {
-	$select_sql .= " company_name, company_id,";
+	$q -> addQuery('company_name, company_id');
 	$displayed_columns[] = COMPANY;
 }
 if ($list_by_department) {
-	$select_sql .= " dept_name as department_name,";
+	$q -> addQuery('dept_name as department_name');
 	$displayed_columns[] = DEPARTMENT;
 }
 if ($list_by_employee) {
-	$select_sql .= " concat(user_first_name, ' ', user_last_name) as employee_name,";
+	$q -> addQuery("concat(user_first_name, ' ', user_last_name) as employee_name");
 	$displayed_columns[] = EMPLOYEE;
 }
 
@@ -71,42 +73,47 @@ $start_date = $start_date->format( FMT_DATETIME_MYSQL );
 $end_date = new CDate( $end_date );
 $end_date = $end_date->format( FMT_DATETIME_MYSQL );
 
-$select_sql = substr($select_sql, 0, strlen($select_sql) - 1);
-
 // from sql
-$from_sql = " from task_log";
+$q -> addTable('task_log','l');
 
 // join sql
-$join_sql = "";
-if ($list_by_task or $list_by_project or $list_by_company)
-	$join_sql .= " LEFT JOIN tasks on task_id = task_log_task";
-if ($list_by_project or $list_by_company)
-	$join_sql .= " LEFT JOIN projects on project_id = task_project";
-if ($list_by_company)
-	$join_sql .= " LEFT JOIN companies on company_id = project_company";
-if ($list_by_employee or $list_by_department)
-	$join_sql .= " LEFT JOIN users on user_id = task_log_creator";
-if ($list_by_department)
-	$join_sql .= " LEFT JOIN departments on dept_id = user_department";
+if ($list_by_task or $list_by_project or $list_by_company){
+	$q -> addJoin('tasks','t','t.task_id = l.task_log_task');
+}
+if ($list_by_project or $list_by_company){
+	$q -> addJoin('projects','p','p.project_id = l.task_project');;
+}
+if ($list_by_company){
+	$q -> addJoin('companies','c','c.company_id = l.project_company');
+}
+if ($list_by_employee or $list_by_department){
+	$q -> addJoin('users','u','u.user_id = l.task_log_creator');;
+}
+if ($list_by_department){
+	$q -> addJoin('departments','d','d.dept_id = l.user_department');;
+}
 	
 // where sql
-$where_sql = " where task_log_date >= '" . $start_date . " 00:00:00' and task_log_date <= '" . $end_date . " 00:00:00'";
-if ($task and $list_by_task)
-	$where_sql .= " and task_id = " . $task;
-if ($project and $list_by_project)
-	$where_sql .= " and project_id = " . $project;
-if ($company and $list_by_company)
-	$where_sql .= " and company_id = " . $company;
-if ($employee and $list_by_employee)
-	$where_sql .= " and user_id = " . $employee;
-if ($department and $list_by_department)
-	$where_sql .= " and dept_id = " . $department;
+$q -> addWhere("l.task_log_date >= '" . $start_date . " 00:00:00' and l.task_log_date <= '" . $end_date . " 00:00:00'");
+if ($task and $list_by_task){
+	$q -> addWhere('t.task_id = ' . $task);
+}
+if ($project and $list_by_project){
+	$q -> addWhere('p.project_id = ' . $project);
+}
+if ($company and $list_by_company){
+	$q -> addWhere('c.company_id = ' . $company);
+}
+if ($employee and $list_by_employee){
+	$q -> addWhere('u.user_id = ' . $employee);
+}
+if ($department and $list_by_department){
+	$q -> addWhere('d.dept_id = ' . $department);
+}
 
 //echo $select_sql . "<br>" . $from_sql . "<br>" . $join_sql . "<br>" . $where_sql;
 
-$sql = $select_sql . $from_sql . $join_sql . $where_sql;
-
-$results = db_LoadList($sql);
+$results = $q -> loadList();
 
 $tree = make_new_tree();
 

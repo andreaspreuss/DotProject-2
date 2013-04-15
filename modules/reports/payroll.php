@@ -36,49 +36,47 @@ if ( $AppUI->getState('show_timesheet_payroll') ) {
 	echo "\n\t<th colspan=\"6\">Payroll for " . $start_date->format("%b/%d/%Y") . " - " . $end_date->format("%b/%d/%Y") . "</th>";
 	// ->format("%b/%d/%Y")
 	echo "\n</tr>";
-	
-	if ( $AppUI->getState( 'employee_payroll' ) == 0 ) {
+	$q = new DBQuery();
+	$q -> addtable('users','u');
+	$q -> addJoin('contacts','c','c.contact_id=u.user_contact');
+	$q -> addQuery('u.user_id, c.contact_first_name, c.contact_last_name');
+	if ( $AppUI->getState( 'employee_payroll' ) == 0 ) {		
+		$q -> addWhere("u.user_company =  $AppUI->user_company");
+		$q -> addOrder('contact_last_name, contact_first_name');
+		$result = $q -> loadList();
 		
-		$sql = "
-		SELECT user_id, user_first_name, user_last_name
-		FROM users
-		WHERE user_company =  $AppUI->user_company
-		order by user_last_name, user_first_name
-		";
-		
-		$result = db_loadList( $sql );
 		foreach ($result as $row) {
-			traverse_employees($row['user_id'], $row['user_first_name'], $row['user_last_name']);
+			traverse_employees($row['user_id'], $row['contact_first_name'], $row['contact_last_name']);
 		}
 	
 	
 	} else {
 
-		$sql = "
-		SELECT user_id, user_first_name, user_last_name
-		FROM users
-		WHERE user_id = " . $AppUI->getState('employee_payroll') ;
+		$q -> addWhere("u.user_id = $AppUI->getState('employee_payroll')");		
+		$q -> loadObject($row);
 		
-		db_loadObject($sql, $row);
-		
-		traverse_employees($row->user_id, $row->user_first_name, $row->user_last_name);
+		traverse_employees($row->user_id, $row->contact_first_name, $row->contact_last_name);
 	}
 	
 	echo "\n</table>\n";
 	echo "<p />\n";
 }
 if ( $AppUI->getState( 'show_project_payroll' ) ) {
-	$sql = "
-	SELECT project_id, project_name, SUM(task_log_hours) as task_log_hours, task_log_bill_category
-	FROM task_log
-	LEFT JOIN tasks ON task_id = task_log_task
-	LEFT JOIN projects ON project_id = task_project " .
-	" WHERE " . ($AppUI->getState('employee_payroll') ? "task_log_creator = " . $AppUI->getState('employee_payroll') . " and " : "") . "task_log_date >= '" . $start_date->format( FMT_DATETIME_MYSQL ) . "' and task_log_date <= '" . $end_date->format( FMT_DATETIME_MYSQL ) . "'
-	GROUP BY project_id, task_log_bill_category
-	ORDER BY project_name, project_id
-	";
 	
-	$projects = db_loadList($sql);
+	$q = new DBQuery();
+	$q -> addTable('task_log','l');
+	$q -> addQuery('project_id, project_name, SUM(task_log_hours) as task_log_hours, task_log_costcode');
+	$q -> addJoin('tasks','t','t.task_id = l.task_log_task');
+	$q -> addJoin('projects','p','p.project_id = t.task_project');
+	if($AppUI->getState('employee_payroll')){
+		$q -> addWhere( "l.task_log_creator = " . $AppUI->getState('employee_payroll'));
+	}
+	$q -> addWhere("l.task_log_date >= '" . $start_date->format( FMT_DATETIME_MYSQL ) . "'");
+	$q -> addWhere("l.task_log_date <= '" . $end_date->format( FMT_DATETIME_MYSQL ) . "'");
+	$q -> addGroup('project_id, task_log_costcode');
+	$q -> addGroup('project_name, project_id');
+	
+	$projects = $q -> loadList();
 	
 	$total_hours = array();
 
@@ -101,14 +99,14 @@ if ( $AppUI->getState( 'show_project_payroll' ) ) {
 		if (!$prev_project_id) $prev_project_id = $project_row['project_id'];
 		
 		if ($prev_project_id == $project_row['project_id']) {
-			//echo $total_hours[$project_row['task_log_bill_category']] . " is the total hours for " . $project_row['project_name'] . "<BR />\n";
-			$total_hours[$project_row['task_log_bill_category']] = $project_row['task_log_hours'];
+			//echo $total_hours[$project_row['task_log_costcode']] . " is the total hours for " . $project_row['project_name'] . "<BR />\n";
+			$total_hours[$project_row['task_log_costcode']] = $project_row['task_log_hours'];
 		} else {
 			$prev_project_row = $projects[$i - 1];
 			
 			print_project_row( $prev_project_row['project_name'], $total_hours );
 			
-			$total_hours[$project_row['task_log_bill_category']] = $project_row['task_log_hours'];
+			$total_hours[$project_row['task_log_costcode']] = $project_row['task_log_hours'];
 			
 			$prev_project_id = $project_row['project_id'];
 		}
@@ -123,16 +121,19 @@ if ( $AppUI->getState( 'show_project_payroll' ) ) {
 
 if ( $AppUI->getState( 'show_work_categories_payroll' ) ) {
 
-	$sql = "
-		SELECT SUM(task_log_hours) as sum_hours, task_log_work_category, task_log_bill_category 
-		FROM task_log 
-		LEFT JOIN tasks ON task_id = task_log_task 
-		WHERE " . ($AppUI->getState('employee_payroll') ? "task_log_creator = " . $AppUI->getState('employee_payroll') . " and " : "") . "task_log_date >= '" . $start_date->format( FMT_DATETIME_MYSQL ) . "' and task_log_date <= '" . $end_date->format( FMT_DATETIME_MYSQL ) . "'
-		GROUP BY task_log_work_category, task_log_bill_category 
-		ORDER BY task_log_work_category
-		";
+	$q = new DBQuery();
+	$q -> addTable('task_log','l');
+	$q -> addQuery('SUM(task_log_hours) as sum_hours, task_log_costcode, task_log_costcode'); 
+	$q -> addJoin('tasks','t','t.task_id = l.task_log_task');
+	if($AppUI->getState('employee_payroll')){
+		$q -> addWhere("task_log_creator = " . $AppUI->getState('employee_payroll'));
+	}
+	$q -> addWhere("task_log_date >= '" . $start_date->format( FMT_DATETIME_MYSQL ) . "'");
+	$q -> addWhere("task_log_date <= '" . $end_date->format( FMT_DATETIME_MYSQL ) . "'");
+	$q -> addGroup('task_log_costcode, task_log_costcode');
+	$q -> addOrder('task_log_costcode');		
 
-	$categories = db_loadList($sql);
+	$categories = $q -> loadList();
 
 	echo "\n<table border=\"0\" width=\"75%\" bgcolor=\"#f4efe3\" cellpadding=\"3\" cellspacing=\"1\" class=\"tbl\">";
 	echo "\n<tr>";
@@ -147,17 +148,17 @@ if ( $AppUI->getState( 'show_work_categories_payroll' ) ) {
 	for ( $i=0; $i < sizeof($categories); $i++) {
 		$wk_cat_row = $categories[$i];
 			
-		if ( !isset( $prev_wk_cat ) ) $prev_wk_cat = $wk_cat_row['task_log_work_category'];
+		if ( !isset( $prev_wk_cat ) ) $prev_wk_cat = $wk_cat_row['task_log_costcode'];
 		
-		if ( $prev_wk_cat == $wk_cat_row['task_log_work_category'] ) {
-			$hrs[$wk_cat_row['task_log_bill_category']] = $wk_cat_row['sum_hours'];
+		if ( $prev_wk_cat == $wk_cat_row['task_log_costcode'] ) {
+			$hrs[$wk_cat_row['task_log_costcode']] = $wk_cat_row['sum_hours'];
 		} else {
 			
 			print_project_row( $work_category[$prev_wk_cat], $hrs );
 			
-			$hrs[$wk_cat_row['task_log_bill_category']] = $wk_cat_row['sum_hours'];
+			$hrs[$wk_cat_row['task_log_costcode']] = $wk_cat_row['sum_hours'];
 			
-			$prev_wk_cat = $wk_cat_row['task_log_work_category'];
+			$prev_wk_cat = $wk_cat_row['task_log_costcode'];
 		}
 		
 		if ( $i == sizeof($categories) - 1) 
@@ -188,29 +189,30 @@ function traverse_employees( $employee_id, $employee_first_name, $employee_last_
 	global $AppUI, $start_date, $end_date, $bill_category, $work_category;
 	
 	// select timesheets
-	$sql = "
-	SELECT * 
-	FROM timesheet
-	WHERE user_id = $employee_id and timesheet_date >= '" . $start_date->format( FMT_DATETIME_MYSQL ) . "' and timesheet_date <= '" . $end_date->format( FMT_DATETIME_MYSQL ) . "'
-	ORDER BY timesheet_date
-	";
+	$q = new DBQuery();
+	$q -> addTable('timesheet','t');
+	$q -> addQuery('*');
+	$q -> addWhere("t.user_id = $employee_id and t.timesheet_date >= '" . $start_date->format( FMT_DATETIME_MYSQL ) . "'");
+	$q -> addWhere("t.timesheet_date <= '" . $end_date->format( FMT_DATETIME_MYSQL ) . "'");
+	$q -> addOrder('timesheet_date');
 	
-	$timesheets = db_loadList($sql);
+	$timesheets = $q -> loadList();
 	list(, $timesheet_row) = each( $timesheets );
 	
 	// select task logs
-	$sql = "
-	SELECT task_log.*, tasks.task_name, projects.project_short_name, companies.company_name
-	FROM task_log
-	LEFT JOIN users ON user_id = task_log_creator
-	LEFT JOIN tasks ON task_id = task_log_task
-	LEFT JOIN projects ON project_id = task_project
-	LEFT JOIN companies ON company_id = project_company
-	WHERE task_log_creator = $employee_id and task_log_date >= '" . $start_date->format( FMT_DATETIME_MYSQL ) . "' and task_log_date <= '" . $end_date->format( FMT_DATETIME_MYSQL ) . "'
-	ORDER BY task_log_date
-	";
+	$q = new DBQuery();
+	$q -> addTable('task_log','l');		
+	$q -> addQuery('l.*, t.task_name, p.project_short_name, c.company_name');
+	$q -> addJoin('users','u','u.user_id = l.task_log_creator');
+	$q -> addJoin('tasks','t','t.task_id = l.task_log_task');
+	$q -> addJoin('projects','p','p.project_id = t.task_project');
+	$q -> addJoin('companies','c','c.company_id = p.project_company');
+	$q -> addWhere('l.task_log_creator = '.$employee_id);
+	$q -> addWhere("l.task_log_date >= '" . $start_date->format( FMT_DATETIME_MYSQL ) . "'");
+	$q -> addWhere("l.task_log_date <= '" . $end_date->format( FMT_DATETIME_MYSQL ) . "'");
+	$q -> addOrder('task_log_date');
 	
-	$task_logs = db_loadList($sql);
+	$task_logs = $q -> loadList();
 	list(, $task_log_row) = each( $task_logs );
 	
 	// date stuff
@@ -304,9 +306,9 @@ myOutput;
 				//echo "\n\t<td>" . $task_log_row['task_log_name'] . "</td>";
 				echo "\n\t<td>" . sprintf( "%.2f", $task_log_row['task_log_hours'] )  . "</td>";
 				if ( $AppUI->getState('show_work_category_column') )
-					echo "\n\t<td>" . $work_category[$task_log_row['task_log_work_category']] . "</td>";
+					echo "\n\t<td>" . $work_category[$task_log_row['task_log_costcode']] . "</td>";
 				if ( $AppUI->getState('show_billing_category_column') )
-					echo "\n\t<td>" . $bill_category[$task_log_row['task_log_bill_category']] . "</td>";
+					echo "\n\t<td>" . $bill_category[$task_log_row['task_log_costcode']] . "</td>";
 				echo "\n\t<td>" . $task_log_row['task_log_description'] . "</td>";
 				echo "\n</tr>";
 				

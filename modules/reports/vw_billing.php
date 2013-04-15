@@ -5,48 +5,46 @@ require_once dPgetConfig( 'root_dir' ).'/modules/ticketsmith/common.inc.php';
 // may need so more thought as to which company to pull.  (maybe just search for 'internal' type companies)
 
 // companies
-$sql = "
-SELECT company_id, company_name
-FROM companies
-ORDER BY company_name
-";
-$company_res = db_exec( $sql );
+$qc = new DBQuery();
+$qc -> addTable('companies');
+$qc -> addQuery('company_id, company_name');
+$qc -> addOrder('company_name');
+$companies = $qc -> loadList();
 
 // projects
-$sql = "
-SELECt project_id, project_name, project_company
-FROM projects
-ORDER BY project_name
-";
-$project_res = db_exec( $sql );
+$qp = new DBQuery();
+$qp -> addTable('projects');
+$qp -> addQuery('project_id, project_name, project_company');
+$qp -> addOrder('project_name');
+
+$projects = $qp -> loadList();
 
 
 // tasks
-$sql = "
-SELECT task_id, task_name, task_project
-FROM tasks
-ORDER by task_name
-";
-$task_res = db_exec( $sql );
+$qt = new DBQuery();
+$qt -> addTable('tasks'); 
+$qt -> addQuery('task_id, task_name, task_project');
+$qt -> addOrder('task_name');
+
+$tasks = $qt -> loadList();
 
 // departments
-$sql = "
-SELECT dept_id, dept_name, dept_company
-FROM departments
-WHERE dept_company = $AppUI->user_company
-ORDER by dept_name
-";
-$department_res = db_exec( $sql );
+$qd = new DBQuery();
+$qd -> addTable('departments');
+$qd -> addQuery('dept_id, dept_name, dept_company');
+$qd -> addOrder('dept_name');
+$qd -> addWhere("dept_company = $AppUI->user_company");
+$departments = $qd -> loadList();
 
 // employees
-$sql = "
-SELECT user_id, user_username, user_first_name, user_last_name, user_department
-FROM users
-WHERE user_company = $AppUI->user_company
-ORDER by user_last_name, user_first_name
-";
+$qu = new DBQuery();
+$qu -> addTable('users','u');
+$qu -> addJoin('contacts','c','u.user_contact=c.contact_id');
+$qu -> addQuery('u.user_id, u.user_username, c.contact_first_name, c.contact_last_name, u.user_department');
+$qu -> addWhere("u.user_company = $AppUI->user_company");
+$qu -> addOrder('contact_last_name, contact_first_name');
 
-$employee_res = db_exec( $sql );
+$employees = $qu -> loadList();
 
 //$tasks = array( '0' => "[0, 0, 'All']");
 $tasks = array();
@@ -59,34 +57,6 @@ $employees = array();
 
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
-
-while ($row = db_fetch_assoc( $company_res ) ) {
-	// collect companies in normal format
-	//$companies[] = "[{$row['company_id']}, '{$row['company_name']}']";
-	$companies[$row['company_id']] = escape_string($row['company_name']);
-}
-
-while ($row = db_fetch_assoc( $project_res ) ) { 
-	// collect projects in js format
-	$projects[] = "[{$row['project_company']},{$row['project_id']},'" . escape_string($row['project_name']) . "']";
-}
-
-while ($row = db_fetch_assoc( $task_res ) ) {
-	// collect tasks in js format
-	$tasks[] = "[{$row['task_project']},{$row['task_id']},'" . escape_string($row['task_name']) . "']";
-}
-
-while ($row = db_fetch_assoc( $department_res ) ) {
-	// collect departments in normal format
-	//$departments[] = "[{$row['dept_id']},'{$row['dept_name']}']";
-	$departments[$row['dept_id']] = escape_string($row['dept_name']);
-}
-
-while ($row = db_fetch_assoc( $employee_res ) ) {
-	// collect employees in js format
-	$employees[] = "[{$row['user_department']},{$row['user_id']},'{$row['user_first_name']} {$row['user_last_name']}']";
-}
-
 
 //$crumbs = array();
 //$crumbs["?m=timetrack&timesheet_id=$timesheet_id"] = "timesheets list";
@@ -105,13 +75,14 @@ $s .= "\nvar employees = new Array(".implode( ",\n", $employees ).")";
 echo "<script language=\"javascript\">$s</script>";
 
 
-$sql = "
-SELECT user_id, user_username, user_first_name, user_last_name
-FROM users
-WHERE user_company = $AppUI->user_company
-ORDER by user_last_name, user_first_name
-";
-$result = db_loadList($sql);
+$qu -> clear();
+$qu -> addTable('users','u');
+$qu -> addJoin('contacts','c','u.user_contact=c.contact_id');
+$qu -> addQuery('u.user_id, u.user_username, c.contact_first_name, c.contact_last_name');
+$qu -> addWhere("user_company = $AppUI->user_company");
+$qu -> addOrder('contact_last_name, contact_first_name');		 
+
+$result = $qu -> loadList();
 
 ?>
 

@@ -3,15 +3,14 @@
 
 $is_special = ($AppUI->user_type > 0 and $AppUI->user_type < 7);
 
-$sql = "
-SELECT user_id, user_username, user_first_name, user_last_name
-FROM users
-WHERE user_company = $AppUI->user_company
-" . ($is_special ? "" : " and user_id = " . $AppUI->user_id) . "
-ORDER by user_last_name, user_first_name
-";
-
-$result = db_loadList($sql);
+$q = new DBQuery();
+$q -> addTable('users','u');
+$q -> addJoin('contacts','c','u.user_contact=c.contact_id');
+$q -> addQuery('u.user_id, u.user_username, c.contact_first_name, c.contact_last_name');
+$q -> addWhere("user_company = $AppUI->user_company
+" . ($is_special ? "" : " and user_id = " . $AppUI->user_id));
+$q -> addOrder('contact_last_name, contact_first_name');
+$result = $q -> loadList();
 
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -113,7 +112,7 @@ function setCalendar( idate, fdate ) {
 				
 					foreach ($result as $employee) {
 						$selected = ($employee['user_id'] == $selectMe) ? " selected" : "";
-						echo "\t\t\t\t<option value=\"" . $employee['user_id'] . "\"" . $selected . " />" . $employee['user_last_name'] . ", " . $employee['user_first_name'] . "\n";
+						echo "\t\t\t\t<option value=\"" . $employee['user_id'] . "\"" . $selected . " />" . $employee['contact_last_name'] . ", " . $employee['contact_first_name'] . "\n";
 					}
 				echo "\t\t\t</select>\n";
 			echo "\t\t</td>\n";
