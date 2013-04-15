@@ -8,25 +8,45 @@
 
 // Update database if we are saving
 $action = @$_REQUEST["action"];
+$q = new DBQuery();
 if($action) {
         $gallery_uri= $_POST["gallery_uri"];
         $gallery_folder = $_POST["gallery_folder"];
         $gallery_user = $_POST["gallery_user"];
 
-        if( $action == "add" ) {
-		db_exec("UPDATE gallery2 SET gallery_uri='".$gallery_uri."'");
-		db_exec("UPDATE gallery2 SET gallery_folder='".$gallery_folder."'");
-		db_exec("UPDATE gallery2 SET gallery_user='".$gallery_user."'");
-
+        if( $action == "add" ) {        	
+        	$q -> addTable('gallery2');
+        	$q -> addUpdate('gallery_uri',$gallery_uri);
+        	$q ->exec();
+        	
+        	$q -> clear();
+        	$q -> addTable('gallery2');
+        	$q -> addUpdate('gallery_folder', $gallery_folder);
+        	$q -> exec();
+        	
+        	$q -> clear();
+        	$q -> addTable('gallery2');
+        	$q -> addUpdate('gallery_user', $gallery_user);
+        	$q -> exec();
+     
 		$AppUI->setMsg( db_error() );
 		$AppUI->redirect();
 	}
 }
 
 // Load database settings
-$gallery_uri= db_loadResult( 'SELECT gallery_uri FROM gallery2' );
-$gallery_folder= db_loadResult( 'SELECT gallery_folder FROM gallery2' );
-$gallery_user= db_loadResult( 'SELECT gallery_user FROM gallery2' );
+$q -> clear();
+$q -> addTable('gallery2');
+$q -> addQuery('gallery_uri');
+$gallery_uri=$q ->loadResult();
+
+$q -> clearQuery();
+$q -> addQuery('gallery_folder');
+$gallery_folder = $q -> loadResult();
+
+$q -> clearQuery();
+$q -> addQuery('gallery_user');
+$gallery_user= $q -> loadResult();
 
 // Override if database failed
 if(!$gallery_folder){

@@ -12,13 +12,22 @@
 $AppUI->savePlace();
 
 // Load configuration and load gallery2
-$gallery_uri= db_loadResult( 'SELECT gallery_uri FROM gallery2' );
-$gallery_folder= db_loadResult( 'SELECT gallery_folder FROM gallery2' );
+$q = new DBQuery();
+$q -> addTable('gallery2');
+$q -> addQuery('gallery_uri');
+$gallery_uri= $q -> loadResult();
+
+$q -> clearQuery();
+$q -> addQuery('gallery_folder');
+$gallery_folder= $q-> loadResult();
+
 echo db_error();
 if($gallery_folder && $gallery_uri)
 {
 	// initiate G2
-	$gallery_user= db_loadResult( 'SELECT gallery_user FROM gallery2' );
+	$q -> clearQuery();
+	$q -> addQuery('gallery_user');
+	$gallery_user= $q -> loadResult();
 	require_once($gallery_folder."/embed.php");
 	$ret = GalleryEmbed::init(array('g2Uri' => $gallery_uri ,
 		'embedUri' => $dPconfig['base_url']."index.php?m=gallery2" ,
