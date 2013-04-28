@@ -1,29 +1,25 @@
 <?php
-	global $AppUI, $user_hash, $view_message, $show_read_messages, $show_sent_messages;
+	global $AppUI, $user_hash, $view_message, $show_read_messages, $show_sent_messages;	
 	
-	$task_owner_filter     = "";
-	$task_recipient_filter = " and ut.user_id     = '".$AppUI->user_id."' ";
-	$task_status_filter    = " and t.task_status = '0' ";
-	
+	$q = new DBQuery();
+	$q -> addQuery('t.*');
+	$q -> addTable('tasks','t');
+	$q -> addTable('user_tasks','ut');
+	$q -> addWhere('t.task_id = ut.task_id');
+	$q -> addWhere("t.task_project = '0'");
 	if($show_read_messages){
-		$task_status_filter = " and t.task_status = '-1' ";
-		
-	} else if ($show_sent_messages) {
-		$task_status_filter    = "";
-		$task_recipient_filter = "";
-		$task_owner_filter     = " and t.task_owner = '".$AppUI->user_id."'";
+		$q -> addWhere("t.task_status = '-1'");
 	}
+	else if ($show_sent_messages){
+		$q -> addWhere("t.task_owner = '".$AppUI->user_id."'");	
+	}
+	else{
+		$q -> addWhere("t.task_status = '0'");
+		$q -> addWhere("ut.user_id     = '".$AppUI->user_id."' ");
+	}
+	$q -> addOrder('task_priority, task_start_date');
 	
-	$sql = "select t.*
-			from tasks as t,
-				 user_tasks as ut
-			where t.task_id = ut.task_id
-			      and t.task_project = '0'
-				  $task_recipient_filter
-				  $task_status_filter
-				  $task_owner_filter
-			order by task_priority, task_start_date";
-	$incoming_messages = db_loadObjectList($sql, new CTask());
+	$incoming_messages = $q -> loadList();	
 	
 	$table_headers = array("Date", "Title");
 	if($show_sent_messages){
@@ -80,9 +76,11 @@
 		<td width='50%' valign='top'>
 			<?php
 				if (isset($view_message)) {
-					$sql = "select user_id
-							from user_tasks
-							where task_id = '".$view_message->task_id."'";
+					$q = new DBQuery();
+					$q -> addTable('user_tasks');
+					$q -> addQuery('user_id');
+					$q -> addWhere("task_id = '".$view_message->task_id."'");
+					
 					$recipient_list = "";
 					foreach(db_loadColumn($sql) as $user_id){
 						$recipient_list .= $user_hash[$user_id].", ";
@@ -147,12 +145,14 @@
 												<?php
 													echo $AppUI->_("Converto to task within the following project");
 													echo "<br />";
-													$project_list = db_loadHashList("select project_id, project_name
-																						from projects
-																						where project_active = '1'
-																							and project_status != '6'
-																							and project_status != '7'
-																						order by project_name");
+													$q -> clear();
+													$q -> addTable('projects');
+													$q -> addQuery('project_id, project_name');
+													$q -> addWhere("project_active = '1'");
+													$q -> addWhere("project_status != '6'");
+													$q -> addWhere("project_status != '7'");
+													$q -> addOrder('project_name');
+													$project_list = $q -> loadHashList();
 													echo arraySelect($project_list, "project_id", "class='text'", 0);
 												?>
 												<div align='right'>

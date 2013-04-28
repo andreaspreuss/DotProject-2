@@ -7,21 +7,24 @@
 	define("READ_MESSAGES_TAB", 3);
 	define("SENT_MESSAGES_TAB", 2);
 	define("COMPOSE_MESSAGE_TAB", 1);
-	error_reporting(E_ALL);
+	//error_reporting(E_ALL);
 	global $AppUI;
 	
 	require_once($AppUI->getModuleClass("tasks"));
 	
 	if(!function_exists("getUsersArray")) {
 	    // Compatibility with dP 1.x
-    	$sql = "select user_id, concat_ws(' ', contact_first_name, contact_last_name)
-    			from users as u left join permissions as p on u.user_id = p.permission_user,
-    				contacts as c
-    			where !isnull(p.permission_user)
-    				and u.user_contact = c.contact_id
-    			group by user_id
-    			order by contact_first_name";
-    	$user_hash = db_loadHashList($sql);
+	    $q = new DBQuery();
+	    $q -> addTable('users','u');
+	    $q -> addTable('contacts','c');	    
+	    $q -> addQuery("user_id, concat_ws(' ', contact_first_name, contact_last_name)");
+	    $q -> addJoin('permissions','p','u.user_id = p.permission_user');
+	    $q -> addGroup('user_id');
+	    $q -> addOrder('contact_first_name');
+	    $q -> addWhere('!isnull(p.permission_user)');
+	    $q -> addWhere('u.user_contact = c.contact_id');    
+	    
+    	$user_hash = $q -> loadHashList();
 	} else {
         $user_hash = array();
         foreach(getUsersArray() as $user_id => $user_data){
@@ -55,17 +58,24 @@
 		
 		$error_message = $new_message->store();
 		if(is_null($error_message)){
-			$sql  = "delete from user_tasks where task_id ='$new_message->task_id';";
-			db_exec($sql);
+			$q = new DBQuery();
+			$q -> setDelete('user_tasks');
+			$q -> addWhere("task_id ='$new_message->task_id'");	
+			$q -> exec();			
 			
-			$sql = "insert into user_tasks (task_id, user_id) values ('$new_message->task_id','".$_POST["recipient_user_id"]."')";
-			db_exec($sql);
-
-			$recipient_email = db_loadResult("select c.contact_email 
-			                                  from contacts as c,
-			                                       users as u
-			                                  where u.user_contact = c.contact_id
-			                                        and u.user_id = '".$_POST["recipient_user_id"]."'");
+			$q -> clear();
+			$q -> addTable('user_tasks');
+			$q -> addInsert('task_id', $new_message->task_id);
+			$q -> addInsert('user_id', $_POST["recipient_user_id"]);
+			$q -> exec();			
+			
+			$q -> clear();
+			$q -> addTable('contacts','c');
+			$q -> addTable('users','u');
+			$q -> addQuery('c.contact_email');
+			$q -> addWhere('u.user_contact = c.contact_id');
+			$q -> addWhere("u.user_id = '".$_POST["recipient_user_id"]."'");
+			$recipient_email = $q -> loadResult();
 			
 			if(dPgetParam($_POST, "send_email", "") != "" && $recipient_email != ""){
         		$mail = new Mail();
@@ -103,10 +113,13 @@
 		$view_message->load($_GET["message_id"]);
 		
 		// This is for security reasons
-		$user_present_in_recipients = db_loadResult("select count(user_id)
-													 from user_tasks
-													 where task_id = '".$view_message->task_id."'
-													 and user_id = '".$AppUI->user_id."'");
+		$q = new DBQuery();
+		$q -> addTable('user_tasks');
+		$q -> addQuery('count(user_id)');
+		$q -> addWhere("task_id = '".$view_message->task_id."'");
+		$q -> addWhere("user_id = '".$AppUI->user_id."'");
+		
+		$user_present_in_recipients = $q -> loadResult();
 	
 		if(!$user_present_in_recipients && $view_message->task_owner != $AppUI->user_id) {
 			unset($view_message);
@@ -167,10 +180,12 @@
 	}
 	
 	if(dPgetParam($_GET, "reply_to_message_id", 0) > 0){
-		$user_present_in_recipients = db_loadResult("select count(user_id)
-														 from user_tasks
-														 where task_id = '".$_GET["reply_to_message_id"]."'
-														 and user_id = '".$AppUI->user_id."'");
+		$q = new DBQuery();
+		$q -> addTable('user_tasks');
+		$q -> addQuery('count(user_id)');
+		$q -> addWhere("task_id = '".$_GET["reply_to_message_id"]."'");
+		$q -> addWhere("user_id = '".$AppUI->user_id."'");		
+		$user_present_in_recipients = $q -> loadResult();
 		if($user_present_in_recipients){
 			$message_tab = COMPOSE_MESSAGE_TAB;
 			$reply_to_message_id = $_GET["reply_to_message_id"];

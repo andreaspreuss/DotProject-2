@@ -14,10 +14,12 @@
 	} else {
 		$focus_command        = "document.frmComposeMessage.user_id_quick_select.focus();";
 	}
+	$q = new DBQuery();
+	$q -> addTable('users');
+	$q -> addQuery('user_signature');
+	$q -> addWhere("user_id = '".$AppUI->user_id."'");
+	$signature = $q -> loadResult();
 	
-	$signature = db_loadResult("select user_signature
-								from users
-								where user_id = '".$AppUI->user_id."'");
 	if($signature != ""){
 		$default_body = "\n\n$signature";
 	}
