@@ -1,7 +1,7 @@
 /**
  * dotProject stylesheet
  * @theme "amp" 
- * @author rodrigo brandão (http://www.rodrigobrandao.com.br)
+ * @author rodrigo brandï¿½o (http://www.rodrigobrandao.com.br)
  * @version v.1.0 07/06/2010
  */
 body {
@@ -18,7 +18,11 @@ body, h1, h2, h3, td, th, tr, table, div, span, select, input, button, textarea 
 	font-family:"Trebuchet MS"; /* font */
 	font-size:12px; /* font size */
 }
+select, input, button, textarea,label,radio{
+	color:#000;
+}
 h1 {
+	color:#000;
 	letter-spacing:-1px;
 	font-size:23px;
 }
