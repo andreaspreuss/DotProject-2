@@ -33,8 +33,8 @@ class CBudget extends CDpObject {
 	var $service_operation = "0.00";
 	
 	
-	function CBudget() {
-		$this->CDpObject('budget', 'budget_id');
+	function __construct() {
+		parent::__construct('budget', 'budget_id');
 	}
 
 	function loadFromTask($task_id) {
@@ -43,9 +43,7 @@ class CBudget extends CDpObject {
 		$q->addTable('budget');
 		$q->addQuery('budget_id');
 		$q->addWhere('task_id = ' . $task_id );
-		$sql = $q->prepare();
-		$q->clear();
-		$budget_id = db_loadResult($sql);
+		$budget_id = $q -> loadResult();
 		if($budget_id == null) {
 			$this->Tax = mostCommonTax();
 			return 0;
@@ -61,9 +59,7 @@ class CBudget extends CDpObject {
 		$q->addTable('budget');
 		$q->addQuery('budget_id');
 		$q->addWhere('task_id = ' . $this->task_id );
-		$sql = $q->prepare();
-		$q->clear();
-		$budget_id = db_loadResult($sql);
+		$budget_id = $q -> loadResult();
 		if($budget_id == null) {
 			$q->addTable('budget');
 			$q->addInsert('task_id', $this->task_id);
@@ -82,9 +78,7 @@ class CBudget extends CDpObject {
 		$q->addUpdate('intangible_operation',$this->intangible_operation);
 		$q->addUpdate('service_operation',$this->service_operation);
 		$q->addWhere('task_id = '.$this->task_id);
-		$sql = $q->prepare();
-		$q->clear();
-		db_exec($sql);
+		$q -> exec();
 	}
 	
 	function get_equipment_investment($mult = 1, $symbol = "", $sep = " ") { $tax =  1; if($this->display_tax) $tax += ($this->Tax/100); return number_format($this->equipment_investment*$tax*$mult,2,'.',$sep).$symbol; }

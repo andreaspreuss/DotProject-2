@@ -52,13 +52,13 @@ class CSetupFinances {
   function remove() {
 		$dbprefix = dPgetConfig('dbprefix', '');
 		$success = 1;
-/*
-		$bulk_sql[] = "DROP TABLE `{$dbprefix}budget`";
-		foreach ($bulk_sql as $s) {
-			db_exec($s);
-			if (db_error())
-				$success = 0;
-		} */
+		$q = new DBQuery();
+		$q -> dropTable('budget');
+		$success = $success & $q -> exec();
+		
+		if($success){
+			return null;
+		}
 		return $success; 
 	}
   
@@ -66,9 +66,10 @@ class CSetupFinances {
 
 	function install() { 
 		$dbprefix = dPgetConfig('dbprefix', '');
-		$success = 1;
-/*		$bulk_sql[] = "
-                  CREATE TABLE IF NOT EXISTS `".$dbprefix."budget` (
+		$success = true;
+		$q = new DBQuery();
+		$q -> createTable('budget');
+		$q -> createDefinition("(
 				  `budget_id` int(11) NOT NULL AUTO_INCREMENT,
 				  `task_id` int(11) NOT NULL DEFAULT '0',
 				  `Tax` decimal(4,2) NOT NULL DEFAULT '0',
@@ -81,14 +82,11 @@ class CSetupFinances {
 				  `intangible_operation` decimal(15,2) DEFAULT '0',
 				  `service_operation` decimal(15,2) DEFAULT '0',
 				  PRIMARY KEY (`budget_id`)
-				) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;";
-			foreach ($bulk_sql as $s) {
-                  db_exec($s);
-                  
-                  if (db_error()) {
-                        $success = 0;
-                  }
-            } */
+				) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;");
+		$success= $success & $q -> exec();
+		if($sucess){
+			return null;
+		}
 		return $success; 
 	}
 }

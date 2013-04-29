@@ -359,7 +359,7 @@ if(dPgetParam($_POST, 'edit', 0))
 			<th><?php echo $AppUI->_('Service');?></th>
 		</tr>
 		<tr class="tdTotal">
-			<td class="tdDesc"><b>TOTAL</b></td>
+			<td class="tdDesc"><b><?php $AppUI->_('TOTAL'); ?></b></td>
 			<td class="tdContentTask budget" rel="_ei"><b><?php echo number_format($total_ei*$mult,2,'.',' ').$symbol; ?></b></td>
 			<td class="tdContentTask budget" rel="_ii"><b><?php echo number_format($total_ii*$mult,2,'.',' ').$symbol; ?></b></td>
 			<td class="tdContentTask budget" rel="_si"><b><?php echo number_format($total_si*$mult,2,'.',' ').$symbol; ?></b></td>
@@ -373,7 +373,7 @@ if(dPgetParam($_POST, 'edit', 0))
 	</thead>
 	<tfoot>
 		<tr class="tdTotal">
-			<td class="tdDesc" rowspan=3><b>TOTAL</b></td>
+			<td class="tdDesc" rowspan=3><b><?php $AppUI->_('TOTAL'); ?></b></td>
 			<td class="tdContentTask" rel="_ei"><b><?php echo number_format($total_ei*$mult,2,'.',' ').$symbol; ?></b></td>
 			<td class="tdContentTask" rel="_ii"><b><?php echo number_format($total_ii*$mult,2,'.',' ').$symbol; ?></b></td>
 			<td class="tdContentTask" rel="_si"><b><?php echo number_format($total_si*$mult,2,'.',' ').$symbol; ?></b></td>
