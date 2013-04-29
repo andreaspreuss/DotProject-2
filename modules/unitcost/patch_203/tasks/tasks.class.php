@@ -75,8 +75,8 @@ class CTask extends CDpObject {
         var $task_type   = NULL;
 
 
-        function CTask() {
-                $this->CDpObject( 'tasks', 'task_id' );
+        function __construct() {
+                parent::__construct( 'tasks', 'task_id' );
         }
 
 // overload check

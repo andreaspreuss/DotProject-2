@@ -32,8 +32,8 @@ class Cunitcost_task_costs extends CDpObject {
   var $task_actual_cost = NULL;
 
   // constructor 
-  function Cunitcost_task_costs() {
-    parent::CDpObject('unitcost_task_costs', 'task_id');
+  function __construct() {
+    parent::__construct('unitcost_task_costs', 'task_id');
   }
 
   // overloaded - no permission since we run inside tasks; our records
@@ -97,8 +97,8 @@ class Cunitcost_task_log_costs extends CDpObject {
   var $task_actual_cost = NULL;
 
   // constructor 
-  function Cunitcost_task_log_costs() {
-    parent::CDpObject('unitcost_task_log_costs', 'task_log_id');
+  function __construct() {
+    parent::__construct('unitcost_task_log_costs', 'task_log_id');
   }
 
   // since we run inside tasks not permission stuff for now
