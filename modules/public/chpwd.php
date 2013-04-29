@@ -65,23 +65,23 @@ function submitIt() {
 {
 ?>
 <tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Current Password');?></td>
+	<td align="right" nowrap="nowrap" class="hilite"><?php echo $AppUI->_('Current Password');?></td>
 	<td><input type="password" name="old_pwd" class="text"></td>
 </tr>
 <?php } ?>
 <tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('New Password');?></td>
+	<td align="right" nowrap="nowrap" class="hilite"><?php echo $AppUI->_('New Password');?></td>
 	<td><input type="password" name="new_pwd1" class="text"></td>
 </tr>
 <tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Repeat New Password');?></td>
+	<td align="right" nowrap="nowrap" class="hilite"><?php echo $AppUI->_('Repeat New Password');?></td>
 	<td><input type="password" name="new_pwd2" class="text"></td>
 </tr>
 <tr>
 	<td>&nbsp;</td>
 	<td align="right" nowrap="nowrap"><input type="button" value="<?php echo $AppUI->_('submit');?>" onclick="submitIt()" class="button"></td>
 </tr>
-<form>
+</form>
 </table>
 <?php
 	}
