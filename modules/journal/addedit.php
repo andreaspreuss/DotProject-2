@@ -23,19 +23,27 @@ if($action) {
 	$journal_description = $_POST["journal_description"];
 	$journal_project = $_POST["journal_project"];
 	$userid = $AppUI->user_id;
-	
+	$q = new DBQuery();	
 	if( $action == "add" ) {
-		$sql = "INSERT INTO journal (journal_date, journal_description, journal_user, journal_project) " .
-		  "VALUES (now(), '$journal_description', $userid, $journal_project)";
+		$date=new Date();
+		$q -> addTable('journal'); // this is not out of the block because we have the setDelete and may cause problems
+		$q -> addInsert('journal_date',date($date->format('Y-m-d H:i:s')));
+		$q -> addInsert('journal_description',$journal_description);
+		$q -> addInsert('journal_user',$userid);
+		$q -> addInsert('journal_project',$journal_project);		
 		$okMsg = "journal added";
 	} else if ( $action == "update" ) {
-		$sql = "UPDATE journal SET journal_description = '$journal_description', journal_project = '$journal_project' WHERE journal_id = $journal_id";
+		$q -> addTable('journal'); // this is not out of the block because we have the setDelete and may cause problems
+		$q -> addUpdate('journal_description', $journal_description);
+		$q -> addUpdate('journal_project',$journal_project);
+		$q -> addWhere('journal_id ='.$journal_id);		
 		$okMsg = "journal updated";
 	} else if ( $action == "del" ) {
-		$sql = "DELETE FROM journal WHERE journal_id = $journal_id";
+		$q -> setDelete('journal');
+		$q -> addWhere('journal_id ='. $journal_id);		
 		$okMsg = "journal deleted";				
 	}
-	if(!db_exec($sql)) {
+	if(!$q -> exec()) {
 		$AppUI->setMsg( db_error() );
 	} else {	
 		$AppUI->setMsg( $okMsg );
@@ -44,8 +52,12 @@ if($action) {
 }
 
 // pull the journal
-$sql = "SELECT * FROM journal WHERE journal_id = $journal_id";
-db_loadHash( $sql, $journal );
+$q = new DBQuery();
+$q -> addTable('journal');
+$q -> addQuery('*');
+$q -> addWhere("journal_id = $journal_id");
+$journal = $q -> loadHash();
+
 
 if ($journal["journal_project"]){
     $project_id=$journal["journal_project"];
@@ -84,8 +96,11 @@ if ($journal["journal_project"]){
 	<td width="60%">
 <?php
 // pull the projects list
-$sql = "SELECT project_id,project_name FROM projects ORDER BY project_name";
-$projects = arrayMerge( array( 0 => '('.$AppUI->_('any').')' ), db_loadHashList( $sql ) );
+$q = new DBQuery();
+$q -> addTable('projects');
+$q -> addQuery('project_id,project_name');
+$q -> addOrder('project_name');
+$projects = arrayMerge( array( 0 => '('.$AppUI->_('any').')' ), $q -> loadHashList() );
 echo arraySelect( $projects, 'journal_project', 'class="text"', $project_id );
 
 ?>

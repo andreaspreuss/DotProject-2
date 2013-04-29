@@ -499,12 +499,15 @@ if ($canAccessTask) {
 if (getPermission('forums', 'access')) {
 	$tabBox->add(DP_BASE_DIR.'/modules/projects/vw_forums', 'Forums');
 }
+
 /*
 if (getPermission('files', 'access')) {
 	$tabBox->add(DP_BASE_DIR.'/modules/projects/vw_files', 'Files');
 }
 */
 if ($canAccessTask) {
+	// Added the journal entry
+	$tabBox->add( DP_BASE_DIR.'/modules/journal/index', 'Journal' );
 	$tabBox->add(DP_BASE_DIR.'/modules/tasks/viewgantt', 'Gantt Chart');
 	if ($canAccessTaskLog) {
 		$tabBox->add(DP_BASE_DIR.'/modules/projects/vw_logs', 'Task Logs');

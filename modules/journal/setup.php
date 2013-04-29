@@ -26,7 +26,9 @@ if (@$a == 'setup') {
 class CSetupjournal {
 
 	function install() {
-		$sql = "CREATE TABLE IF NOT EXISTS journal ( " .
+		$q = new DBQuery();
+		$q -> createTable('journal');
+		$q -> createDefinition("( " .
 		  "journal_id int(10) unsigned NOT NULL auto_increment," .
 		  "journal_user int(10) NOT NULL default '0'," .
 		  "journal_module int(10) NOT NULL default '0'," .
@@ -35,14 +37,21 @@ class CSetupjournal {
 		  "journal_description text," .
 		  "PRIMARY KEY  (journal_id)," .
 		  "UNIQUE KEY journal_id (journal_id)" .
-		  ") TYPE=MyISAM;";
-		db_exec( $sql );
-		return null;
+		  ")");
+		
+		if($q -> exec()){
+			return null;
+		}
+		return false;
 	}
 	
 	function remove() {
-		//db_exec( "DROP TABLE journal" );
-		return null;
+		$q = new DBQuery();
+		$q -> dropTable('journal');
+		if($q -> exec()){		
+			return null;
+		}
+		return false;
 	}
 	
 	function upgrade() {

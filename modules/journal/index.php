@@ -15,22 +15,19 @@ if ($module<>"journal"){
     $project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 }
 
-// check for project filter
-if ($project_id){
-    $where .= "\n WHERE project_id = '$project_id'";}
-else
-    {$where="";}
-
 //get stuff from db
-$psql =
-"SELECT *
-FROM journal
-LEFT JOIN users ON journal_user = user_id
-LEFT JOIN projects on journal.journal_project=project_id
-$where
-ORDER BY journal_date DESC";
-$prc = db_exec( $psql );
-echo db_error();
+$q = new DBQuery();
+$q -> addTable('journal','j');
+$q -> addQuery('*');
+$q -> addJoin('users','u','j.journal_user=u.user_id');
+$q -> addJoin('projects','p','j.journal_project=p.project_id');
+$q -> addOrder('journal_date DESC');
+// check for project filter
+if($project_id){
+	$q -> addWhere('project_id = '.$project_id);
+}
+
+$prc = $q -> exec();
 
 $journal = array();
 
@@ -41,18 +38,21 @@ $journal = array();
 	<td width="32"><img src="./images/icons/notepad.gif" alt="Tasks" border="0" height="24" width="24"></td>
 	<td nowrap><h1><?php echo $AppUI->_('Journal Entries:');?></h1></td>
 	
-<? if ($module=="journal"){
+<?php if ($module=="journal"){
     echo "<td align=right width=100%>",$AppUI->_( 'Project' ),":</td>";
 	echo "<td align=right>";
         // pull the projects list
-        $sql = "SELECT project_id,project_name FROM projects ORDER BY project_name";
-        $projects = arrayMerge( array( 0 => '('.$AppUI->_('All').')' ), db_loadHashList( $sql ) );
+        $q = new DBQuery();
+        $q -> addTable('projects');
+        $q -> addQuery('project_id,project_name');
+        $q -> addOrder('project_name');        
+        $projects = arrayMerge( array( 0 => '('.$AppUI->_('All').')' ), $q -> loadHashList() );
         echo arraySelect( $projects, 'project_id', ' onChange=document.pickCompany.submit() class=text', $project_id );
         echo "</form></td>";
         }
         ?>
 	
-	<td align="right"><input class="button" type="button" value="<?php echo $AppUI->_('Add note');?>" onclick="window.location='?m=journal&a=addedit&project_id=<?echo $project_id?>'"></td>
+	<td align="right"><input class="button" type="button" value="<?php echo $AppUI->_('Add note');?>" onclick="window.location='?m=journal&a=addedit&project_id=<?php echo $project_id?>'"></td>
 </table>
 
 <table width="100%" border="0" cellpadding="3" cellspacing="1" class="tbl">
