@@ -107,8 +107,7 @@ foreach ($modules as $row) {
 	// check for configuration
 	if ($ok && isset($config['mod_config']) && $config['mod_config'] == true && $canEdit) {
 		$s .= ' | <a href="' . $query_string . '&amp;cmd=configure">' . $AppUI->_('configure') . '</a>';
-	}
-	
+	}	
 	
 	$s .= '</td>';
 	$s .= '<td>' . $row['mod_type'] . '</td>';
@@ -119,19 +118,7 @@ foreach ($modules as $row) {
 	$s .= '<td>';
 	$s .= ('<img src="./images/obj/' . ($row['mod_ui_active'] ? 'dotgreen.gif' : 'dotredanim.gif') 
 	       . '" width="12" height="12" alt="" />&nbsp;');
-	/*
-	$s .= (($row['mod_ui_active']) 
-	       ? ('<span style="color:green">' . $AppUI->_('on')) 
-	       : ('<span style="color:red">' . $AppUI->_('off')));
-	*/
-	// John changes Module Terminology to be more descriptive of current Module State... 
-	// [14 Feb 2003]
-	// Menu Status term "show" changed to "Visible"
-	// Menu Status term "activate" changed to "Disabled"
-	/*
-	$s .= ('<a href="' . $query_string . '&cmd=toggleMenu">' 
-	       . ($row['mod_ui_active'] ? $AppUI->_('hide') : $AppUI->_('show')) . '</a></td>');
-	*/
+	
 	
 	if ($canEdit) {
 		$s .= '<a href="' . $query_string . '&amp;cmd=toggleMenu">';
