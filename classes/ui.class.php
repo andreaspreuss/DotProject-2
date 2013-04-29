@@ -98,7 +98,7 @@ class CAppUI {
 /**
 * CAppUI Constructor
 */
-	function CAppUI() {
+	function __construct() {
 		$this->state = array();
 		
 		$this->user_id = -1;
@@ -1222,8 +1222,6 @@ class CTitleBlock_core {
 	 * Cells are added from left to right.
 	 */
 	function addCrumb($link, $label, $icon='') {
-		//$link = str_replace('&amp;', '&', $link);
-		//$link = htmlspecialchars($link);
 		$link = dPsanitiseHTML($link);
 		$this->crumbs[$link] = array($label, $icon);
 	}
