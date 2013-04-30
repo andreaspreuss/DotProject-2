@@ -49,37 +49,34 @@ class CSetupICal {
 
 	function configure() { return true; }
 
-	function remove() {
-		$dbprefix = dPgetConfig('dbprefix', '');
+	function remove() {		
 		$success = 1;
-
-		$bulk_sql[] = "DROP TABLE `{$dbprefix}tasks_ical`";
-
-		foreach ($bulk_sql as $s) {
-			db_exec($s);
-			if (db_error())
-				$success = 0;
+		$q = new DBQuery();
+		$q -> dropTable('tasks_ical');
+		$success = $success & $q->exec();
+		if($success){
+			return null;
 		}
 		return $success;
 	}
   
 	function upgrade($old_version) { return true; }
 
-	function install() { $dbprefix = dPgetConfig('dbprefix', '');
+	function install() {
 		$success = 1;
-		
-		$bulk_sql = "
-                  CREATE TABLE IF NOT EXISTS `tasks_ical` (
+		$q = new DBQuery();
+		$q -> createTable('tasks_ical');
+		$q -> createDefinition('(
 				  `task_id` int(10) NOT NULL,
 				  `UID` varchar(30) DEFAULT NULL,
 				  `created` varchar(15) NOT NULL,
 				  `sequence` int(10) NOT NULL
-				) ENGINE=MyISAM  DEFAULT CHARSET=latin1;";
-		db_exec($bulk_sql);
-		  
-		if (db_error()) {
-			$success = 0;
-		}
+				)');
+		
+		$success= $success& $q -> exec();
+		if($success){
+			return null;
+		}		  
 
 		return $success;
 	}
