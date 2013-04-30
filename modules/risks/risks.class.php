@@ -29,8 +29,8 @@ class CRisks extends CDpObject {
         var $risk_prevention_actions = NULL;
         var $risk_contingency_plan = NULL;
         
-	function CRisks() {
-            $this->CDpObject('risks', 'risk_id');
+	function __construct() {
+            parent::__construct('risks', 'risk_id');
 	}
 
 	function check() {
