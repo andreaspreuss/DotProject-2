@@ -23,8 +23,8 @@ class CHosting extends CDpObject {
 	var $hosting_status = null;
 	var $hosting_notes = null;
 
-	function CHosting() {
-		$this->CDpObject( 'hosting', 'domain_id' );
+	function __construct() {
+		parent::__construct( 'hosting', 'domain_id' );
 	}
 
 	function canDelete($message = null, $domain_id = null){
