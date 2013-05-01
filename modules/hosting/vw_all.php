@@ -22,13 +22,13 @@ switch($sort){
 
 $q  = new DBQuery;
 $q->addTable('domains','dom');
-$q->addQuery("dom.domain_id, company_id, domain_name, domain_expiry_date, domain_registrar, domain_status,
-	domain_notes, hosting_id, hosting_package_name, hosting_expiry_date, hosting_status, hosting_notes");
+$q->addQuery('dom.domain_id, company_id, domain_name, domain_expiry_date, domain_registrar, domain_status,
+	domain_notes, hosting_id, hosting_package_name, hosting_expiry_date, hosting_status, hosting_notes');
 $q->addJoin('hosting', 'h', 'h.domain_id = dom.domain_id');
 
 if($AppUI->getState('HostIdxCompany') != null){
 	if($AppUI->getState('HostIdxCompany') != "" || $AppUI->getState('HostIdxCompany') != 0 || $AppUI->getState('HostIdxCompany') != "0"){
-		$q->addWhere('domains.company_id = '.$AppUI->getState('HostIdxCompany'));
+		$q->addWhere('dom.company_id = '.$AppUI->getState('HostIdxCompany'));
 	}
 }
 
