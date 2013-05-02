@@ -33,7 +33,6 @@
 "City"=>"Ciudad",
 "Client"=>"Cliente",
 "Clients"=>"Clientes",
-"Clients &amp; Companies"=>"",
 "Clients &amp; Companies"=>"Clientes y Empresas",
 "Companies"=>"Empresas",
 "Company"=>"Empresa",
