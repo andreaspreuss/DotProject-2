@@ -77,13 +77,13 @@ if($existsHumanResource) {
 
 
 $cwd = array();
-$cwd[0] = '0';
-$cwd[1] = '1';
-$cwd[2] = '2';
-$cwd[3] = '3';
-$cwd[4] = '4';
-$cwd[5] = '5';
-$cwd[6] = '6';
+$cwd[0] = '1';
+$cwd[1] = '2';
+$cwd[2] = '3';
+$cwd[3] = '4';
+$cwd[4] = '5';
+$cwd[5] = '6';
+$cwd[6] = '7';
 $cwd_conv = array_map('cal_work_day_conv', $cwd);
 
 function cal_work_day_conv($val) {
@@ -142,31 +142,31 @@ $res =& $query->exec();
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Weekday working hours');?>:</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $cwd_conv[0];?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo  $AppUI->_($cwd_conv[0]);?>:</td>
 			<td class="hilite" width="100%"><?php echo $obj->human_resource_mon;?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $cwd_conv[1];?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo  $AppUI->_($cwd_conv[1]);?>:</td>
 			<td class="hilite" width="100%"><?php echo $obj->human_resource_tue;?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $cwd_conv[2];?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo  $AppUI->_($cwd_conv[2]);?>:</td>
 			<td class="hilite" width="100%"><?php echo $obj->human_resource_wed;?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $cwd_conv[3];?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_($cwd_conv[3]);?>:</td>
 			<td class="hilite" width="100%"><?php echo $obj->human_resource_thu;?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $cwd_conv[4];?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo  $AppUI->_($cwd_conv[4]);?>:</td>
 			<td class="hilite" width="100%"><?php echo $obj->human_resource_fri;?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $cwd_conv[5];?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo  $AppUI->_($cwd_conv[5]);?>:</td>
 			<td class="hilite" width="100%"><?php echo $obj->human_resource_sat;?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $cwd_conv[6];?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo  $AppUI->_($cwd_conv[6]);?>:</td>
 			<td class="hilite" width="100%"><?php echo $obj->human_resource_sun;?></td>
 		</tr>
 	</td>

@@ -45,13 +45,13 @@ $titleBlock->addCrumb('?m=human_resources&amp;a=view_company_users&amp;company_i
 $titleBlock->show();
 
 $cwd = array();
-$cwd[0] = '0';
-$cwd[1] = '1';
-$cwd[2] = '2';
-$cwd[3] = '3';
-$cwd[4] = '4';
-$cwd[5] = '5';
-$cwd[6] = '6';
+$cwd[0] = '1';
+$cwd[1] = '2';
+$cwd[2] = '3';
+$cwd[3] = '4';
+$cwd[4] = '5';
+$cwd[5] = '6';
+$cwd[6] = '7';
 $cwd_conv = array_map('cal_work_day_conv', $cwd);
 
 function cal_work_day_conv($val) {

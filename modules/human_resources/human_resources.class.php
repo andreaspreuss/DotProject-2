@@ -19,9 +19,9 @@ class CHumanResource extends CDpObject {
   var $human_resource_sat = null;
   var $human_resource_sun = null;
 
-  function CHumanResource() {
+  function __construct() {
      
-	 parent::CDpObject('human_resource', 'human_resource_id');
+	 parent::__construct('human_resource', 'human_resource_id');
 	 $initial_url = substr($human_resource_lattes_url, 0, 6);
 	 $http = 'http://';
 	 if(strcmp($initial_url, $http) != 0) {
@@ -45,8 +45,8 @@ class CHumanResourceAllocation extends CDpObject {
 	var $project_tasks_estimated_roles_id = null;
 	var $human_resource_id = null;
 	
-	function CHumanResourceAllocation() {
-		parent::CDpObject('human_resource_allocation', 'human_resource_allocation_id');
+	function __construct() {
+		parent::__construct('human_resource_allocation', 'human_resource_allocation_id');
 	}
 	
 	function canDelete(&$msg, $oid=null, $joins=null) {
@@ -92,8 +92,8 @@ class CCompaniesPolicies extends CDpObject {
 	var $company_policies_safety = null;
 	var $company_policies_company_id = null;
 	
-	function CCompaniesPolicies() {
-		parent::CDpObject('company_policies', 'company_policies_id');
+	function __construct() {
+		parent::__construct('company_policies', 'company_policies_id');
 	}
 	
 	function canDelete(&$msg, $oid=null, $joins=null) {
@@ -109,8 +109,8 @@ class CHumanResourcesRole extends CDpObject {
 	var $human_resources_role_authority = null;
 	var $human_resources_role_competence = null;
 		  
-	function CHumanResourcesRole() {
-		parent::CDpObject('human_resources_role', 'human_resources_role_id');
+	function __construct() {
+		parent::__construct('human_resources_role', 'human_resources_role_id');
 	}
 		  
 	function canDelete(&$msg, $oid=null, $joins=null) { 
@@ -123,8 +123,8 @@ class CHumanResourceRoles extends CDpObject {
 	var $human_resources_role_id = null;
 	var $human_resource_id = null;
 		  
-	function CHumanResourceRoles() {
-		parent::CDpObject('human_resource_roles', 'human_resource_roles_id');
+	function __construct() {
+		parent::__construct('human_resource_roles', 'human_resource_roles_id');
 	}
 	
 	function deleteAll($human_resource_id) {
