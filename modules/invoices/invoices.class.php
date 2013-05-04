@@ -20,8 +20,8 @@ class CInvoice extends CDpObject {
 	var $invoice_terms = NULL;
 	var $invoice_status = NULL;
 
-	function CInvoice() {
-		$this->CDpObject( 'invoices', 'invoice_id' );
+	function __construct() {
+		parent::__construct( 'invoices', 'invoice_id' );
 	}
 
 	function store() {
@@ -47,14 +47,19 @@ class CInvoice extends CDpObject {
 
 
 	function delete() {
-		$sql = "SELECT product_id FROM invoice_product WHERE product_invoice = $this->invoice_id";
+		$q = new DBQuery();
+		$q -> addTable('invoice_product');
+		$q -> addQuery('product_id');
+		$q -> addWhere('product_invoice = '.$this->invoice_id);		
 
-		$res = db_exec( $sql );
+		$res = $q -> exec();
 		if (db_num_rows( $res )) {
 			return "You cannot delete a invoice that has products associated with it.";
 		} else{
-			$sql = "DELETE FROM invoices WHERE invoice_id = $this->invoice_id";
-			if (!db_exec( $sql )) {
+			$q -> clear();
+			$q -> addTable('invoices');
+			$q -> addWhere('invoice_id = '.$this->invoice_id);			
+			if (!$q -> exec()) {
 				return db_error();
 			} else {
 				return NULL;
@@ -74,8 +79,8 @@ class CProduct extends CDpObject {
 	var $product_qty = NULL;
 	var $product_price = NULL;
 
-	function CProduct() {
-		$this->CDpObject( 'invoice_product', 'product_id' );
+	function __construct() {
+		parent::__construct( 'invoice_product', 'product_id' );
 	}
 }
 ?>

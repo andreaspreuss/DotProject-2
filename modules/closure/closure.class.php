@@ -22,8 +22,8 @@ class CClosure extends CDpObject {
 		var $improvement_suggestions = null;
 		var $conclusions = null;
 
-  function CClosure() {
-    parent::CDpObject('post_mortem_analysis', 'pma_id');
+  function __construct() {
+    parent::__construct('post_mortem_analysis', 'pma_id');
   }
   
  	function load($oid=null , $strip = true) {

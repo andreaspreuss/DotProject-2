@@ -33,9 +33,9 @@ class CInventory extends CDpObject
 // v0.3
 	var $inventory_quantity = NULL;
 
-	function CInventory()
+	function __construct()
 	{
-		$this->CDpObject( 'inventory', 'inventory_id' );
+		parent::__construct( 'inventory', 'inventory_id' );
 	}
 
 	function check()
@@ -143,9 +143,9 @@ class CInventoryCategory extends CDpObject
 	var $inventory_category_id = NULL;
 	var $inventory_category_name = NULL;
 
-	function CInventoryCategory()
+	function __construct()
 	{
-		$this->CDpObject( 'inventory_categories', 'inventory_category_id' );
+		parent::__construct( 'inventory_categories', 'inventory_category_id' );
 	}
 
 	function check()
@@ -160,9 +160,9 @@ class CInventoryBrand extends CDpObject
 	var $inventory_brand_id = NULL;
 	var $inventory_brand_name = NULL;
 
-	function CInventoryBrand()
+	function __construct()
 	{
-		$this->CDpObject( 'inventory_brands', 'inventory_brand_id' );
+		parent::__construct( 'inventory_brands', 'inventory_brand_id' );
 	}
 
 	function check()

@@ -6,9 +6,7 @@ if (!defined('DP_BASE_DIR')) {
 global $tabbed, $currentTabName, $currentTabId, $AppUI;
 $obj = new CResource;
 
-$query = new DBQuery;
-$obj->setAllowedSQL($AppUI->user_id, $query);
-$query->addTable($obj->_tbl);
+$query = $obj->getQuery();
 if (!$tabbed)
 	$currentTabId++;
 

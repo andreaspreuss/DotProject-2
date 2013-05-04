@@ -20,23 +20,32 @@ class CPayment extends CDpObject {
 	var $payment_date = NULL;
 	var $payment_owner = NULL;
 
-	function CPayment() {
-		$this->CDpObject( 'payments', 'payment_id' );
+	function __construct() {
+		parent::__construct( 'payments', 'payment_id' );
 	}
 
 	function updatePaymentsInvoices( $cslist ) {
 	// delete all current entries
-		$sql = "DELETE FROM invoice_payment WHERE payment_id = $this->payment_id";
-		db_exec( $sql );
+		$q = new DBQuery();
+		$q -> setDelete('invoice_payment');
+		$q -> addWhere('payment_id = '.$this->payment_id);		
+		$q -> exec();
 
 	// process dependencies
 		if(isset($cslist)) {
 		  foreach ($cslist as $invoice_id) {
 		    if (intval( $invoice_id ) > 0) {
-		      $sql = "INSERT into invoice_payment (payment_id, invoice_id) VALUES ($this->payment_id, $invoice_id)";
-		      db_exec($sql);
-		      $sql = "UPDATE invoices set invoice_status = 1 where invoice_id = $invoice_id";
-		      db_exec($sql);
+		      $q -> clear();
+		      $q -> addTable('invoice_payment');
+		      $q -> addInsert('payment_id',$this->payment_id);
+		      $q -> addInsert('invoice_id',$invoice_id);
+		      $q -> exec();
+
+		      $q -> clear();
+		      $q -> addTable('invoices');
+		      $q -> addUpdate('invoice_status', 1);
+		      $q -> addWhere('invoice_id = '.$invoice_id);
+		      $q -> exec();     		      
 		    }
 		  }
 		}
@@ -57,7 +66,7 @@ class CPayment extends CDpObject {
 	function canDelete( &$msg, $oid=null ) {
 		$tables[] = array( 'label' => 'Payment Invoices', 'name' => 'invoice_payment', 'idfield' => 'invoice_id', 'joinfield' => 'payment_id' );
 	// call the parent class method to assign the oid
-		return CDpObject::canDelete( $msg, $oid, $tables );
+		return parent::canDelete( $msg, $oid, $tables );
 	}
 }
 ?>
