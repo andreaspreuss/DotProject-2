@@ -36,7 +36,7 @@ $journal = array();
 <form action=./?m=journal method="post" name="pickCompany">
 <tr valign="top">
 	<td width="32"><img src="./images/icons/notepad.gif" alt="Tasks" border="0" height="24" width="24"></td>
-	<td nowrap><h1><?php echo $AppUI->_('Journal Entries:');?></h1></td>
+	<td nowrap><h1><?php echo $AppUI->_('Journal Entries');?> :</h1></td>
 	
 <?php if ($module=="journal"){
     echo "<td align=right width=100%>",$AppUI->_( 'Project' ),":</td>";

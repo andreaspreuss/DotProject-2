@@ -62,7 +62,7 @@ $journal = $q -> loadHash();
 if ($journal["journal_project"]){
     $project_id=$journal["journal_project"];
 }
-
+// TODO : remove this header and add use CTitleBlock
 ?>
 
 <form name="AddEdit" method="post">				
