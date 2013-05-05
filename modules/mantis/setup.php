@@ -21,7 +21,7 @@ class Mantis {
 		global $AppUI;
 		$msg = $AppUI->setMsg( 'Unable to Install',UI_MSG_ERROR );
 		
-		require_once( './classes/CustomFields.class.php' );
+		require_once $AppUI-> getSystemClass('CustomFields');
 		$custom_fields = New CustomFields( 'projects','addedit',null,null );
 		$fid = $custom_fields->add( 'idMantisIntegration','Mantis Integration','checkbox','alpha','',$msg );
 		if( $fid > 0) return null;
@@ -29,7 +29,9 @@ class Mantis {
 	}
 	
 	function remove() {
-		require_once( './classes/CustomFields.class.php' );
+		global $AppUI;
+		require_once $AppUI-> getSystemClass('CustomFields');
+		
 		$custom_fields = New CustomFields( 'projects','addedit',null,'delete' );
 		$custom_fields->deleteField( $custom_fields->fields['idMantisIntegration']->field_id );
 		return null;
