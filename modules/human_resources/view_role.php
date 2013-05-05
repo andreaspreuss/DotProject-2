@@ -13,7 +13,7 @@ $query->addTable('companies', 'c');
 $query->addQuery('company_name');
 $query->addWhere('c.company_id = ' . $company_id);
 $res =& $query->exec();
-$titleBlock->addCrumb(('?m=companies&amp;a=view&amp;company_id=' . $company_id), 'company ' . $res->fields['company_name']);
+$titleBlock->addCrumb(('?m=companies&amp;a=view&amp;company_id=' . $company_id),  $AppUI->_('company') .' '. $res->fields['company_name']);
 $query->clear();
 
 $human_resources_role_id = intval(dPgetParam($_GET, 'human_resources_role_id', 0));

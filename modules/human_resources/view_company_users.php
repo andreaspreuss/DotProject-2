@@ -14,7 +14,7 @@ $query->addWhere('c.company_id = ' . $company_id);
 $res =& $query->exec();
 
 $titleBlock = new CTitleBlock('Human Resource Configurations', 'applet3-48.png', $m, "$m.$a");
-$titleBlock->addCrumb(('?m=companies&amp;a=view&amp;company_id=' . $company_id), 'company ' . $res->fields['company_name']);
+$titleBlock->addCrumb(('?m=companies&amp;a=view&amp;company_id=' . $company_id), $AppUI->_('company').' '. $res->fields['company_name']);
 $titleBlock->show();
 $query->clear();
 

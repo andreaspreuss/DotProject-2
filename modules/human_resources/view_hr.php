@@ -13,7 +13,7 @@ $query->addTable('companies', 'c');
 $query->addQuery('company_name');
 $query->addWhere('c.company_id = ' . $company_id);
 $res =& $query->exec();
-$titleBlock->addCrumb(('?m=companies&amp;a=view&amp;company_id=' . $company_id), 'company ' . $res->fields['company_name']);
+$titleBlock->addCrumb(('?m=companies&amp;a=view&amp;company_id=' . $company_id), $AppUI->_('company').' ' . $res->fields['company_name']);
 $query->clear();
 
 $contact_id = intval(dPgetParam($_GET, 'contact_id', 0));
@@ -23,7 +23,7 @@ $query->addQuery('contact_last_name, contact_first_name');
 $query->addWhere('c.contact_id = ' . $contact_id);
 $res =& $query->exec();
 $contact_name = $res->fields['contact_last_name'] . ', ' . $res->fields['contact_first_name'];
-$titleBlock->addCrumb('?m=contacts&amp;a=view&amp;contact_id=' . $contact_id, 'contact ' . $contact_name);
+$titleBlock->addCrumb('?m=contacts&amp;a=view&amp;contact_id=' . $contact_id, $AppUI->_('contact').' '. $contact_name);
 $query->clear();
 
 $user_id = intval(dPgetParam($_GET, 'user_id', 0));
@@ -46,7 +46,7 @@ $titleBlock->addCrumb('?m=human_resources&amp;a=view_company_users&amp;company_i
 if($existsHumanResource) {
 	$canDelete = $obj->canDelete();
 	if($canDelete) {
-		$titleBlock->addCrumb("?m=human_resources&amp;a=addedit_hr&amp;human_resource_id=$human_resource_id&amp;contact_id=$contact_id&amp;company_id=$company_id", "edit this human resource");
+		$titleBlock->addCrumb("?m=human_resources&amp;a=addedit_hr&amp;human_resource_id=$human_resource_id&amp;contact_id=$contact_id&amp;company_id=$company_id", 'edit this human resource');
 		$titleBlock->addCrumbDelete('delete human resource', true, 'no delete permission');
 	}
 	else {
