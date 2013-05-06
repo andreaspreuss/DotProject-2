@@ -21,11 +21,13 @@ $AppUI->savePlace();
 </tr>
 <?php
 //get stuff from db
-$sql = "SELECT * FROM holiday ";
-$sql.= " WHERE holiday_white=0";
-$sql.= " ORDER BY holiday_start_date DESC";
+$q = new DBQuery();
+$q -> addTable('holiday');
+$q -> addQuery('*');
+$q -> addWhere('holiday_white=0');
+$q -> addOrder('holiday_start_date DESC');
 
-$prc = db_exec( $sql );
+$prc = $q -> exec();
 echo db_error();
 
 while ($row = db_fetch_assoc( $prc )) {
@@ -45,7 +47,7 @@ while ($row = db_fetch_assoc( $prc )) {
 </table>
 <table width="100%" border="0" cellpadding="3" cellspacing="1">
         <tr valign="top">
-                <td align="left">Blacklist items allows you to ignore holidays not viable in your region</td>
+                <td align="left"><?php echo $AppUI->_('Blacklist items allows you to ignore holidays not viable in your region');?>.</td>
                 <td align="right"><input class="button" type="button" value="<?php echo $AppUI->_('Add workday');?>" onclick="window.location='?m=holiday&a=addedit&white=0&'"></td>
         </tr>
 </table>

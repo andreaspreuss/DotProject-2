@@ -1,4 +1,4 @@
-dotProject Holiday Module 0.2
+dotProject Holiday Module 0.3
 -----------------------------
 
 INTRODUCTION
@@ -36,4 +36,7 @@ INSTALLATION
 	}
 5. Save and exit
 
+*******************************************
+TODO: Add support for additional calendars and create appropiate classes to handle
+operations used in this module
 

@@ -7,12 +7,19 @@
 ##
 require_once 'PEAR/Holidays.php';
 
-function isHoliday( $date=0 ){
+function isHoliday( $date=0 ){	
 	// Query database for settings
-	$holiday_manual = db_loadResult( 'SELECT holiday_manual FROM holiday_settings' );
-	$holiday_auto = db_loadResult( 'SELECT holiday_auto FROM holiday_settings' );
-	$holiday_driver = db_loadResult( 'SELECT holiday_driver FROM holiday_settings' );
-
+	$q = new DBQuery();
+	$q -> addTable('holiday_settings');
+	$q -> addQuery('holiday_manual');
+	$q -> addQuery('holiday_auto');
+	$q -> addQuery('holiday_driver');
+	
+	$settings = $q -> loadList()[0];
+	
+	$holiday_manual = intval($settings['holiday_manual']);
+	$holiday_auto =   intval($settings['holiday_auto']);
+	$holiday_driver = intval($settings['holiday_driver']);
 	if(!$date)
 	{
 		$date=new CDate;
@@ -21,44 +28,36 @@ function isHoliday( $date=0 ){
 	if($holiday_manual)
 	{
 		// Check whether the date is blacklisted
-		$sql = "SELECT * FROM holiday ";
-		$sql.= "WHERE ( date(holiday_start_date) <= '";
-		$sql.= $date->format( '%Y-%m-%d' );
-		$sql.= "' AND date(holiday_end_date) >= '";
-		$sql.= $date->format( '%Y-%m-%d' ) ;
-		$sql.= "' AND holiday_white=0 ) ";
-		$sql.= "OR ( ";
-		$sql.= " DATE_FORMAT(holiday_start_date, '%m-%d') <= '";
-		$sql.= $date->format( '%m-%d' );
-		$sql.= "' AND DATE_FORMAT(holiday_end_date, '%m-%d') >= '";
-		$sql.= $date->format( '%m-%d' ) ;		
-		$sql.= "' AND holiday_annual=1";
-		$sql.= " AND holiday_white=0 ) ";		
+		$q -> clear();
+		$q -> addTable('holiday');
+		$q -> addQuery('*');
+		$q -> addWhere("( date(holiday_start_date) <= '".$date->format( '%Y-%m-%d' )
+						."' AND date(holiday_end_date) >= '".$date->format( '%Y-%m-%d' )
+						."' AND holiday_white=0 ) "
+						."OR ( DATE_FORMAT(holiday_start_date, '%m-%d') <= '".$date->format( '%m-%d' )
+						."' AND DATE_FORMAT(holiday_end_date, '%m-%d') >= '".$date->format( '%m-%d' ) 
+						."' AND holiday_annual=1 AND holiday_white=0 ) ");
 				
-		if(db_loadResult($sql))
+		if($q -> loadResult())
 		{
 			return 0;
 		}
 
-        // Check if we have a whitelist item for this date 
-		$sql = "SELECT * FROM holiday ";
-		$sql.= "WHERE ( date(holiday_start_date) <= '";
-		$sql.= $date->format( '%Y-%m-%d' );
-		$sql.= "' AND date(holiday_end_date) >= '";
-		$sql.= $date->format( '%Y-%m-%d' ) ;
-		$sql.= "' AND holiday_white=1 ) ";
-		$sql.= "OR ( ";
-		$sql.= " DATE_FORMAT(holiday_start_date, '%m-%d') <= '";
-		$sql.= $date->format( '%m-%d' );
-		$sql.= "' AND DATE_FORMAT(holiday_end_date, '%m-%d') >= '";
-		$sql.= $date->format( '%m-%d' ) ;		
-		$sql.= "' AND holiday_annual=1";
-		$sql.= " AND holiday_white=1 ) ";
-		
-        if(db_loadResult($sql))
-        {
+        // Check if we have a whitelist item for this date
+		$q -> clear();
+		$q -> addTable('holiday');
+		$q -> addQuery('*');
+		$q -> addWhere("( date(holiday_start_date) <= '".$date->format( '%Y-%m-%d' )
+						."' AND date(holiday_end_date) >= '".$date->format( '%Y-%m-%d' )
+						."' AND holiday_white=1 ) "
+						."OR ( DATE_FORMAT(holiday_start_date, '%m-%d') <= '".$date->format( '%m-%d' )
+						."' AND DATE_FORMAT(holiday_end_date, '%m-%d') >= '".$date->format( '%m-%d' ) 
+						."' AND holiday_annual=1 AND holiday_white=1 ) ");
+				
+		if($q -> loadResult())
+		{
 			return 1;
-        }
+		}
 	}
 
 	if($holiday_auto)

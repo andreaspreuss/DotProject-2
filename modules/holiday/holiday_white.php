@@ -20,11 +20,13 @@ $AppUI->savePlace();
 </tr>
 <?php
 //get stuff from db
-$sql = "SELECT * FROM holiday ";
-$sql.= " WHERE holiday_white=1";
-$sql.= " ORDER BY holiday_start_date DESC";
+$q = new DBQuery();
+$q -> addTable('holiday');
+$q -> addQuery('*');
+$q -> addWhere('holiday_white=1');
+$q -> addOrder('holiday_start_date DESC');
 
-$prc = db_exec( $sql );
+$prc = $q -> exec();
 echo db_error();
 
 while ($row = db_fetch_assoc( $prc )) {
@@ -44,7 +46,7 @@ while ($row = db_fetch_assoc( $prc )) {
 </table>
 <table width="100%" border="0" cellpadding="3" cellspacing="1">
         <tr valign="top">
-                <td align="left">Whitelist items allows you to add holidays manually</td>
+                <td align="left"><?php echo $AppUI->_('Whitelist items allows you to add holidays manually');?>.</td>
                 <td align="right"><input class="button" type="button" value="<?php echo $AppUI->_('Add holiday');?>" onclick="window.location='?m=holiday&a=addedit&white=1&'"></td>
         </tr>
 </table>

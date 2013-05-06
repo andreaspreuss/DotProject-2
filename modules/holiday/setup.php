@@ -25,8 +25,11 @@ if (@$a == 'setup') {
 class CSetupHoliday {
 
 	function install() {
+		$ok=true;
 		// Create whilelist/blacklist database
-		$sql = "CREATE TABLE IF NOT EXISTS holiday ( " .
+		$q = new DBQuery();
+		$q -> createTable('holiday');
+		$q -> createDefinition("( " .
 		"holiday_id int(10) unsigned NOT NULL auto_increment," .
 		"holiday_user int(10) NOT NULL default '0'," .
 		"holiday_white int(10) NOT NULL default '0'," .
@@ -36,32 +39,48 @@ class CSetupHoliday {
 		"holiday_description text," .
 		"PRIMARY KEY  (holiday_id)," .
 		"UNIQUE KEY holiday_id (holiday_id)" .
-		") TYPE=MyISAM;";
-		db_exec( $sql );
+		")");
+		$ok = $ok & $q -> exec();	
 
 		// Create settings database
-                $sql = "CREATE TABLE IF NOT EXISTS holiday_settings ( " .
+		$q = new DBQuery();
+		$q -> createTable('holiday_settings');
+		$q -> createDefinition("( " .
                 "holiday_manual int(10) NOT NULL default '0'," .
                 "holiday_auto int(10) NOT NULL default '0'," .
                 "holiday_driver int(10) NOT NULL default '0'," .
                 "UNIQUE KEY holiday_manual (holiday_manual)," .
                 "UNIQUE KEY holiday_auto (holiday_auto)," .
                 "UNIQUE KEY holiday_driver (holiday_driver)" .
-                ") TYPE=MyISAM;";
-                db_exec( $sql );
-
+                ")");                
+        
+		$ok = $ok & $q -> exec();
+		
 		// Set default settings
-        	$sql = "INSERT INTO holiday_settings (holiday_manual,holiday_auto,holiday_driver) ";
-        	$sql.= "VALUES ('".($holiday_manual+0)."','".($holiday_auto+0)."','".($holiday_driver+0)."');";
-                db_exec( $sql );
-
-		return null;
+		$q = new DBQuery();
+		$q -> addTable('holiday_settings');
+		$q -> addInsert('holiday_manual', $holiday_manual+0); // TODO: Check these values, as they don't look right
+		$q -> addInsert('holiday_auto',$holiday_auto+0);
+		$q -> addInsert('holiday_driver',$holiday_driver+0);        	
+		$ok = $ok & $q->exec();
+		if($ok){
+			return null;
+		}
+		return $ok;
 	}
 	
 	function remove() {
-		db_exec("DROP TABLE holiday;");
-		db_exec("DROP TABLE holiday_settings;");
-		return null;
+		$ok = true;
+		$q = new DBQuery();
+		$q -> dropTable('holiday');
+		$ok = $ok & $q -> exec();
+		$q -> clear();
+		$q -> dropTable('holiday_settings');
+		$ok = $ok & $q -> exec();
+		if($ok){
+			return null;
+		}
+		return $ok;
 	}
 	
 	function upgrade() {

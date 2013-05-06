@@ -12,12 +12,23 @@ if($action=="update") {
 	$holiday_manual = $_POST["holiday_manual"];
 	$holiday_auto = $_POST["holiday_auto"];
 	$holiday_driver = $_POST["holiday_driver"];
-
-	db_exec("UPDATE holiday_settings SET holiday_manual=".($holiday_manual+0));
-	db_exec("UPDATE holiday_settings SET holiday_auto=".($holiday_auto+0));
-	db_exec("UPDATE holiday_settings SET holiday_driver=".($holiday_driver+0));
-
-        $AppUI->setMsg( "Settings updated" );
+	
+	$q = new DBQuery();
+	$q -> addTable('holiday_settings');
+	$q -> addUpdate('holiday_manual', $holiday_manual+0);
+	$q -> exec();
+	
+	$q -> clear();
+	$q -> addTable('holiday_settings');
+	$q -> addUpdate('holiday_auto', $holiday_auto+0);
+	$q -> exec(); 
+	
+	$q -> clear();
+	$q -> addTable('holiday_settings');
+	$q -> addUpdate('holiday_driver', $holiday_driver+0);
+	$q -> exec();
+	
+    $AppUI->setMsg( "Settings updated" );
 	$AppUI->redirect();
 }
 
@@ -30,9 +41,17 @@ for($i=0;$drivers_alloc[$i];$i++){
 }
 
 // Query database
-$holiday_manual = db_loadResult( 'SELECT holiday_manual FROM holiday_settings' );
-$holiday_auto = db_loadResult( 'SELECT holiday_auto FROM holiday_settings' );
-$holiday_driver = db_loadResult( 'SELECT holiday_driver FROM holiday_settings' );
+$q = new DBQuery();
+$q -> addTable('holiday_settings');
+$q -> addQuery('holiday_manual');
+$q -> addQuery('holiday_auto');
+$q -> addQuery('holiday_driver');
+
+$settings = $q -> loadList()[0];
+
+$holiday_manual = intval($settings['holiday_manual']);
+$holiday_auto =   intval($settings['holiday_auto']);
+$holiday_driver = intval($settings['holiday_driver']);
 
 ?>
 

@@ -18,35 +18,31 @@ $holiday_description = dPgetParam( $_POST, "holiday_description", '');
 $holiday_annual = dPgetParam( $_POST, "holiday_annual", 0);
         
 $action = @$_REQUEST["action"];
+$q = new DBQuery();
 if($action) {
         if( $action == "add" ) {
-                $sql = "INSERT INTO holiday (holiday_description,holiday_start_date,holiday_end_date,holiday_white,holiday_annual) ";
-                $sql.= "VALUES ('";
-                $sql.= $holiday_description;
-                $sql.= "','";
-                $sql.= $start_date->format(FMT_DATETIME_MYSQL);
-                $sql.= "','";
-                $sql.= $end_date->format(FMT_DATETIME_MYSQL);
-                $sql.= "','";
-                $sql.= $holiday_white;
-                $sql.= "','";
-                $sql.= $holiday_annual;
-                $sql.= "')";
+        		$q -> addTable('holiday');
+        		$q -> addInsert('holiday_description',$holiday_description);
+        		$q -> addInsert('holiday_start_date',$start_date->format(FMT_DATETIME_MYSQL));
+        		$q -> addInsert('holiday_end_date',$end_date->format(FMT_DATETIME_MYSQL));
+        		$q -> addInsert('holiday_white',$holiday_white);
+        		$q -> addInsert('holiday_annual',$holiday_annual);
                 $okMsg = "Holiday registered";
         } else if ( $action == "update" ) {
-                $sql = "UPDATE holiday SET ";
-                $sql.= "holiday_description = '" . $holiday_description . "', ";
-                $sql.= "holiday_start_date = '" . $start_date->format(FMT_DATETIME_MYSQL) . "', ";
-                $sql.= "holiday_end_date = '" . $end_date->format(FMT_DATETIME_MYSQL) . "', ";
-                $sql.= "holiday_annual = '" . $holiday_annual . "' ";
-                $sql.= "WHERE holiday_id = " . $holiday_id;
+        		$q -> addTable('holiday');
+        		$q -> addUpdate('holiday_description', $holiday_description);
+        		$q -> addUpdate('holiday_start_date',$start_date->format(FMT_DATETIME_MYSQL));
+        		$q -> addUpdate('holiday_end_date',$end_date->format(FMT_DATETIME_MYSQL));
+        		$q -> addUpdate('holiday_annual',$holiday_annual);
+        		$q -> addWhere('holiday_id = '.$holiday_id);              
                 $okMsg = "Holiday updated";
         }
         else if ( $action == "del" ) {
-		$sql = "DELETE FROM holiday WHERE holiday_id = ".$holiday_id;
+        		$q -> setDelete('holiday');
+        		$q -> addWhere('holiday_id = '.$holiday_id);		
                 $okMsg = "Holiday removed";
 	}
-        if(!db_exec($sql)) {
+        if(!$q -> exec()) {
                 $AppUI->setMsg( db_error() );
         } else {
                 $AppUI->setMsg( $okMsg );
@@ -55,7 +51,11 @@ if($action) {
 }
 
 // pull the holiday from the database
-db_loadHash( "SELECT * FROM holiday WHERE holiday_id = $holiday_id", $holiday );
+$q ->clear();
+$q -> addTable('holiday');
+$q -> addQuery('*');
+$q -> addWhere('holiday_id = '.$holiday_id);
+$holiday = $q -> loadHash();
 
 if($holiday_white == -1)
 {
