@@ -37,7 +37,7 @@ define('SEC_DAY',	  86400);
 */
 class CDate extends Date {
 
-	function CDate($date = null)
+	function __construct($date = null)
 	{
 		if (!is_object($date) && strlen($date) == 12 && strpos($date, '-') === false && strpos($date, '/') === false) {
 			$date = $date.'00';
@@ -122,7 +122,13 @@ class CDate extends Date {
 	
 	function isWorkingDay() {
 		global $AppUI;
+		global $baseDir;
 		
+		require_once $baseDir."/modules/holiday/holiday_func.php";
+		if(isHoliday($this))
+		{
+			return 0;
+		}
 		$working_days = dPgetConfig("cal_working_days");
 		$working_days = ((is_null($working_days)) ? array('1','2','3','4','5') : explode(",", $working_days));
 		return in_array($this->getDayOfWeek(), $working_days);
