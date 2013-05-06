@@ -59,7 +59,7 @@ class CSS_Color extends PEAR
   //==CONSTRUCTOR=====================================
   //==================================================
 
-  function CSS_Color($bgHex, $fgHex='')
+  function __construct($bgHex, $fgHex='')
   {
     // This is the constructor method for the class,
     // which is called when a new object is created.

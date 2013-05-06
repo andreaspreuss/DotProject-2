@@ -32,7 +32,7 @@ class CustomField
 	var $value_charvalue;
 	var $value_intvalue;
 	
-	function CustomField($field_id, $field_name, $field_order, $field_description, 
+	function __construct($field_id, $field_name, $field_order, $field_description, 
 	                     $field_extratags) {
 		$this->field_id = $field_id;
 		$this->field_name = $field_name;

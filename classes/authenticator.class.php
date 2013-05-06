@@ -49,7 +49,7 @@ if (!defined('DP_BASE_DIR')) {
 	class PostNukeAuthenticator extends SQLAuthenticator
 	{
 
-		function PostNukeAuthenticator()
+		function __construct()
 		{
 			global $dPconfig;
 			$this->fallback = isset($dPconfig['postnuke_allow_login']) ? $dPconfig['postnuke_allow_login'] : false;
@@ -207,8 +207,7 @@ if (!defined('DP_BASE_DIR')) {
 		var $user_id;
 		var $username;
 
-		function LDAPAuthenticator()
-		{
+		function __construct(){
 			GLOBAL $dPconfig;
 
 			$this->fallback = isset($dPconfig['ldap_allow_login']) ? $dPconfig['ldap_allow_login'] : false;

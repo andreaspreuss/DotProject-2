@@ -104,7 +104,7 @@ class Mail
 /**
  *  Mail constructor
  */
-function Mail() {
+function __construct() {
 	$this->autoCheck(TRUE);
 	$this->boundary = '--' . md5(uniqid('dPboundary'));
 	// Grab the current mail handling options

@@ -15,7 +15,7 @@ class CDpTree
 	/**
 	 * Constructor.  This is PHP4 compliant.
 	 */
-	function CDpTree() {
+	function __construct() {
 		$emptynode = null;
 		$this->base_node = new CDpTreeNode(0, $emptynode);
 	}
@@ -68,7 +68,7 @@ class CDpTreeNode
 	var $depth = 0;
 	var $parent = null;
 
-	function CDpTreeNode($id = 0, &$data = null, &$parent = null) {
+	function __construct($id = 0, &$data = null, &$parent = null) {
 		$this->id = $id;
 		if (isset($data)) {
 			$this->data =& $data;

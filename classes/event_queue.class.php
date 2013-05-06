@@ -22,7 +22,7 @@ class EventQueue {
 	var $delete_list = array();
 	var $event_count = 0;
 
-	function EventQueue()
+	function __construct()
 	{
 	}
 

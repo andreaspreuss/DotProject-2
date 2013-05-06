@@ -59,7 +59,7 @@ class DBQuery {
 	var $_query_id = null;
 	var $_old_style = null;
 
-	function DBQuery($prefix = null) {
+	function __construct($prefix = null) {
 		$this->_table_prefix = ((isset($prefix)) ? $prefix : dPgetConfig('dbprefix', ''));
 		$this->include_count = false;
 		$this->clear();
