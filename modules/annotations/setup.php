@@ -44,19 +44,26 @@ if (@$a == 'setup') {
 class CSetupAnnotations {
 
 	function remove() {		// run this method on uninstall process
-		db_exec( "DROP TABLE annotations;" );	// remove the pcmc table from database
-		db_exec( "DROP TABLE annotations_histories;" );	// remove the pcmc table from database
+		$q = new DBQuery();
+		$q -> dropTable('annotations');
+		$q -> exec();// remove the pcmc table from database
+		$q -> clear();
+		$q -> dropTable('annotations_histories');
+		$q -> exec();	// remove the pcmc table from database
 		
 	//remove extra SysVals created on installation time
-		 $sql = 'DELETE FROM sysvals WHERE ( ' .
-				' sysval_title="AnnotationsPoints" ' .
-				' );';
-		 db_exec( $sql ); db_error();
+		$q -> clear();		
+		$q -> setDelete('sysvals');
+		$q -> addWhere('sysval_title="AnnotationsPoints"');
+		$q -> exec(); 
 		return null;
 	}
 
 	function install() {
-		$sql = "CREATE TABLE annotations ( " .					// prepare the creation of a dbTable
+		$ok= true;
+		$q = new DBQuery();
+		$q -> createTable('annotations');
+		$q -> createDefinition("( " .					// prepare the creation of a dbTable
 			"  annotation_id int(11) unsigned NOT NULL auto_increment" .
 			", annotation_project int(11) unsigned NOT NULL" .
 			", annotation_previous TEXT NULL DEFAULT NULL" .
@@ -83,11 +90,13 @@ class CSetupAnnotations {
 			", annotation_subject TEXT NULL ".
 			", PRIMARY KEY  (annotation_id)" .
 			", UNIQUE KEY annotation_id (annotation_id)" .
-			") TYPE=MyISAM;";
-		db_exec( $sql ); db_error();						// execute the queryString
+			") TYPE=MyISAM;");
+		$ok = $ok & $q->exec();
 		
 		// Create History table
-		$sql = 'CREATE TABLE annotations_histories (
+		$q -> clear();
+		$q -> createTable('annotations_histories');
+		$q -> createDefinition(' (
 				 annotation_history_id int(11) NOT NULL auto_increment,
 				 annotation_history_annotation int(11) NOT NULL,
 				 annotation_history_date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP,
@@ -113,14 +122,14 @@ class CSetupAnnotations {
 				 annotation_history_must_rationale text,
 				 annotation_history_project int(11) NOT NULL,
 				  PRIMARY KEY  (annotation_history_id)
-				) ENGINE=MyISAM DEFAULT CHARSET=latin1 ;';
+				) ENGINE=MyISAM DEFAULT CHARSET=latin1 ;');
 
-		db_exec( $sql ); db_error();						// execute the queryString
+		$ok = $ok & $q -> exec();
 
 		
 		//inserting some extra sysvals
-		//$sql = 'INSERT INTO sysvals ( sysval_key_id, sysval_title, sysval_value ) ' .
-		$sql = 'REPLACE INTO sysvals ( sysval_key_id, sysval_title, sysval_value ) ' .
+		
+		$sql = 'REPLACE INTO '.dPgetConfig('dbprefix', '').'sysvals ( sysval_key_id, sysval_title, sysval_value ) ' .
 			   'VALUES ( ' .
 			   ' "1","OpportunitiesPriorities","1|- \n2|Must \n3|High \n4|Medium \n5|Low \n6|Option" ' .
 			   ' ) , ( ' .
