@@ -105,7 +105,7 @@ $titleBlock->show();
 <p align='center' style="color: #000066; font-size: 12pt"><?php echo $AppUI->_('Meeting Settings')?></p>
 
  <table align=left width='100%' border='0' cellpadding='2' cellspacing='1' class='std'>
- <tr> <td align='left'>Meeting Participants</td></tr>
+ <tr> <td align='left'><?php echo $AppUI->_('Meeting Participants');?></td></tr>
 
 <tr>
 <td align='left' width='5%'>
@@ -258,17 +258,17 @@ echo arraySelect($projects, 'project_name', 'size="1" class="text"', $row->proje
 <table cellspacing="1" cellpadding="1" border="0" width="100%" class="std">
 	  <tr><td align='right'><?php echo $AppUI->_('Project Strengths')?></td>
   <td><textarea name='project_strength' cols=80 rows=8 ><?php echo dPformSafe($row->project_strength); ?></textarea>
-   List here (each topic with '*') technologies, processes, IDEs or whatever tecniques, tools or services that worked out for you in this project
+   <br/><?php echo $AppUI->_("List here (each topic with '*') technologies, processes, IDEs or whatever tecniques, tools or services that worked out for you in this project");?>
 	</td>
 	  <tr><td align='right'><?php echo $AppUI->_('Project Weaknesses');?></td>
   <td><textarea name='project_weaknesses' cols=80 rows=8 ><?php echo dPformSafe($row->weaknesses); ?></textarea>
-   List here (each topic with '*') technologies, processes, IDEs or whatever tecniques, tools or services that did not worked out for you in this project
+   <br/><?php echo $AppUI->_("List here (each topic with '*') technologies, processes, IDEs or whatever tecniques, tools or services that did not worked out for you in this project");?>
 	<tr><td align='right'><?php echo $AppUI->_('Improvement Suggestions');?></td>
   <td><textarea name='improvement_suggestions' cols=80 rows=8 ><?php echo dPformSafe($row->improvement_suggestions); ?></textarea>
-  List here (each topic with '*') the aspects of the project that need to be improved
+  <br/><?php echo $AppUI->_("List here (each topic with '*') the aspects of the project that need to be improved");?>
 	<tr><td align='right'><?php echo $AppUI->_('Conclusions');?></td>
   <td><textarea name='conclusions' cols=80 rows=8 ><?php echo dPformSafe($row->conclusions); ?></textarea>
-  General conclusions about the project
+  <br/><?php echo $AppUI->_('General conclusions about the project');?>
 
   </td>
 </tr>
