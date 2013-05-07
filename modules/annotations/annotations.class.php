@@ -38,8 +38,8 @@ class CAnnotations extends CDpObject {
 	var $annotation_subject = NULL;
 
 	//The Constructor
-	function CAnnotations() {  
-		$this->CDpObject( 'annotations', 'annotation_id' );
+	function __construct() {  
+		parent::__construct( 'annotations', 'annotation_id' );
 	}
 	
 
