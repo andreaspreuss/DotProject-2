@@ -1,0 +1,1 @@
+if the pictures won't appear correctly, you must copy them to the ".../dotProject/images" folder!!
