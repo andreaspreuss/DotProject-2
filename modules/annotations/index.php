@@ -1,4 +1,6 @@
 <?php 
+// TODO: remove a load of these "unnecessary" comments
+
 // this is the index site for our Annotations module
 // it is automatically appended on the applications main ./index.php by the dPframework
 
@@ -261,10 +263,7 @@ function setCalendar( idate, fdate) {
 
 <!--*********************** Head of table **************************-->
 <tr>
-	<th nowrap="nowrap"><?php echo $AppUI->_( 'Color' );	// use the method _($param) of the UIclass $AppUI to translate $param automatically
-								// please remember this! automatic translation by dP is only possible if all strings
-								// are handled like this
-	?></th>
+	<th nowrap="nowrap"><?php echo $AppUI->_( 'Color' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Status' ); ?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Project' ); ?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'S' );	?></th>
@@ -277,9 +276,7 @@ function setCalendar( idate, fdate) {
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'ho' );	?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'cb' );	?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Previous' );	?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_( 'Next' );	// use the method _($param) of the UIclass $AppUI to translate $param automatically
-								// please remember this! automatic translation by dP is only possible if all strings
-								// are handled like this
+	<th nowrap="nowrap"><?php echo $AppUI->_( 'Next' );	
 	?></th>
 	<th>&nbsp;</th>
 </tr>

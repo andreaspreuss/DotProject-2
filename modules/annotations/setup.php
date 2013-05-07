@@ -27,7 +27,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'Annotations';				// name the module
-$config['mod_version'] = '0.2.6';					// add a version number
+$config['mod_version'] = '0.2.7';					// add a version number
 $config['mod_directory'] = 'annotations';			// tell dotProject where to find this module
 $config['mod_setup_class'] = 'CSetupAnnotations';	// the name of the PHP setup class (used below)
 $config['mod_type'] = 'user';						// 'core' for modules distributed with dP by standard, 'user' for additional modules from dotmods
@@ -88,9 +88,8 @@ class CSetupAnnotations {
 			", annotation_must_rationale TEXT NULL ".
 			", annotation_team TEXT NULL ".
 			", annotation_subject TEXT NULL ".
-			", PRIMARY KEY  (annotation_id)" .
-			", UNIQUE KEY annotation_id (annotation_id)" .
-			") TYPE=MyISAM;");
+			", PRIMARY KEY  (annotation_id)" .			
+			") ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 		$ok = $ok & $q->exec();
 		
 		// Create History table
@@ -125,7 +124,7 @@ class CSetupAnnotations {
 				) ENGINE=MyISAM DEFAULT CHARSET=latin1 ;');
 
 		$ok = $ok & $q -> exec();
-
+		db_error();
 		
 		//inserting some extra sysvals
 		
@@ -150,8 +149,10 @@ class CSetupAnnotations {
 			   ' "1","OpportunitiesBA","1|- \n2|FIN \n3|MIS \n4|VC \n5|GS \n6|OTH \n7|LO" ' .
 			   ');';
 		db_exec( $sql ); db_error();						// execute the queryString		
-				
-		return null;	
+		if($ok){		
+			return null;
+		}
+		return $ok;	
 	}
 	
 	//needed ?
