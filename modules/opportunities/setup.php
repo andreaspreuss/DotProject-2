@@ -2,7 +2,7 @@
 /*
  * Name:      Opportunities
  * Directory: opportunities
- * Version:   0.1.2
+ * Version:   0.1.3
  * Type:      user
  * UI Name:   Opportunities
  * UI Icon:
@@ -11,14 +11,14 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'Opportunities';		// name the module
-$config['mod_version'] = '0.1.2';		// add a version number
+$config['mod_version'] = '0.1.3';		// add a version number
 $config['mod_directory'] = 'opportunities';		// tell dotProject where to find this module
 $config['mod_setup_class'] = 'CSetupOpportunity';	// the name of the PHP setup class (used below)
 $config['mod_type'] = 'user';			// 'core' for modules distributed with dP by standard, 'user' for additional modules from dotmods
 $config['mod_ui_name'] = 'Opportunities';		// the name that is shown in the main menu of the User Interface
 $config['mod_ui_icon'] = 'opportunities.png';	// name of a related icon
 $config['mod_description'] = 'List of opportunities i.e. ideas or issues';	// some description of the module
-$config['mod_config'] = true;			// show 'configure' link in viewmods
+$config['mod_config'] = false;			// show 'configure' link in viewmods
 
 // show module configuration with the dPframework (if requested via http)
 if (@$a == 'setup') {
