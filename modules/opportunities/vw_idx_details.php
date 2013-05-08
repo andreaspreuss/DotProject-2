@@ -17,7 +17,7 @@ if (!$canRead) {			// lock out users that do not have at least readPermission on
 	
 if ($show_owner_id != "-1") $where="WHERE opportunity_pm=".$show_owner_id;
 
-$q = new DBQuery;
+$q = new DBQuery();
 
 //Get necessary Sysvals (added by installation of opportunities) // Internal arrays - key, value
 	$priorities = dPgetSysVal( 'OpportunitiesPriorities' );
@@ -28,7 +28,7 @@ $q = new DBQuery;
 	$ba 		= dPgetSysVal( 'OpportunitiesBA' );
 
 	// get the users
-	$sql = "SELECT contact_id,contact_first_name,contact_last_name FROM contacts ORDER BY contact_last_name";
+	$sql = 'SELECT contact_id,contact_first_name,contact_last_name FROM '.dPgetConfig('dbprefix', '').'contacts ORDER BY contact_last_name';
 	$Tmp_pm = db_loadList( $sql );
 	$pm = array("-1" => "All");
 	foreach ( $Tmp_pm as $t) {
@@ -48,31 +48,21 @@ $q = new DBQuery;
 <tr>
 	<th nowrap="nowrap">&nbsp;</th>
 	<th nowrap="nowrap"><a href="?m=opportunities&show_owner_id=<?php echo $show_owner_id;?>&order=<?php echo ($order=="asc") ? 'desc' : 'asc';?>&order_by=opportunity_name">
-		<?php echo $AppUI->_( 'Opportunity' );	// use the method _($param) of the UIclass $AppUI to translate $param automatically
-								// please remember this! automatic translation by dP is only possible if all strings
-								// are handled like this
-	?></a></th>
+		<?php echo $AppUI->_( 'Opportunity' );?>
+	</a></th>
 	<th>st</th><th>sh</th><th>ri</th><th>si</th><th>ho</th><th>cb</th>
 	<th nowrap="nowrap">
-		<?php echo $AppUI->_( 'rel.' );	// use the method _($param) of the UIclass $AppUI to translate $param automatically
-								// please remember this! automatic translation by dP is only possible if all strings
-								// are handled like this
-	?></th>
+		<?php echo $AppUI->_( 'rel.' );?>
+	</th>
 	<th nowrap="nowrap"><a href="?m=opportunities&show_owner_id=<?php echo $show_owner_id;?>&order=<?php echo ($order=="asc") ? 'desc' : 'asc';?>&order_by=contact_last_name">
-		<?php echo $AppUI->_( 'Analyst' );	// use the method _($param) of the UIclass $AppUI to translate $param automatically
-								// please remember this! automatic translation by dP is only possible if all strings
-								// are handled like this
-	?></a></th>
+		<?php echo $AppUI->_( 'Analyst' );?>
+	</a></th>
 	<th nowrap="nowrap"><a href="?m=opportunities&show_owner_id=<?php echo $show_owner_id;?>&order=<?php echo ($order=="asc") ? 'desc' : 'asc';?>&order_by=opportunity_sizing">
-		<?php echo $AppUI->_( 'Sizing' );	// use the method _($param) of the UIclass $AppUI to translate $param automatically
-								// please remember this! automatic translation by dP is only possible if all strings
-								// are handled like this
-	?></a></th>
+		<?php echo $AppUI->_( 'Sizing' );?>
+	</a></th>
 	<th nowrap="nowrap"><a href="?m=opportunities&show_owner_id=<?php echo $show_owner_id;?>&order=<?php echo ($order=="asc") ? 'desc' : 'asc';?>&order_by=opportunity_status">
-		<?php echo $AppUI->_( 'Status' );	// use the method _($param) of the UIclass $AppUI to translate $param automatically
-								// please remember this! automatic translation by dP is only possible if all strings
-								// are handled like this
-	?></a></th>
+		<?php echo $AppUI->_( 'Status' );?>
+	</a></th>
 </tr>
 <?php
 // retrieving some dynamic content using an easy database query
@@ -130,7 +120,7 @@ foreach ($opps as $row) {		//parse the array of opportunities quotes
 
 	<td><center>
 	<?php
-	echo $r = db_loadResult('SELECT count(opportunity_project_opportunities) FROM opportunities_projects WHERE opportunity_project_opportunities='.$row["opportunity_id"]);		// finally show the opportunities quote stored in the indexed array
+	echo $r = db_loadResult('SELECT count(opportunity_project_opportunities) FROM '.dPgetConfig('dbprefix', '').'opportunities_projects WHERE opportunity_project_opportunities='.$row["opportunity_id"]);		// finally show the opportunities quote stored in the indexed array
 	?>
 	</center></td>
 	<td >

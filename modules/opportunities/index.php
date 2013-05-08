@@ -46,25 +46,25 @@ $titleBlock->show();	//finally show the titleBlock
 	// in this case the  selected tab  got the same number as the status of projects, so we can use the tab to indicate which projects to choose...
 		// if an owner was selected, only count his projects!
 	$all_opps	= ($show_owner_id && $show_owner_id != "-1") ?
-					db_loadResult(' SELECT COUNT(opportunity_id) FROM opportunities WHERE opportunity_pm='.$show_owner_id)
+					db_loadResult(' SELECT COUNT(opportunity_id) FROM '.dPgetConfig('dbprefix', '').'opportunities WHERE opportunity_pm='.$show_owner_id)
 						:
-					db_loadResult(' SELECT COUNT(opportunity_id) FROM opportunities WHERE 1');
+					db_loadResult(' SELECT COUNT(opportunity_id) FROM '.dPgetConfig('dbprefix', '').'opportunities WHERE 1');
 	$open_opps 	= ($show_owner_id && $show_owner_id != "-1") ?
-					db_loadResult(' SELECT COUNT(opportunity_id) FROM opportunities WHERE (opportunity_status=1 AND opportunity_pm='.$show_owner_id.')')
+					db_loadResult(' SELECT COUNT(opportunity_id) FROM '.dPgetConfig('dbprefix', '').'opportunities WHERE (opportunity_status=1 AND opportunity_pm='.$show_owner_id.')')
 						:
-					db_loadResult(' SELECT COUNT(opportunity_id) FROM opportunities WHERE opportunity_status=1 ');
+					db_loadResult(' SELECT COUNT(opportunity_id) FROM '.dPgetConfig('dbprefix', '').'opportunities WHERE opportunity_status=1 ');
 	$anal_opps 	= ($show_owner_id && $show_owner_id != "-1") ?
-					db_loadResult(' SELECT COUNT(opportunity_id) FROM opportunities WHERE (opportunity_status=2 AND opportunity_pm='.$show_owner_id.')')
+					db_loadResult(' SELECT COUNT(opportunity_id) FROM '.dPgetConfig('dbprefix', '').'opportunities WHERE (opportunity_status=2 AND opportunity_pm='.$show_owner_id.')')
 						:
-					db_loadResult(' SELECT COUNT(opportunity_id) FROM opportunities WHERE opportunity_status=2 ');
+					db_loadResult(' SELECT COUNT(opportunity_id) FROM '.dPgetConfig('dbprefix', '').'opportunities WHERE opportunity_status=2 ');
 	$proj_opps 	= ($show_owner_id && $show_owner_id != "-1") ?
-					db_loadResult(' SELECT COUNT(opportunity_id) FROM opportunities WHERE (opportunity_status=3 AND opportunity_pm='.$show_owner_id.')')
+					db_loadResult(' SELECT COUNT(opportunity_id) FROM '.dPgetConfig('dbprefix', '').'opportunities WHERE (opportunity_status=3 AND opportunity_pm='.$show_owner_id.')')
 						:
-					db_loadResult(' SELECT COUNT(opportunity_id) FROM opportunities WHERE opportunity_status=3 ');
+					db_loadResult(' SELECT COUNT(opportunity_id) FROM '.dPgetConfig('dbprefix', '').'opportunities WHERE opportunity_status=3 ');
 	$arch_opps 	= ($show_owner_id && $show_owner_id != "-1") ?
-					db_loadResult(' SELECT COUNT(opportunity_id) FROM opportunities WHERE (opportunity_status=4 AND opportunity_pm='.$show_owner_id.')')
+					db_loadResult(' SELECT COUNT(opportunity_id) FROM '.dPgetConfig('dbprefix', '').'opportunities WHERE (opportunity_status=4 AND opportunity_pm='.$show_owner_id.')')
 						:
-					db_loadResult(' SELECT COUNT(opportunity_id) FROM opportunities WHERE opportunity_status=4 ');
+					db_loadResult(' SELECT COUNT(opportunity_id) FROM '.dPgetConfig('dbprefix', '').'opportunities WHERE opportunity_status=4 ');
 						
 // build new tab box object
 	$tabBox = new CTabBox( "?m=opportunities&show_owner_id=".$show_owner_id, "$baseDir/modules/opportunities/", $tab );

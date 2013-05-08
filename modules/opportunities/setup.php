@@ -34,23 +34,27 @@ class CSetupOpportunity {
 	}
 
 	function remove() {		// run this method on uninstall process
+		$q = new DBQuery();
 		//remove the main table
-	     db_exec( "DROP TABLE opportunities;" );
+	     $q -> dropTable('opportunities');
+	     $q -> exec();
 		 
+	     $q -> clear();
 		//remove relation table (opportunities related to projects)
-		 db_exec( "DROP TABLE opportunities_projects;" );		
-		 
+		 $q -> dropTable('opportunities_projects');
+		 $q -> exec();
+		 		
+		 $q ->clear();
 		//remove extra SysVals created on installation time
-		 $sql = 'DELETE FROM sysvals WHERE ( ' .
-				' sysval_title="OpportunitiesPriorities" ' .
+		$q -> setDelete('sysvals');
+		$q -> addWhere(' sysval_title="OpportunitiesPriorities" ' .
 				' OR sysval_title="OpportunitiesSizings" ' .
 				' OR sysval_title="OpportunitiesStatus" ' .
 				' OR sysval_title="OpportunitiesPoints" ' .
 				' OR sysval_title="OpportunitiesYesNo" ' .
 				' OR sysval_title="OpportunitiesPM" ' .
-				' OR sysval_title="OpportunitiesBA" ' .
-				' );';
-		 db_exec( $sql ); db_error();
+				' OR sysval_title="OpportunitiesBA" ');
+		 $q -> exec();
 		
 		return null;
 	}
@@ -63,7 +67,9 @@ class CSetupOpportunity {
 
 	function install() {
 				// creation of the maintable
-	$sql = "CREATE TABLE opportunities ( ".
+				$q = new DBQuery();
+				$q -> createTable('opportunities');
+				$q -> createDefinition("( ".
 		  " opportunity_id int(11) unsigned NOT NULL auto_increment, ".
 		  " opportunity_name varchar(150) NOT NULL, ".
 		  " opportunity_orig int(11) default NULL, ".
@@ -96,24 +102,28 @@ class CSetupOpportunity {
 		  " opportunity_must_rationale TEXT default NULL, ".	
 		  " PRIMARY KEY  (opportunity_id), ".
 		  " UNIQUE KEY opportunity_id (opportunity_id) ".
-		" ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ;";
+		" ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 ;");
 		
-		db_exec( $sql ); db_error();						// execute the queryString
+		$q -> exec();
 		
 		//creation of a dependencies-help-table for dependencies between opportunitiess <-> projects
 		// n,n realation between ops and projs
-		$sql = "CREATE TABLE opportunities_projects (
+		$q -> clear();
+		$q -> createTable('opportunities_projects');
+		$q -> createDefinition(" (
 					  opportunity_project_id int(11) unsigned NOT NULL auto_increment,
 					  opportunity_project_projects int(11) unsigned NOT NULL,
 					  opportunity_project_opportunities int(11) unsigned NOT NULL,
 					  opportunity_project_description text,
 					  PRIMARY KEY  (opportunity_project_id),
 					  UNIQUE KEY opportunity_project_id (opportunity_project_id)
-				) ENGINE=MyISAM  DEFAULT CHARSET=latin1;";
-		db_exec( $sql ); db_error();						// execute the queryString
+				) ENGINE=MyISAM  DEFAULT CHARSET=latin1;");
+		$q -> exec();
 		
 		// Creating an history table
-		$sql = 'CREATE TABLE opportunities_histories (
+		$q -> clear();
+		$q -> createTable('opportunities_histories');
+		$q -> createDefinition(' (
 				  opportunity_history_id int(11) unsigned NOT NULL auto_increment,
 				  opportunity_history_user_id int(11) default NULL,
 				  opportunity_history_name varchar(150) NOT NULL,
@@ -151,13 +161,13 @@ class CSetupOpportunity {
 				  opportunity_history_opportunity int(11) default NULL,
 				  opportunity_history_proposal text,
 				  PRIMARY KEY  (opportunity_history_id)
-			) ENGINE=MyISAM DEFAULT CHARSET=latin1;';
+			) ENGINE=MyISAM DEFAULT CHARSET=latin1;');
 			
-		db_exec( $sql ); db_error();						// execute the queryString
+		$q -> exec();
 		
 		//inserting some extra sysvals
 		//$sql = 'INSERT INTO sysvals ( sysval_key_id, sysval_title, sysval_value ) ' .
-		$sql = 'REPLACE INTO sysvals ( sysval_key_id, sysval_title, sysval_value ) ' .
+		$sql = 'REPLACE INTO '.dPgetConfig('dbprefix', '').'sysvals ( sysval_key_id, sysval_title, sysval_value ) ' .
 			   'VALUES ( ' .
 			  // ' "1","OpportunitiesPriorities","1|- \n2|Must \n3|High \n4|Medium \n5|Low \n6|Option" ' .
 			  // ' ) , ( ' .

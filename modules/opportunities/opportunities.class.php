@@ -55,15 +55,18 @@ class COpportunities extends CDpObject {
 	var $opportunity_proposal = NULL;
 
 	// the constructor of the COpportunities class, always combined with the table name and the unique key of the table
-	function COpportunities() {
-		$this->CDpObject( 'opportunities', 'opportunity_id' );
+	function __construct() {
+		parent::__construct( 'opportunities', 'opportunity_id' );
 	}
 
 	// overload the delete method of the parent class for adaptation for opportunities's needs
 	function delete() {
-		$sql = "DELETE FROM opportunities WHERE opportunity_id = $this->opportunity_id";
-		if (!db_exec( $sql )) {
-			return $sql."-".db_error();
+		$q = new DBQuery();
+		$q -> setDelete('opportunities');
+		$q -> addWhere('opportunity_id = '.$this->opportunity_id);
+		
+		if (!$q -> exec()) {
+			return db_error();
 		} else {
 			return NULL;
 		}

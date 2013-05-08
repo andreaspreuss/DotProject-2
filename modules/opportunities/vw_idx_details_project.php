@@ -28,7 +28,7 @@ $q = new DBQuery;
 	$yesno 		= dPgetSysVal( 'OpportunitiesYesNo' );
 	$ba 		= dPgetSysVal( 'OpportunitiesBA' );
 // get the users
-	$sql = "SELECT contact_id,contact_first_name,contact_last_name FROM contacts ORDER BY contact_last_name";
+	$sql = 'SELECT contact_id,contact_first_name,contact_last_name FROM '.dPgetConfig('dbprefix', '').'contacts ORDER BY contact_last_name';
 	$Tmp_pm = db_loadList( $sql );
 	$pm = array("-1" => "All");
 	foreach ( $Tmp_pm as $t) {
