@@ -34,7 +34,7 @@ $titleBlock->addCell();
 // adding the 'add'-Button if user has writePermissions
 if ($canEdit) {
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new Opportunity').'">', '',
+		'<input type="submit" class="button" value="'.$AppUI->_('new opportunity').'">', '',
 		'<form action="?m=opportunities&a=addedit" method="post">', '</form>'			//call addedit.php in case of mouseclick
 	);
 }
@@ -68,11 +68,11 @@ $titleBlock->show();	//finally show the titleBlock
 						
 // build new tab box object
 	$tabBox = new CTabBox( "?m=opportunities&show_owner_id=".$show_owner_id, "$baseDir/modules/opportunities/", $tab );
-	$tabBox->add( 'vw_idx_details'  , 'All ('.$all_opps.')' );	// add another subsite to the tab box object
-	$tabBox->add( 'vw_idx_details_open'  , 'Open ('.$open_opps.')' );	// add another subsite to the tab box object
-	$tabBox->add( 'vw_idx_details_analysis'  , 'Analysis ('.$anal_opps.')' );	// add another subsite to the tab box object
-	$tabBox->add( 'vw_idx_details_project'  , 'To Project ('.$proj_opps.')' );	// add another subsite to the tab box object
-	$tabBox->add( 'vw_idx_details_archieved'  , 'Archieved ('.$arch_opps.')' );	// add another subsite to the tab box object
+	$tabBox->add( 'vw_idx_details'  , $AppUI->_('All').' ('.$all_opps.')' );	// add another subsite to the tab box object
+	$tabBox->add( 'vw_idx_details_open'  , $AppUI->_('Open').' ('.$open_opps.')' );	// add another subsite to the tab box object
+	$tabBox->add( 'vw_idx_details_analysis'  , $AppUI->_('Analysis').' ('.$anal_opps.')' );	// add another subsite to the tab box object
+	$tabBox->add( 'vw_idx_details_project'  , $AppUI->_('To Project').' ('.$proj_opps.')' );	// add another subsite to the tab box object
+	$tabBox->add( 'vw_idx_details_archieved'  , $AppUI->_('Archieved').' ('.$arch_opps.')' );	// add another subsite to the tab box object
 	$tabBox->add( 'vw_idx_about', 'About' );			// add a subsite vw_idx_about.php to the tab box object with title 'About'
 	$tabBox->show();						// finally show the tab box
 

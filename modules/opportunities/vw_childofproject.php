@@ -64,7 +64,7 @@ if ($save=="1") {
 				//$projs= ($projs!="") ? $projs.',('.$i.','.$opportunity_id.',"'.$description.'")' : '('.$i.','.$opportunity_id.',"'.$description.'")';		// Child Project
 			
 				//first, this insertion was cumulated and inserted after the for (...) {}. But using the addinsert somewhy only remember the last insertion!
-				//inserting without dP results in errors when using !!"§$/()@*Ü'Ö#ä
+				//inserting without dP results in errors when using !!"ï¿½$/()@*ï¿½'ï¿½#ï¿½
 				$q->addTable('opportunities_projects');
 				$q->addInsert('opportunity_project_projects',$i);
 				$q->addInsert('opportunity_project_opportunities',$opportunity_id);
@@ -89,7 +89,7 @@ if ($save=="1") {
 			$q->clear();
 			$Result = db_loadResult( $sql );
 			
-			$tmpName = db_loadResult('SELECT opportunity_name FROM opportunities WHERE opportunity_id='.$opportunity_id);
+			$tmpName = db_loadResult('SELECT opportunity_name FROM '.dPgetConfig('dbprefix', '').'opportunities WHERE opportunity_id='.$opportunity_id);
 			$txtChange = $AppUI->_("Please note that the status for Opportunity ").'"'.$tmpName.'"'.$AppUI->_(' will be changed to ').' '.$v;
 			echo "<script langauge=\"javascript\">alert(\"".$txtChange."\");</script>";
 		}

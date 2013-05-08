@@ -58,7 +58,7 @@ $q = new DBQuery;
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr><td colspan="13"><?php
 			echo '<form name="pickOwner" action="?m=opportunities&tab='.$tab.'" method="POST">';
-			echo $AppUI->_('Show Opportunities for : ').arraySelect($pm,'show_owner_id','size=1 class=text onChange="document.pickOwner.submit();"', $show_owner_id ) ;
+			echo $AppUI->_('Show Opportunities for').' : '.arraySelect($pm,'show_owner_id','size=1 class=text onChange="document.pickOwner.submit();"', $show_owner_id ) ;
 			echo '</form>';
 ?></td></tr>
 <tr>
