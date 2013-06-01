@@ -156,9 +156,17 @@ if ($changed_show_date != "") $show_date=$changed_show_date;
 		if ( $project_id ) $obj->annotation_id = $annotation_id;
 		// Get the name of project and the owner, if we are NOT entering a new one:
 		if ( $project_id != "-1" ) {
-			$project_name = db_loadResult( 'SELECT project_name FROM projects WHERE project_id='.$project_id );
-			$tmp_project_owner_name = db_loadList( 'SELECT contact_first_name,contact_last_name FROM contacts 
-									WHERE contact_id=( SELECT project_owner FROM projects WHERE project_id='.$project_id.' ) ' );
+			$q = new DBQuery();
+			$q -> addTable('projects');
+			$q -> addQuery('project_name');
+			$q -> addWhere('project_id='.$project_id);
+			$project_name=$q -> loadResult();
+			
+			$q -> clear();
+			$q -> addTable('contacts');
+			$q -> addQuery('contact_first_name,contact_last_name');
+			$q -> addWhere('contact_id=( SELECT project_owner FROM projects WHERE project_id='.$project_id.' ) ');
+			$tmp_project_owner_name = $q -> loadList();
 			$project_owner_name = $tmp_project_owner_name[0]['contact_last_name'].", ".substr($tmp_project_owner_name[0]['contact_first_name'],0,1).".";
 		}
 
