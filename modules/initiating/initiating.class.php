@@ -30,8 +30,8 @@ class CInitiating extends CDpObject {
   var $initiating_approved_comments = NULL;
   var $initiating_authorized_comments = NULL;
 	
-	function CInitiating() {
-		$this->CDpObject('initiating', 'initiating_id');
+	function __construct() {
+		parent::__construct('initiating', 'initiating_id');
 	}
 
 	function check() {
