@@ -44,52 +44,28 @@ if ($_POST['mode'] == 'upgrade') {
 <?php
 	if (strstr('WIN', strtoupper(PHP_OS)) !== false):
 ?>
-			<option value="access">MS Access</option>
-			<option value="ado">Generic ADO</option>
-			<option value="ado_access">ADO to MS Access Backend</option>
-			<option value="ado_mssql">ADO to MS SQL Server</option>
+			<option value="access" <?php if("access"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>MS Access</option>
+			<option value="ado" <?php if("ado"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>Generic ADO</option>
+			<option value="ado_access" <?php if("ado_access"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>ADO to MS Access Backend</option>
+			<option value="ado_mssql" <?php if("ado_mssql"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>ADO to MS SQL Server</option>
 
-			<option value="vfp">MS Visual FoxPro</option>
-			<option value="fbsql">FrontBase</option>
+			<option value="vfp" <?php if("vfp"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>MS Visual FoxPro</option>
+			<option value="fbsql" <?php if("fbsql"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>FrontBase</option>
 <?php
 endif;
 ?>
-			<option value="db2">IBM DB2</option>
-			<option value="ibase">Interbase 6 or earlier</option>
-			<option value="firebird">Firebird</option>
-			<option value="borland_ibase">Borland Interbase 6.5 and Later</option>
-
-			<option value="informix">Informix 7.3 or later</option>
-			<option value="informix72">Informix 7.2 or earlier</option>
-			<option value="ldap">LDAP</option>
-			<option value="mssql">MS SQL Server 7 and later</option>
-			<option value="mssqlpro">Portable MS SQL Server</option>
-			<option value="mysql" selected="selected">MySQL - Recommended</option>
-
-			<option value="mysqlt">MySQL With Transactions</option>
-			<option value="maxsql">MySQL MaxDB</option>
-			<option value="oci8">Oracle 8/9</option>
-			<option value="oci805">Oracle 8.0.5</option>
-			<option value="oci8po">Oracle 8/9 Portable</option>
-			<option value="odbc">ODBC</option>
-
-			<option value="odbc_mssql">MS SQL Server via ODBC</option>
-			<option value="odbc_oracle">Oracle via ODBC</option>
-			<option value="odbtp">Generic Odbtp</option>
-			<option value="odbtp_unicode">Odbtp With Unicode Support</option>
-			<option value="oracle">Older Oracle</option>
-			<option value="netezza">Netezza</option>
-
-			<option value="postgres">Generic PostgreSQL</option>
-			<option value="postgres64">PostreSQL 6.4 and earlier</option>
-			<option value="postgres7">PostgreSQL 7</option>
-			<option value="sapdb">SAP DB</option>
-			<option value="sqlanywhere">Sybase SQL Anywhere</option>
-			<option value="sqlite">SQLite</option>
-
-			<option value="sqlitepo">Portable SQLite</option>
-			<option value="sybase">Sybase</option>
-		</select>
+			<option value="mysql" <?php if("mysql"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>MySQL - Recommended</option>
+						
+			<option value="mysqlt" <?php if("mysqlt"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>MySQL With Transactions</option>
+			<option value="maxsql" <?php if("maxsql"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>MySQL MaxDB</option>
+			
+			<option value="postgres" <?php if("postgres"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>Generic PostgreSQL</option>
+			<option value="postgres64" <?php if("postgres64"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>PostreSQL 6.4 and earlier</option>
+			<option value="postgres7" <?php if("postgres7"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>PostgreSQL 7</option>
+			<option value="postgres8" <?php if("postgres8"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>PostgreSQL 8</option>
+			<option value="postgres9" <?php if("postgres9"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>PostgreSQL 9</option>
+			
+			</select>
 		</td>
 	</tr>
 	<tr>
@@ -99,6 +75,10 @@ endif;
 	<tr>
 		<td class="item">Database Name</td>
 		<td align="left"><input class="button" type="text" name="dbname" value="<?php echo  $dPconfig['dbname']; ?>" title="The Name of the Database dotProject will use and/or install" /></td>
+	</tr>
+	<tr>
+		<td class="item">Database Prefix</td>
+		<td align="left"><input class="button" type="text" name="dbprefix" value="<?php echo  $dPconfig['dbprefix']; ?>" title="The Prefix for the tables dotProject will use and/or install" /></td>
 	</tr>
 	<tr>
 		<td class="item">Database User Name</td>

@@ -22,7 +22,7 @@ $cFileMsg = 'Not Created';
 $dbErr = false;
 $cFileErr = false;
 
-$dbtype = 'mysql';
+$dbtype = trim(dPInstallGetParam($_POST, 'dbtype', ''));
 $dbprefix = trim( dPInstallGetParam( $_POST, 'dbprefix', '' ) );
 $dbhost = trim(dPInstallGetParam($_POST, 'dbhost', ''));
 $dbname = trim(dPInstallGetParam($_POST, 'dbname', ''));
@@ -64,9 +64,10 @@ if (!empty($db)) {
     $existing_db = $db->SelectDB($dbname);
 } else { $dbc = false; }
 
-// Quick hack to ensure MySQL behaves itself (#2323)
-$db->Execute("SET sql_mode := ''");
-
+if('mysql'==$dbtype){
+	// Quick hack to ensure MySQL behaves itself (#2323)
+	$db->Execute("SET sql_mode := ''");
+}
 
 $current_version = $dp_version_major . '.' . $dp_version_minor;
 $current_version .= isset($dp_version_patch) ? ('.'.$dp_version_patch) : '';

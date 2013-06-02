@@ -36,8 +36,8 @@ function dPgetIniSize($val)
 	<td class="title" colspan="2">Check for Requirements</td>
 </tr>
 <tr>
-	<td class="item"><li>PHP Version &gt;= 4.1</li></td>
-	<td align="left"><?php echo version_compare(phpversion(), '4.1', '<') ? '<b class="error">'.$failedImg.' ('.phpversion().'): dotProject may not work. Please upgrade!</b>' : '<b class="ok">'.$okImg.'</b><span class="item"> ('.phpversion().')</span>';?></td>
+	<td class="item"><li>PHP Version &gt;= 5.0</li></td>
+	<td align="left"><?php echo version_compare(phpversion(), '5.0', '<') ? '<b class="error">'.$failedImg.' ('.phpversion().'): dotProject may not work. Please upgrade!</b>' : '<b class="ok">'.$okImg.'</b><span class="item"> ('.phpversion().')</span>';?></td>
 </tr>
 <tr>
 	<td class="item"><li>Server API</li></td>
