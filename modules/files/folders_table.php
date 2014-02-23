@@ -74,9 +74,7 @@ function displayFolders($folder_id=0, $level=0) {
 	  $q->addTable('file_folders', 'ff');
 		$q->addQuery('ff.*');
 		$q->addWhere('ff.file_folder_id = ' . $folder_id);
-		$folder_sql = $q->prepare();
-		$q->clear();
-		$folders = db_loadList($folder_sql);
+		$folders = $q -> loadList();
 	} else {
 		$folders[0]['file_folder_name'] = $AppUI->_('Root');
 		$folders[0]['file_folder_description'] = '';

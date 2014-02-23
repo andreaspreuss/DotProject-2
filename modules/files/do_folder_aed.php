@@ -9,12 +9,12 @@ $redirect = dPgetCleanParam($_POST, 'redirect', '');
 
 $obj = new CFileFolder();
 if ($file_folder_id) { 
-	$obj->_message = 'updated';
+	$obj->__message = 'updated';
 	$oldObj = new CFileFolder();
 	$oldObj->load($file_folder_id);
 
 } else {
-	$obj->_message = 'added';
+	$obj->__message = 'added';
 }
 
 if (!$obj->bind($_POST)) {

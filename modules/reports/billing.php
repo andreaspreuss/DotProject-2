@@ -23,7 +23,7 @@ $end_date   = $AppUI->getState( 'end_date_billing' );
 
 
 $q = new DBQuery();
-$q -> addQuery('task_log_hours, task_log_bill_category');
+$q -> addQuery('task_log_hours, task_log_costcode');
 
 $displayed_columns = array();
 
@@ -49,7 +49,7 @@ if ($list_by_department) {
 	$displayed_columns[] = DEPARTMENT;
 }
 if ($list_by_employee) {
-	$q -> addQuery("concat(user_first_name, ' ', user_last_name) as employee_name");
+	$q -> addQuery("concat(contact_first_name, ' ', contact_last_name) as employee_name");
 	$displayed_columns[] = EMPLOYEE;
 }
 
@@ -87,14 +87,16 @@ if ($list_by_company){
 	$q -> addJoin('companies','c','c.company_id = l.project_company');
 }
 if ($list_by_employee or $list_by_department){
-	$q -> addJoin('users','u','u.user_id = l.task_log_creator');;
+	$q -> addJoin('users','u','u.user_id = l.task_log_creator');
+	$q -> addJoin('contacts','cont','u.user_contact=cont.contact_id');
 }
 if ($list_by_department){
 	$q -> addJoin('departments','d','d.dept_id = l.user_department');;
 }
 	
 // where sql
-$q -> addWhere("l.task_log_date >= '" . $start_date . " 00:00:00' and l.task_log_date <= '" . $end_date . " 00:00:00'");
+$q -> addWhere("l.task_log_date >= '" . $start_date . " 00:00:00'");
+$q -> addWhere("l.task_log_date <= '" . $end_date . " 00:00:00'");
 if ($task and $list_by_task){
 	$q -> addWhere('t.task_id = ' . $task);
 }
@@ -111,8 +113,6 @@ if ($department and $list_by_department){
 	$q -> addWhere('d.dept_id = ' . $department);
 }
 
-//echo $select_sql . "<br>" . $from_sql . "<br>" . $join_sql . "<br>" . $where_sql;
-
 $results = $q -> loadList();
 
 $tree = make_new_tree();
@@ -124,7 +124,7 @@ foreach ( $results as $row ) {
 	// create hours array
 	$hours = array();
 	foreach ( $bill_category as $i=>$name ) {
-		if ( $row['task_log_bill_category'] == $i )
+		if ( $row['task_log_costcode'] == $i )
 			$hours[$name] = $row['task_log_hours'];
 		else
 			$hours[$name] = 0;
@@ -143,20 +143,5 @@ foreach ( $results as $row ) {
 echo "<br>\n";
 
 print_tree( $tree, $displayed_columns );
-
-/*
-$sql = "
-
-select task_log_work_category as task_log_cost_code, task_log_description as task_log_summary, task_log_hours, task_log_bill_category, task_name, project_name, company_name, user_username as employee_name, dept_name as department_name
-from task_log
-LEFT JOIN tasks ON task_id = task_log_task
-LEFT JOIN projects ON project_id = task_project
-LEFT JOIN companies ON company_id = project_company
-LEFT JOIN users ON user_id = task_log_creator
-LEFT JOIN departments ON dept_id = user_department
-where task_log_date >= '2003-07-21' and task_log_date <= '2003-08-11'
-
-";
-*/
 
 ?>

@@ -16,10 +16,11 @@ if ($product_id) {
 }
 
 // select costcodes for pull down
-$sql = "select costcode_id, costcode_name
-        from costcodes
-        order by costcode_id";
-$product_costcodes = arrayMerge( array( 0=>'Select'), db_loadHashList( $sql ) );
+$q = new DBQuery();
+$q -> addTable('costcodes');
+$q -> addQuery('costcode_id, costcode_name');
+$q -> addOrder('costcode_id');
+$product_costcodes = arrayMerge( array( 0=>$AppUI->_('Select')), $q -> loadHashList() );
 
 
 if ($canEdit) {

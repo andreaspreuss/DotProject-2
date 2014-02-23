@@ -37,7 +37,7 @@ class CFile extends CDpObject {
 	var $file_checkout = NULL;
 	var $file_co_reason = NULL;
 	
-	var $_message = NULL;
+	var $__message = NULL;
 	
 	// This "breaks" check-in/upload if helpdesk is not present.
 	// class variable needs to be added "dymanically"
@@ -67,7 +67,7 @@ class CFile extends CDpObject {
 			// create task log with information about the file that was uploaded
 			$task_log = new CHDTaskLog();
 			$task_log->task_log_help_desk_id = $this->file_helpdesk_item;
-			if ($this->_message != 'deleted') {
+			if ($this->__message != 'deleted') {
 				$task_log->task_log_name = 'File ' . $this->file_name .' uploaded';
 			} else {
 				$task_log->task_log_name = 'File ' . $this->file_name .' deleted';
@@ -154,7 +154,7 @@ class CFile extends CDpObject {
 		}
 		$this->_query->clear();
 		
-		$this->_message = 'deleted';
+		$this->__message = 'deleted';
 		
 		if ($helpdesk_available && $this->file_helpdesk_item != 0) {
 			$this->addHelpDeskTaskLog();
@@ -308,7 +308,7 @@ class CFile extends CDpObject {
 			$this->_hditem->load($this->file_helpdesk_item);
 			
 			// This section modified by HaTaX on 6-04-2011 for helpdesk changes
-			if ($this->_message != 'deleted') {
+			if ($this->__message != 'deleted') {
 				$this->_hditem->log_status(99, $this->file_name, "uploaded with description \"".$this->file_description."\" ");
 			} else {
 				$this->_hditem->log_status(99, $this->file_name, "deleted.");
@@ -373,9 +373,9 @@ class CFile extends CDpObject {
 			}
 			$this->_query->clear();
 			
-			$body .= ("\n\nFile " . $this->file_name . ' was ' . $this->_message . ' by ' 
+			$body .= ("\n\nFile " . $this->file_name . ' was ' . $this->__message . ' by ' 
 			          . $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
-			if ($this->_message != 'deleted') {
+			if ($this->__message != 'deleted') {
 				$body .= ("\n" . $AppUI->_('URL') . ': ' . DP_BASE_URL 
 				          . '/fileviewer.php?file_id=' . $this->file_id);
 				$body .= "\n" . $AppUI->_('Description') . ':' . "\n" . $this->file_description;
@@ -474,9 +474,9 @@ class CFile extends CDpObject {
 				$this->_query->clear();
 			}
 			
-			$body .= ("\n\nFile " . $this->file_name . ' was ' . $this->_message . ' by ' 
+			$body .= ("\n\nFile " . $this->file_name . ' was ' . $this->__message . ' by ' 
 			          . $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
-			if ($this->_message != 'deleted') {
+			if ($this->__message != 'deleted') {
 				$body .= ("\n" . $AppUI->_('URL') . ': ' . DP_BASE_URL 
 				          . '/fileviewer.php?file_id=' . $this->file_id);
 				$body .= "\n" . $AppUI->_('Description') . ":\n" . $this->file_description;

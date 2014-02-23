@@ -18,7 +18,6 @@ $companies = arrayMerge( array( '0'=>$AppUI->_('Select A Company') ), $companies
 $types = dPgetSysVal ( 'PaymentType' );
 
 // load the record data
-// TODO FIX query to add contact information (not user information)
 $sql = new DBQuery();
 $sql -> addTable('payments','paym');
 $sql -> addQuery("paym.*,cont.contact_first_name,cont.contact_last_name,comp.company_name");
@@ -187,6 +186,7 @@ if($obj->payment_company == null) {
 
 <?
 $s = '';
+
 foreach($inv as $row) {
   $invoice_date = intval( @$row["invoice_date"] ) ? new CDate( $row["invoice_date"] ) : null;
   $invoice_due = intval( @$row["invoice_due"] ) ? new CDate( $row["invoice_due"] ) : null;
@@ -197,6 +197,7 @@ foreach($inv as $row) {
   if(isset($selected)) {
     if(in_array(@$row["invoice_id"], $selected)) { $s .= " checked"; }
   }
+  
   $s .= '></td>';
   $s .= $CR . '<td align="right" width="65"><a href="./index.php?m=invoicess&a=addedit&invoice_id="'.@$row['invoice_id'].'">' . $row["invoice_id"] . '</a></td>';
   $s .= $CR . '<td align="center" nowrap="nowrap">'.$row['company_name'].'</td>';

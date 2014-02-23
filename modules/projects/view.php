@@ -492,27 +492,21 @@ $canAccessTask = getPermission('tasks', 'access');
 $canAccessTaskLog = getPermission('task_log', 'access');
 $showEditCheckbox = false;
 
-if ($canAccessTask) {
-	$tabBox->add(DP_BASE_DIR.'/modules/tasks/tasks', 'Tasks');
-	$tabBox->add(DP_BASE_DIR.'/modules/tasks/tasks', 'Tasks (Inactive)');
-}
-if (getPermission('forums', 'access')) {
-	$tabBox->add(DP_BASE_DIR.'/modules/projects/vw_forums', 'Forums');
-}
+$tabBox->add( DP_BASE_DIR.'/modules/journal/index', $AppUI->_('Journal') );
+$tabBox->add( DP_BASE_DIR.'/modules/initiating/index', $AppUI->_('Initiating') );
 
-/*
-if (getPermission('files', 'access')) {
-	$tabBox->add(DP_BASE_DIR.'/modules/projects/vw_files', 'Files');
-}
-*/
 if ($canAccessTask) {
-	// Added the journal entry
-	$tabBox->add( DP_BASE_DIR.'/modules/journal/index', 'Journal' );
-	$tabBox->add(DP_BASE_DIR.'/modules/tasks/viewgantt', 'Gantt Chart');
+	$tabBox->add(DP_BASE_DIR.'/modules/tasks/tasks', $AppUI->_('Tasks'));
+	$tabBox->add(DP_BASE_DIR.'/modules/tasks/tasks', $AppUI->_('Tasks (Inactive)'));	
+	$tabBox->add(DP_BASE_DIR.'/modules/tasks/viewgantt', $AppUI->_('Gantt Chart'));
 	if ($canAccessTaskLog) {
-		$tabBox->add(DP_BASE_DIR.'/modules/projects/vw_logs', 'Task Logs');
+		$tabBox->add(DP_BASE_DIR.'/modules/projects/vw_logs', $AppUI->_('Task Logs'));
 	}
 }
+if (getPermission('forums', 'access')) {
+	$tabBox->add(DP_BASE_DIR.'/modules/projects/vw_forums', $AppUI->_('Forums'));
+}
+
 $tabBox->loadExtras($m);
 $f = 'all';
 $min_view = true;

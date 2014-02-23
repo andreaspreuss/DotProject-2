@@ -20,11 +20,11 @@ $list = $q->loadList();
 </tr>
 <?php foreach ($list as $row) { ?>
 <tr>
-	<td><?php echo $row['initiating_title'] ?></td>
-	<td><?php echo $row['initiating_manager'] ?></td>
-	<td><?php echo $row['initiating_create_by'] ?></td>
-	<td><?php echo $row['initiating_date_create'] ?></td>
-	<td><a href="index.php?m=initiating&a=addedit&id=<?php echo $row['initiating_id'] ?>">edit</a></td>
+	<td><?php echo $AppUI->_($row['initiating_title']); ?></td>
+	<td><?php echo $AppUI->_($row['initiating_manager']); ?></td>
+	<td><?php echo $AppUI->_($row['initiating_create_by']); ?></td>
+	<td><?php echo $AppUI->_($row['initiating_date_create']); ?></td>
+	<td><a href="index.php?m=initiating&a=addedit&id=<?php echo $row['initiating_id'] ?>"><php echo $AppUI->_('edit'); ?></a></td>
 </tr>
 <?php } ?>
 </table>

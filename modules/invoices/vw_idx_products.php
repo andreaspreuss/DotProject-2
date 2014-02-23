@@ -29,15 +29,15 @@ function delIt2(id) {
 </tr>
 <?php
 // Pull the invoice data
-$sql = "
-SELECT invoice_product.*,
-p1.invoice_status invoice_status
-FROM invoice_product
-LEFT JOIN invoices p1 ON product_invoice = p1.invoice_id
-WHERE product_invoice = $invoice_id 
-ORDER BY product_costcode
-";
-$logs = db_loadList( $sql );
+$q = new DBQuery();
+$q -> addTable('invoice_product','ip');
+$q -> addQuery('ip.*');
+$q -> addQuery('p1.invoice_status');
+$q -> addJoin('invoices','p1','product_invoice = p1.invoice_id');
+$q -> addWhere('product_invoice = '.$invoice_id);
+$q -> addOrder('product_costcode');
+
+$logs = $q -> loadList();
 
 $s = '';
 $hrs = 0;

@@ -53,8 +53,8 @@ class CMacroProject extends CDpObject {
 	var $macroproject_priority = NULL;
 	var $macroproject_type = NULL;
 	
-	function CMacroProject() {
-		$this->CDpObject('macroprojects', 'macroproject_id');
+	function __construct() {
+		parent::__construct('macroprojects', 'macroproject_id');
 	}
 	
 	function check() {
@@ -95,7 +95,7 @@ class CMacroProject extends CDpObject {
 		// TODO: check if user permissions are considered when deleting a project
 		global $AppUI;
 		
-		return getPermission('macroprojects', 'delete', $oid); //modification effectuée dans include/permission et classes/permissions
+		return getPermission('macroprojects', 'delete', $oid); //modification effectuï¿½e dans include/permission et classes/permissions
 		
 		// NOTE: I uncommented the dependencies check since it is
 		// very anoying having to delete all tasks before being able
@@ -351,7 +351,7 @@ function macroprojects_list_data($user_id=false) {
 		$q->addJoin('user_tasks', 'ut', 'ut.task_id = t.task_id');
 		$q->addWhere('ut.user_id = ' . $user_id);
 	}
-	//$q->addWhere('t.task_id = t.task_parent'); ==>on veut le calculer en prenant en compte toutes les tâches
+	//$q->addWhere('t.task_id = t.task_parent'); ==>on veut le calculer en prenant en compte toutes les tï¿½ches
 	$q->addGroup('t.task_project');
 	$tasks_sum = $q->exec();
 	$q->clear();*/

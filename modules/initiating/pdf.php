@@ -1,5 +1,5 @@
 <?php
-// chama a classe 'class.ezpdf.php' necessária para se gerar o documento
+// chama a classe 'class.ezpdf.php' necessï¿½ria para se gerar o documento
 //include "lib/ezpdf/class.ezpdf.php"; 
 $font_dir = DP_BASE_DIR.'/lib/ezpdf/fonts';
 require($AppUI->getLibraryClass('ezpdf/class.ezpdf'));
@@ -23,50 +23,52 @@ if (!db_loadObject($q->prepare(), $obj) && $id > 0) {
 
 $q = new DBQuery();
 $q->addQuery('*');
-$q->addTable('contacts');
-$q->addWhere('contact_id = ' . $obj->initiating_manager);
+$q->addTable('contacts','c');
+$q->addTable('users','u');
+$q->addWhere('u.user_contact = c.contact_id');
+$q->addWhere('user_id = ' . $obj->initiating_manager);
 $contact = $q->loadHash();
 
 // instancia um novo documento com o nome de pdf
 $pdf = new Cezpdf();
 
-// seta a fonte que será usada para apresentar os dados
-//essas fontes são aquelas dentro do diretório GeraPDF/fonts
+// seta a fonte que serï¿½ usada para apresentar os dados
+//essas fontes sï¿½o aquelas dentro do diretï¿½rio GeraPDF/fonts
 //$pdf->selectFont('lib/ezpdf/Helvetica.afm'); 
 $pdf->selectFont("$font_dir/Helvetica.afm");
 
-// chama o método ezText e passa o texto que deverá ser apresentado no documento
-//o numero após o texto se refere ao tamanho da fonte
+// chama o mï¿½todo ezText e passa o texto que deverï¿½ ser apresentado no documento
+//o numero apï¿½s o texto se refere ao tamanho da fonte
 $pdf->ezText("\n");
-$pdf->ezText("<b>Termo de abertura de projeto</b>",18,array('justification'=>'center')); 
+$pdf->ezText('<b>Termo de abertura de projeto</b>',18,array('justification'=>'center')); 
 $pdf->ezText('');
 $pdf->ezText('');
-$pdf->ezText("<b>Titulo do Projeto: </b>" . $obj->initiating_title,16);
+$pdf->ezText('<b>'.$AppUI->_('Project Title').': </b>' . $obj->initiating_title,16);
 $pdf->ezText('');
-$pdf->ezText("<b>Stakeholder: </b>" . $contact['contact_first_name'] . " " .  $contact['contact_last_name'],16);
+$pdf->ezText('<b>'.$AppUI->_('Stakeholder').': </b>' . $contact['contact_first_name'] . ' ' .  $contact['contact_last_name'],16);
 $pdf->ezText('');
-$pdf->ezText("<b>Justificativa: </b>" . $obj->initiating_justification,16);
+$pdf->ezText('<b>'.$AppUI->_('Justification').': </b>' . $obj->initiating_justification,16);
 $pdf->ezText('');
-$pdf->ezText("<b>Objetivos: </b>" . $obj->initiating_objective,16);
+$pdf->ezText('<b>'.$AppUI->_('Objectives').': </b>' . $obj->initiating_objective,16);
 $pdf->ezText('');
-$pdf->ezText("<b>Resultados Esperados: </b>" . $obj->initiating_expected_result,16);
+$pdf->ezText('<b>'.$AppUI->_('Expected Results').': </b>' . $obj->initiating_expected_result,16);
 $pdf->ezText('');
-$pdf->ezText("<b>Premissas: </b>" . $obj->initiating_premise,16);
+$pdf->ezText('<b>Premissas: </b>' . $obj->initiating_premise,16);
 $pdf->ezText('');
-$pdf->ezText("<b>Restrições: </b>" . $obj->initiating_restrictions,16);
+$pdf->ezText('<b>Restriï¿½ï¿½es: </b>' . $obj->initiating_restrictions,16);
 $pdf->ezText('');
-$pdf->ezText("<b>Orçamento: </b>" . $obj->initiating_budget,16);
+$pdf->ezText('<b>Orï¿½amento: </b>' . $obj->initiating_budget,16);
 $pdf->ezText('');
-$pdf->ezText("<b>Data de Início: </b>" . $obj->initiating_start_date,16);
+$pdf->ezText('<b>'.$AppUI->_('Start Date').': </b>' . $obj->initiating_start_date,16);
 $pdf->ezText('');
-$pdf->ezText("<b>Data Final: </b>" . $obj->initiating_end_date,16);
+$pdf->ezText('<b>'.$AppUI->_('End Date').': </b>' . $obj->initiating_end_date,16);
 $pdf->ezText('');
-$pdf->ezText("<b>Marcos: </b>" . $obj->initiating_milestone,16);
+$pdf->ezText('<b>'.$AppUI->_('Milestones').': </b>' . $obj->initiating_milestone,16);
 $pdf->ezText('');
-$pdf->ezText("<b>Critérios para Sucesso: </b>" . $obj->initiating_success,16);
+$pdf->ezText('<b>Critï¿½rios para Sucesso: </b>' . $obj->initiating_success,16);
 $pdf->ezText('');
 $pdf->ezText('');
-$pdf->ezText("<b>Assinaturas</b>",16,array('justification'=>'center')); 
+$pdf->ezText('<b>Assinaturas</b>',16,array('justification'=>'center')); 
 
 // gera o PDF
 $pdf->ezStream(); 

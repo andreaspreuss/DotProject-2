@@ -145,8 +145,8 @@ function delIt() {
 $query_string = "?m=invoices&a=view&invoice_id=$invoice_id";
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=invoices&a=view&invoice_id=$invoice_id", "", $tab );
-$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/invoices/vw_idx_products", 'Products' );
-$obj->invoice_status == 0 ? $tabBox->add( "{$AppUI->cfg['root_dir']}/modules/invoices/vw_idx_products_update"  , 'Update Products' ) : null;
+$tabBox->add( dPgetConfig( 'root_dir' ).'/modules/invoices/vw_idx_products', 'Products' );
+$obj->invoice_status == 0 ? $tabBox->add( dPgetConfig( 'root_dir' ).'/modules/invoices/vw_idx_products_update'  , 'Update Products' ) : null;
 
 // settings for tasks
 $f = 'all';

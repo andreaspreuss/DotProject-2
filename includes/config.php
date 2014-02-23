@@ -9,11 +9,11 @@ if (!defined('DP_BASE_DIR')) {
 ### FOR INFORMATION ON MANUAL CONFIGURATION AND FOR DOCUMENTATION SEE ./includes/config-dist.php ###
 
 $dPconfig['dbtype'] = 'mysql';
-$dPconfig['dbhost'] = 'localhost';
+$dPconfig['dbhost'] = 'virtual';
 $dPconfig['dbname'] = 'dotproject';
 $dPconfig['dbprefix'] = 'dotp_';
-$dPconfig['dbuser'] = 'dotproject';
-$dPconfig['dbpass'] = 'clave';
+$dPconfig['dbuser'] = 'root';
+$dPconfig['dbpass'] = 'root';
 $dPconfig['dbpersist'] = false;
 $dPconfig['root_dir'] = $baseDir;
 $dPconfig['base_url'] = $baseUrl;

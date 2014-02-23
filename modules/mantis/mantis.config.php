@@ -4,7 +4,7 @@ require_once("xmlrpc/PHPXMLRPC/client.php");
 
 // Mantis host, w/o http, w/o trailing slash
 // either IP or domain name, NO localhost
-$cnf['mantishost'] = 'bugs.iberux.org';
+$cnf['mantishost'] = 'bugs.dechobot.com';
 
 // Web mantis path, + trailing slash
 $cnf['mantisuri'] = '/';

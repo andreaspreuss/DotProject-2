@@ -17,33 +17,33 @@ require_once $AppUI->getSystemClass('date');
 $df = $AppUI->getPref( 'SHDATEFORMAT' );
 
 // get timesheet globals
-$sql = "
-SELECT tt_start_date, tt_end_date, tt_id, tt_active,
+$q = new DBQuery();
+$q -> addTable('timetrack_idx');
+$q -> addQuery('tt_start_date, tt_end_date, tt_id, tt_active,
 	COUNT( tt_data_id ) AS data_count,
 	SUM( tt_data_hours ) AS hour_count,
 	COUNT( DISTINCT( DAYOFYEAR( tt_data_date ) ) ) AS day_count, 
-	user_first_name, user_last_name, tt_supervisor_approval, tt_pm_approval, tt_approve_note
-FROM timetrack_idx
-LEFT JOIN timetrack_data ON tt_data_timesheet_id = tt_id
-LEFT JOIN users ON user_id = tt_user_id
-WHERE tt_id = $timesheet_id
-GROUP BY tt_id
-";
-db_loadHash( $sql, $tg_data );
-//echo "<PRE>$sql</PRE>";
+	user_first_name, user_last_name, tt_supervisor_approval, tt_pm_approval, tt_approve_note');
+$q -> addJoin('timetrack_data','data','tt_data_timesheet_id = tt_id');
+$q -> addJoin('users','u','user_id = tt_user_id');
+$q -> addWhere('tt_id = '.$timesheet_id);
+$q -> addGroup('tt_id');
+
+$tg_data = $q -> loadHash();
+
 
 //pull data for this timesheet
-$psql = " 
-SELECT timetrack_data.*, DATE_FORMAT(tt_data_date,'%m/%d/%Y') AS tid_date,
-	company_name, project_name, task_name
-FROM timetrack_data
-LEFT JOIN companies ON company_id = tt_data_client_id
-LEFT JOIN projects ON project_id = tt_data_project_id
-LEFT JOIN tasks ON task_id = tt_data_task_id
-WHERE tt_data_timesheet_id = $timesheet_id
-ORDER BY tt_data_date
-"; 
-$tt_data = db_loadList ( $psql ); 
+$q = new DBQuery();
+$q -> addTable('timetrack_data'); 
+$q -> addQuery("timetrack_data.*, DATE_FORMAT(tt_data_date,'%m/%d/%Y') AS tid_date,
+	company_name, project_name, task_name");
+$q -> addJoin('companies','c','company_id = tt_data_client_id');
+$q -> addJoin('projects','p','project_id = tt_data_project_id');
+$q -> addJoin('tasks','t','task_id = tt_data_task_id');
+$q -> addWhere('tt_data_timesheet_id = $timesheet_id');
+$q -> addOrder('tt_data_date');
+
+$tt_data = $q -> loadList(); 
 //echo "<PRE>$psql</PRE>";
 
 $start_date = new CDate( db_dateTime2unix( $tg_data["tt_start_date"] ) );
