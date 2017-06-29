@@ -1184,7 +1184,10 @@ CREATE TABLE %dbprefix%dpversion (
 	last_code_update date not null default '0000-00-00'
 );
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 601893621ba4750a134f66868dbabe2aa5834596
 INSERT INTO %dbprefix%dpversion VALUES ('2.2.1', 2, '2012-11-19', '2012-09-06');
 
 # 20050307
@@ -1267,6 +1270,7 @@ CREATE TABLE IF NOT EXISTS %dbprefix%tasks_ical (
 
 # 20121019
 # Create budget table
+<<<<<<< HEAD
 CREATE TABLE IF NOT EXISTS %dbprefix%budget (
 	budget_id int(11) NOT NULL AUTO_INCREMENT,
 	task_id int(11) NOT NULL DEFAULT '0',
@@ -1281,3 +1285,19 @@ CREATE TABLE IF NOT EXISTS %dbprefix%budget (
 	service_operation decimal(15,2) DEFAULT '0',
 	PRIMARY KEY (budget_id)
 );
+=======
+CREATE TABLE IF NOT EXISTS `%dbprefix%budget` (
+	`budget_id` int(11) NOT NULL AUTO_INCREMENT,
+	`task_id` int(11) NOT NULL DEFAULT '0',
+	`Tax` decimal(4,2) NOT NULL DEFAULT '0',
+	`display_tax` tinyint(1) NOT NULL DEFAULT '0',
+	`only_financial` tinyint(1) NOT NULL DEFAULT '0',
+	`equipment_investment` decimal(15,2) DEFAULT '0',
+	`intangible_investment` decimal(15,2) DEFAULT '0',
+	`service_investment` decimal(15,2) DEFAULT '0',
+	`equipment_operation` decimal(15,2) DEFAULT '0',
+	`intangible_operation` decimal(15,2) DEFAULT '0',
+	`service_operation` decimal(15,2) DEFAULT '0',
+	PRIMARY KEY (`budget_id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+>>>>>>> 601893621ba4750a134f66868dbabe2aa5834596
