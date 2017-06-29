@@ -19,7 +19,7 @@ if (!ini_get('file_uploads')) {
 }
 $obj = new CFile();
 if ($file_id) { 
-	$obj->_message = 'updated';
+	$obj->setMessage('updated');
 	$oldObj = new CFile();
 	$oldObj->load($file_id);
 } else {
@@ -41,7 +41,7 @@ if ($file_id) {
 		}
 	}
 	*/
-	$obj->_message = 'added';
+	$obj->setMessage('added');
 }
 $obj->file_category = intval(dPgetParam($_POST, 'file_category', 0));
 

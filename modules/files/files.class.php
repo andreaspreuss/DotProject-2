@@ -540,6 +540,12 @@ class CFile extends CDpObject {
 		return $row['task_name'];
 	}
 	
+	function setMessage($message){
+		$__message = $message;
+	}
+	function getMessage(){
+		return $__message;
+	}
 }
 
 /**
@@ -730,4 +736,6 @@ function getFolderSelectList() {
 	                      $allowed_folders);
 	return $folders;
 }
+
+
 ?>
