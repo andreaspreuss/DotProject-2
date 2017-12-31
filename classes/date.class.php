@@ -48,7 +48,7 @@ class CDate extends Date {
 /**
 * extend PEAR Date's format() meet to translation needs
 */
-	function format($format) {
+	function format($format = NULL) {
 		global $AppUI;
 		$AppUI->setBaseLocale();
 		$output = parent::format($format);
@@ -102,9 +102,9 @@ class CDate extends Date {
 * @param Date The date to compare to
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
-	function dateDiff($when) {
+	function dateDiff($po_date, $pb_ignoretime = false) {
 		return Date_calc::dateDiff($this->getDay(), $this->getMonth(), $this->getYear(),
-								   $when->getDay(), $when->getMonth(), $when->getYear());	
+								   $po_date->getDay(), $po_date->getMonth(), $po_date->getYear());	
 	}
 
 /**
