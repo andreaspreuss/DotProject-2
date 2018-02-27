@@ -2,11 +2,19 @@
     /**
     * Helper functions to convert between ADODB recordset objects and XMLRPC values.
     * Uses John Lim's AdoDB and Edd Dumbill's phpxmlrpc libs
-    * 
+<<<<<<< HEAD
+    *
     * @author Daniele Baroncelli
     * @author Gaetano Giunta
     * @copyright (c) 2003-2004 Giunta/Baroncelli. All rights reserved.
-    * 
+    *
+=======
+    *
+    * @author Daniele Baroncelli
+    * @author Gaetano Giunta
+    * @copyright (c) 2003-2004 Giunta/Baroncelli. All rights reserved.
+    *
+>>>>>>> refs/remotes/origin/master
     * @todo some more error checking here and there
     * @todo document the xmlrpc-struct used to encode recordset info
     * @todo verify if using xmlrpc_encode($rs->GetArray()) would work with:
@@ -16,10 +24,17 @@
 
     /**
     * Include the main libraries
-    */    
+<<<<<<< HEAD
+    */
     require_once('xmlrpc.inc');
     if (!defined('ADODB_DIR')) require_once('adodb.inc.php');
-            
+
+=======
+    */
+    require_once('xmlrpc.inc');
+    if (!defined('ADODB_DIR')) require_once('adodb.inc.php');
+
+>>>>>>> refs/remotes/origin/master
     /**
     * Builds an xmlrpc struct value out of an AdoDB recordset
     */
@@ -113,12 +128,21 @@
         }
         $body = new xmlrpcval ($rows, "array");
 
-        return $body;    
+<<<<<<< HEAD
+        return $body;
     }
-    
+
     /**
     * Returns an xmlrpc struct value as string out of an AdoDB recordset
-    */    
+    */
+=======
+        return $body;
+    }
+
+    /**
+    * Returns an xmlrpc struct value as string out of an AdoDB recordset
+    */
+>>>>>>> refs/remotes/origin/master
     function rs2xmlrpcstring (&$adodbrs) {
         $xmlrpc = rs2xmlrpcval ($adodbrs);
         if ($xmlrpc)
@@ -129,24 +153,39 @@
 
     /**
     * Given a well-formed xmlrpc struct object returns an AdoDB object
-    * 
+<<<<<<< HEAD
+    *
+=======
+    *
+>>>>>>> refs/remotes/origin/master
     * @todo add some error checking on the input value
     */
     function xmlrpcval2rs (&$xmlrpcval) {
 
         $fields_array = array();
         $data_array = array();
- 
-        // rebuild column information  
+<<<<<<< HEAD
+
+        // rebuild column information
         $header = $xmlrpcval->structmem('header');
-        
+
+=======
+
+        // rebuild column information
+        $header = $xmlrpcval->structmem('header');
+
+>>>>>>> refs/remotes/origin/master
         $numfields = $header->structmem('fieldcount');
         $numfields = $numfields->scalarval();
         $numrecords = $header->structmem('recordcount');
         $numrecords = $numrecords->scalarval();
         $sqlstring = $header->structmem('sql');
         $sqlstring = $sqlstring->scalarval();
-        
+<<<<<<< HEAD
+
+=======
+
+>>>>>>> refs/remotes/origin/master
         $fieldinfo = $header->structmem('fieldinfo');
         for ($i = 0; $i < $numfields; $i++) {
             $temp = $fieldinfo->arraymem($i);
@@ -179,5 +218,7 @@
         return $rs;
 
     }
+<<<<<<< HEAD
 
-?>
+=======
+>>>>>>> refs/remotes/origin/master

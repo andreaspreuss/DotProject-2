@@ -1,10 +1,18 @@
 <?php
-// Italian language file contributed by Tiraboschi Massimiliano aka TiMax  
+<<<<<<< HEAD
+// Italian language file contributed by Tiraboschi Massimiliano aka TiMax
+=======
+// Italian language file contributed by Tiraboschi Massimiliano aka TiMax
+>>>>>>> refs/remotes/origin/master
 // www.maxdev.com  timax@maxdev.com
 $ADODB_LANG_ARRAY = array (
             'LANG'                      => 'it',
             DB_ERROR                    => 'errore sconosciuto',
-            DB_ERROR_ALREADY_EXISTS     => 'esiste gi&agrave;',
+<<<<<<< HEAD
+            DB_ERROR_ALREADY_EXISTS     => 'esiste già',
+=======
+            DB_ERROR_ALREADY_EXISTS     => 'esiste già',
+>>>>>>> refs/remotes/origin/master
             DB_ERROR_CANNOT_CREATE      => 'non posso creare',
             DB_ERROR_CANNOT_DELETE      => 'non posso cancellare',
             DB_ERROR_CANNOT_DROP        => 'non posso eliminare',
@@ -31,4 +39,7 @@ $ADODB_LANG_ARRAY = array (
             DB_ERROR_NOSUCHDB           => 'database non trovato',
             DB_ERROR_ACCESS_VIOLATION   => 'permessi insufficienti'
 );
-?>
+<<<<<<< HEAD
+
+=======
+>>>>>>> refs/remotes/origin/master
