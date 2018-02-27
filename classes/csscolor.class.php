@@ -93,7 +93,7 @@ class CSS_Color extends PEAR
 
     // Make sure we got a valid hex value
     if (!$this->isHex($bgHex)) {
-      $this->raiseError("background color '$bgHex' is not a hex color value",
+      $this->cssRaiseError("background color '$bgHex' is not a hex color value",
 			__FUNCTION__, __LINE__);
       return false;
     }
@@ -115,7 +115,7 @@ class CSS_Color extends PEAR
 
     // Make sure we got a valid hex value
     if (!$this->isHex($fgHex)) {
-      $this->raiseError("background color '$bgHex' is not a hex color value",
+      $this->cssRaiseError("background color '$bgHex' is not a hex color value",
 			__FUNCTION__, __LINE__);
       return false;
     }
@@ -152,13 +152,13 @@ class CSS_Color extends PEAR
 
     // Make sure inputs are valid
     if (!is_numeric($percent) || $percent < 0 || $percent > 1) {
-      $this->raiseError("percent=$percent is not valid",
+      $this->cssRaiseError("percent=$percent is not valid",
 			__FUNCTION__, __LINE__);
       return false;
     }
 
     if (!is_int($mask) || $mask < 0 || $mask > 255) {
-      $this->raiseError("mask=$mask is not valid",
+      $this->cssRaiseError("mask=$mask is not valid",
 			__FUNCTION__, __LINE__);
       return false;
     }
@@ -215,7 +215,7 @@ class CSS_Color extends PEAR
 		   );
     }
 
-    $this->raiseError("cannot convert hex '$hex' to RGB", __FUNCTION__, __LINE__);
+    $this->cssRaiseError("cannot convert hex '$hex' to RGB", __FUNCTION__, __LINE__);
     return false;
   }
 
@@ -232,7 +232,7 @@ class CSS_Color extends PEAR
 
     // Make sure the input is valid
     if(!$this->isRGB($rgb)) {
-      $this->raiseError("RGB value is not valid", __FUNCTION__, __LINE__);
+      $this->cssRaiseError("RGB value is not valid", __FUNCTION__, __LINE__);
       return false;
     }
 
@@ -426,7 +426,7 @@ class CSS_Color extends PEAR
   }
 
   //--------------------------------------------------
-  function &raiseError($message, $method, $line)
+  function &cssRaiseError($message, $method, $line)
   {
     $error = PEAR::raiseError(sprintf("%s.%s() line %d: %s",
 				      get_class($this), $method, $line, $message),

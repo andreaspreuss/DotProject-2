@@ -49,7 +49,7 @@ class CUser extends CDpObject {
 		return NULL; // object is ok
 	}
 
-	function store() {
+	function store($updateNulls = false) {
 		$msg = $this->check();
 		if ($msg) {
 			return get_class($this)."::store-check failed";
@@ -70,7 +70,7 @@ class CUser extends CDpObject {
 				$this->user_password = null;
 			}
 
-			$ret = db_updateObject('users', $this, 'user_id', false);
+			$ret = db_updateObject('users', $this, 'user_id', $updateNulls);
 		} else {
 			$perm_func = "addLogin";
 			$this->user_password = md5($this->user_password);
@@ -85,9 +85,9 @@ class CUser extends CDpObject {
 		}
 	}
 
-	function delete($oid = NULL) {
+	function delete($oid = NULL, $history_desc = '', $history_proj = 0) {
 		$id = $this->user_id;
-		$result = parent::delete($oid);
+		$result = parent::delete($oid, $history_desc, $history_proj);
 		if (! $result) {
 			$acl =& $GLOBALS['AppUI']->acl();
 			$acl->deleteLogin($id);

@@ -1,0 +1,8 @@
+''=>'Termo de abertura de projeto',
+'Project Title'=>'Titulo do Projeto',
+'Justification'=>'Justificativa',
+'Objectives'=>'Objetivos',
+'Expected Results'=>'Resultados Esperados',
+'Milestones'=>'Marcos',
+'End Date'=>'Data Final',
+'Start Date'=>'Data de In�cio',

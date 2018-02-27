@@ -54,7 +54,7 @@ if ($_POST['mode'] == 'upgrade') {
 <?php
 endif;
 ?>
-			<option value="mysql" <?php if("mysql"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>MySQL - Recommended</option>
+			<option value="mysqli" <?php if("mysql"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>MySQL - Recommended</option>
 						
 			<option value="mysqlt" <?php if("mysqlt"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>MySQL With Transactions</option>
 			<option value="maxsql" <?php if("maxsql"== $dPconfig['dbtype']){ ?>selected="selected"<?php } ?>>MySQL MaxDB</option>

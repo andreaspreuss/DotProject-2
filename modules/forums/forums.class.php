@@ -41,13 +41,13 @@ class CForum extends CDpObject {
 		return NULL; // object is ok
 	}
 
-	function store() {
+	function store($updateNulls = false) {
 		$msg = $this->check();
 		if( $msg ) {
 			return "CForum::store-check failed<br />$msg";
 		}
 		if( $this->forum_id ) {
-			$ret = db_updateObject( 'forums', $this, 'forum_id', false ); // ! Don't update null values
+			$ret = db_updateObject( 'forums', $this, 'forum_id', $updateNulls); // ! Don't update null values
 			$details['changes'] = $ret;
 			if($this->forum_name) {
 				// when adding messages, this functon is called without first setting 'forum_name'
@@ -68,7 +68,7 @@ class CForum extends CDpObject {
 		}
 	}
 
-	function delete() {
+	function delete($oid = NULL, $history_desc = '', $history_proj = 0) {
 		$q  = new DBQuery;
 		$q->setDelete('forum_visits');
 		$q->addWhere('visit_forum = '.$this->forum_id);
@@ -147,7 +147,7 @@ class CForumMessage {
 		return NULL; // object is ok
 	}
 
-	function store() {
+	function store($updateNulls = false) {
 		$msg = $this->check();
 		if( $msg ) {
 			return "CForumMessage::store-check failed<br />$msg";
@@ -159,7 +159,7 @@ class CForumMessage {
 			$q->setDelete('forum_visits');
 			$q->addWhere('visit_message = '.$this->message_id);
 			$q->exec(); // No error if this fails, it is not important.
-			$ret = db_updateObject( 'forum_messages', $this, 'message_id', false ); // ! Don't update null values
+			$ret = db_updateObject( 'forum_messages', $this, 'message_id', $updateNulls); // ! Don't update null values
 			$q->clear();
 		} else {
 			$date = new CDate();
@@ -195,7 +195,7 @@ class CForumMessage {
 		}
 	}
 
-	function delete() {
+	function delete($oid = NULL, $history_desc = '', $history_proj = 0) {
 		$q  = new DBQuery;
 		$q->setDelete('forum_visits');
 		$q->addWhere('visit_message = '.$this->message_id);

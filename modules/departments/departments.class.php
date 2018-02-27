@@ -27,14 +27,14 @@ class CDepartment extends CDpObject {
  		// empty constructor
  	}
 
-	function load($oid) {
+	function load($oid = NULL,$strip = true) {
 		$q  = new DBQuery;
 		$q->addTable('departments','dep');
 		$q->addQuery('dep.*');
 		$q->addWhere('dep.dept_id = '.$oid);
 		$sql = $q->prepare();
 		$q->clear();
-		return db_loadObject($sql, $this);
+		return db_loadObject($sql, $this,false,$trip);
 	}
 
 	function bind($hash) {
@@ -57,13 +57,13 @@ class CDepartment extends CDpObject {
 		return NULL; // object is ok
 	}
 
-	function store() {
+	function store($updateNulls = false) {
 		$msg = $this->check();
 		if ($msg) {
 			return get_class($this)."::store-check failed - $msg";
 		}
 		if ($this->dept_id) {
-			$ret = db_updateObject('departments', $this, 'dept_id', false);
+			$ret = db_updateObject('departments', $this, 'dept_id', $updateNulls);
 		} else {
 			$ret = db_insertObject('departments', $this, 'dept_id');
 		}
@@ -74,7 +74,7 @@ class CDepartment extends CDpObject {
 		}
 	}
 
-	function delete() {
+	function delete($oid = NULL, $history_desc = '', $history_proj = 0) {
 		$q  = new DBQuery;
 		$q->addTable('departments','dep');
 		$q->addQuery('dep.*');
