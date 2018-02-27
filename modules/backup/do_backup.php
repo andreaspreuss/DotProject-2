@@ -15,7 +15,7 @@ if (! $perms->checkModule('backup', 'view'))
 
 $export_what = dPgetParam($_POST, 'export_what');
 $output_format = dPgetParam($_POST, 'output_format');
-$droptable = dPgetParam($_POST, 'droptable', false);
+$drop_table = dPgetParam($_POST, 'droptable', false);
 
 $valid_export_options = array('all', 'table', 'data');
 $valid_output_formats = array('xml', 'zip', 'sql');
